@@ -16,7 +16,7 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/mohammadmansour200/basset)
 ![GitHub issues](https://img.shields.io/github/issues/mohammadmansour200/basset)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/mohammadmansour200/basset)
-![GitHub](https://img.shields.io/github/license/mohammadmansour200/basset)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Platform Support 🖥️
 
