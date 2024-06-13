@@ -13,49 +13,52 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 <hr><a href="#platform-support">Platform support</a> &bull; <a href="#features">Features</a> &bull; <a href="#download-links">Download Links</a> &bull; <a href="#contributing">Contributing</a> &bull; <a href="#localization">Localization</a> &bull; <a href="#contact">Contact</a> &bull; <a href="#license">License</a></p>
 <hr>
 
-## Platform support
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/mohammadmansour200/basset)
+![GitHub issues](https://img.shields.io/github/issues/mohammadmansour200/basset)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/mohammadmansour200/basset)
+![GitHub](https://img.shields.io/github/license/mohammadmansour200/basset)
+
+## Platform Support 🖥️
 
 | Platform | Versions        |
 | :------- | :-------------- |
 | Windows  | 7 and above     |
 | macOS    | 10.15 and above |
-| Linux    |
+| Linux    | -               |
 
-## Features
+## Features 🌟
 
-- Media cutting and trimming with preview
-- Media converting
-- Media compressing
-- Video quality downgrading
-- Full customizability
-- Multi-lingual
-- Dark/Light mode
-- Low RAM usage (thanks to Tuari)
-- Privacy (everything happens locally)
+- ✂️ **Media cutting and trimming with preview**
+- 🔄 **Media conversion**
+- 📉 **Media compression**
+- 📉 **Video quality downgrading**
+- ⚙️ **Full customizability**
+- 🌐 **Multi-lingual support**
+- 🌗 **Dark/Light mode**
+- 🧠 **Low RAM usage (thanks to Tuari)**
+- 🔒 **Privacy-focused (everything happens locally)**
 
-## Download Links
+## Download Links 📥
 
-- GitHub Releases (currently being worked on)
+- [GitHub Releases](https://github.com/mohammadmansour200/basset/releases) (under development)
+- [Basset Website](https://basset-website.example.com) (under development)
 
-- Basset Website (currently being worked on)
+## Contributing 🤝
 
-## Contributing
+We welcome contributions! Please review our [Contribution Guidelines](https://github.com/mohammadmansour200/basset/CONTRIBUTING.md) before submitting a pull request.
 
-If you like to contribute. follow the [Contribution Guidelines](https://github.com/mohammadmansour200/basset/blob/development/CONTRIBUTING.md) before sending your pull request.
+## Localization 🌍
 
-## Localization
+Currently, Basset supports Arabic and English. We encourage you to contribute additional languages by submitting a pull request.
 
-Currently Arabic and English are only supported, feel free to add another Language by sending a pull request.
+## Contact 📧
 
-## Contact
+If you have any questions or need assistance, please reach out:
 
-If you ever have any questions, feel free to ask me here:
+- **Email:** [abdultawab940@gmail.com](mailto:abdultawab940@gmail.com)
+- **Telegram:** [Mohammedmansour200](https://t.me/Mohammedmansour200)
 
-> Email: abdultawab940@gmail.com
-
-> Telegram account: https://t.me/Mohammedmansour200
-
-## License
+## License 📜
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.html)
 
