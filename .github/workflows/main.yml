@@ -99,7 +99,7 @@ jobs:
           releaseBody: "See the assets to download this version and install."
 
       - name: create arch package (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.settings.platform == 'ubuntu-20.04'
         uses: 2m/arch-pkgbuild-builder@v1.17
         with:
           debug: true
@@ -107,7 +107,7 @@ jobs:
           pkgname: ${{ needs.setup.outputs.name_bin }}/
 
       - name: create rpm.spec file (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.settings.platform == 'ubuntu-20.04'
         run: |
           mkdir -p ${{ needs.setup.outputs.name_bin }}
           cat <<EOF > ./${{ needs.setup.outputs.name_bin }}/rpm.spec
@@ -141,14 +141,14 @@ jobs:
           cat ${{ needs.setup.outputs.name_bin }}/rpm.spec
 
       - name: create rpm package (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.settings.platform == 'ubuntu-20.04'
         uses: Antikythera/build-rpm@latest
         with:
           spec_file: ${{ needs.setup.outputs.name_bin }}/rpm.spec
           sources: ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }}
 
       - name: upload arch && rpm release (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.settings.platform == 'ubuntu-20.04'
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
