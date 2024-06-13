@@ -67,7 +67,7 @@
     "bundle": {
       "externalBin": ["bin/ffmpeg", "bin/ffprobe"],
       "active": true,
-      "targets": "all",
+      "targets": ["deb", "msi", "app", "dmg", "updater"],
       "identifier": "com.basset.app",
       "category": "Utility",
       "icon": [
