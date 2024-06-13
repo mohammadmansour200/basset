@@ -8,7 +8,7 @@ on:
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
-  
+
 env:
   ARCH: x86_64
   DEPENDENCIES_ARCH: "'libappindicator-gtk3' 'webkit2gtk' 'gtk3'"
@@ -22,7 +22,7 @@ jobs:
       version: ${{ steps.get-package.outputs.version }}
       description: ${{ steps.get-package.outputs.description }}
       license: ${{ steps.get-package.outputs.license }}
-      deb_pkg_name: ${{ steps.get-package.outputs.name }}_${{ steps.get-package.outputs.version }}_amd64.deb 
+      deb_pkg_name: ${{ steps.get-package.outputs.name }}_${{ steps.get-package.outputs.version }}_amd64.deb
       deb_pkg_path: ./src-tauri/target/release/bundle/deb/
       deb_pkg_renamed: ${{ steps.get-package.outputs.name }}-${{ steps.get-package.outputs.version }}-${{ env.ARCH }}.deb
       arch_pkg_name: ${{ steps.get-package.outputs.name }}-bin-${{ steps.get-package.outputs.version }}-1-${{ env.ARCH }}.pkg.tar.zst
@@ -33,7 +33,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: lts/*
       - name: get package info
         id: get-package
         run: |
@@ -48,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-       settings:
+        settings:
           - platform: "macos-latest" # for Arm based macs (M1 and above).
             args: "--target aarch64-apple-darwin"
           - platform: "macos-latest" # for Intel based macs.
@@ -96,53 +96,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ""
-          NO_STRIP: true
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "Basset v__VERSION__"
           releaseBody: "See the assets to download this version and install."
 
-      - name: copy deb package && create PKGBUILD file (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
-        run: |
-          mkdir -p ${{ needs.setup.outputs.name_bin }}
-          cp -fr ${{ needs.setup.outputs.deb_pkg_path }}${{ needs.setup.outputs.deb_pkg_name }} ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }} 
-          cat <<EOF > ./${{ needs.setup.outputs.name_bin }}/PKGBUILD
-            pkgname=${{ needs.setup.outputs.name_bin }}
-            pkgver=${{ needs.setup.outputs.version }}
-            md5sums=('$(md5sum ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }}  | awk '{print $1}')')
-            pkgrel=1
-            depends=(${{ env.DEPENDENCIES_ARCH }})
-            pkgdesc='${{ needs.setup.outputs.description }}'
-            arch=('${{ env.ARCH }}')
-            url="https://github.com/${{ github.repository }}"
-            license=('${{ needs.setup.outputs.license }}')
-            source=("\$url/releases/download/${{ needs.setup.outputs.tag_name }}/${{ needs.setup.outputs.deb_pkg_renamed }}")
-
-            build() {
-                rm control.tar.gz
-                tar xvf data.tar.gz
-            }
-
-            package() {
-                cp -fr usr/ \${pkgdir}
-            }
-          EOF
-          cat ${{ needs.setup.outputs.name_bin }}/PKGBUILD
-
       - name: create arch package (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-20.04'
         uses: 2m/arch-pkgbuild-builder@v1.17
         with:
           debug: true
           target: pkgbuild
           pkgname: ${{ needs.setup.outputs.name_bin }}/
 
-      - name: copy deb package && create rpm.spec file (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
+      - name: create rpm.spec file (ubuntu only)
+        if: matrix.platform == 'ubuntu-20.04'
         run: |
           mkdir -p ${{ needs.setup.outputs.name_bin }}
-          cp -fr ${{ needs.setup.outputs.deb_pkg_path }}/${{ needs.setup.outputs.deb_pkg_name }} ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }} 
           cat <<EOF > ./${{ needs.setup.outputs.name_bin }}/rpm.spec
           Name: ${{ needs.setup.outputs.name }}
           Version: ${{ needs.setup.outputs.version }}
@@ -162,7 +132,7 @@ jobs:
           %build
           rm -rf control.tar.gz
           tar xvf data.tar.gz
-                      
+                            
           %install
           cp -fr usr/ %{buildroot}
 
@@ -174,14 +144,14 @@ jobs:
           cat ${{ needs.setup.outputs.name_bin }}/rpm.spec
 
       - name: create rpm package (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-20.04'
         uses: Antikythera/build-rpm@latest
         with:
           spec_file: ${{ needs.setup.outputs.name_bin }}/rpm.spec
-          sources: ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }} 
+          sources: ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }}
 
       - name: upload arch && rpm release (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-20.04'
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -189,6 +159,4 @@ jobs:
           files: |
             ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.arch_pkg_name }}
             ${{ needs.setup.outputs.rpm_pkg_name }}
-          releaseDraft: true
           prerelease: false
-          args: ${{ matrix.settings.args }}
