@@ -11,34 +11,8 @@ concurrency:
 
 env:
   ARCH: x86_64
-  DEPENDENCIES_ARCH: "'libappindicator-gtk3' 'webkit2gtk' 'gtk3'"
   DEPENDENCIES_RPM: "javascriptcoregtk4.0, webkit2gtk4.0, libappindicator-gtk3"
 jobs:
-  setup:
-    runs-on: ubuntu-20.04
-    outputs:
-      name: ${{ steps.get-package.outputs.name }}
-      name_bin: ${{ steps.get-package.outputs.name }}-bin
-      version: ${{ steps.get-package.outputs.version }}
-      description: ${{ steps.get-package.outputs.description }}
-      license: ${{ steps.get-package.outputs.license }}
-      arch_pkg_name: ${{ steps.get-package.outputs.name }}-bin-${{ steps.get-package.outputs.version }}-1-${{ env.ARCH }}.pkg.tar.zst
-      rpm_pkg_name: RPMS/${{ steps.get-package.outputs.name }}-${{ steps.get-package.outputs.version }}-1.${{ env.ARCH }}.rpm
-      tag_name: v${{ steps.get-package.outputs.version }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-      - name: get package info
-        id: get-package
-        run: |
-          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
-          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-          echo "description=$(node -p "require('./package.json').description")" >> $GITHUB_OUTPUT
-          echo "license=$(node -p "require('./package.json').license")" >> $GITHUB_OUTPUT
-
   build-tauri:
     permissions:
       contents: write
@@ -98,30 +72,26 @@ jobs:
           releaseName: "Basset v__VERSION__"
           releaseBody: "See the assets to download this version and install."
 
-      - name: create arch package (ubuntu only)
-        if: matrix.settings.platform == 'ubuntu-20.04'
-        uses: 2m/arch-pkgbuild-builder@v1.17
-        with:
-          debug: true
-          target: pkgbuild
-          pkgname: ${{ needs.setup.outputs.name_bin }}/
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: create rpm.spec file (ubuntu only)
         if: matrix.settings.platform == 'ubuntu-20.04'
         run: |
-          mkdir -p ${{ needs.setup.outputs.name_bin }}
-          cat <<EOF > ./${{ needs.setup.outputs.name_bin }}/rpm.spec
-          Name: ${{ needs.setup.outputs.name }}
-          Version: ${{ needs.setup.outputs.version }}
-          BuildArch: ${{ env.ARCH }}
+          mkdir -p basset-bin
+          cat <<EOF > ./basset-bin/rpm.spec
+          Name: basset
+          Version: ${{ steps.package-version.outputs.current-version}}
+          BuildArch: x86_64
           Release: 1
-          Summary: ${{ needs.setup.outputs.description }}
+          Summary: Utility for video/audio cutting, compressing, converting and quality changing
           Requires: ${{ env.DEPENDENCIES_RPM }}
-          License: ${{ needs.setup.outputs.license }}
-          Source0: ${{ needs.setup.outputs.deb_pkg_renamed }}
+          License:  GPL-3.0 
+          Source0: basset-${{ steps.package-version.outputs.current-version}}-${{ env.ARCH }}.deb
 
           %description
-          ${{ needs.setup.outputs.description }}
+          Utility for video/audio cutting, compressing, converting and quality changing
 
           %prep
           ar x %{SOURCE0}
@@ -134,26 +104,25 @@ jobs:
           cp -fr usr/ %{buildroot}
 
           %files
-          %{_bindir}/${{ needs.setup.outputs.name }}
-          /usr/share/applications/${{ needs.setup.outputs.name }}.desktop
+          %{_bindir}/basset
+          /usr/share/applications/basset.desktop
           /usr/share/icons/hicolor/**/*
           EOF
-          cat ${{ needs.setup.outputs.name_bin }}/rpm.spec
+          cat basset-bin/rpm.spec
 
       - name: create rpm package (ubuntu only)
         if: matrix.settings.platform == 'ubuntu-20.04'
         uses: Antikythera/build-rpm@latest
         with:
-          spec_file: ${{ needs.setup.outputs.name_bin }}/rpm.spec
-          sources: ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.deb_pkg_renamed }}
+          spec_file: basset-bin/rpm.spec
+          sources: basset-bin/basset-${{ steps.package-version.outputs.current-version}}-${{ env.ARCH }}.deb
 
       - name: upload arch && rpm release (ubuntu only)
         if: matrix.settings.platform == 'ubuntu-20.04'
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ needs.setup.outputs.tag_name  }}
+          tag_name: v__VERSION__
           files: |
-            ${{ needs.setup.outputs.name_bin }}/${{ needs.setup.outputs.arch_pkg_name }}
-            ${{ needs.setup.outputs.rpm_pkg_name }}
+            RPMS/basset-${{ steps.package-version.outputs.current-version}}-1.x86_64.rpm
           prerelease: false
