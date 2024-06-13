@@ -16,7 +16,7 @@
         "https://releases.myapp.com/{{target}}/{{arch}}/{{current_version}}"
       ],
       "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU1RkVGMTVBOEJDMjI0QzYKUldUR0pNS0xXdkgrVmRzNkNNUGVlVjVwYk9pMGFzUkpmeC96RjR6MG5ucFdBRjcwMHFFS1dpaXoK"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDExMUFDNTc4NzE1RjI1NzAKUldSd0pWOXhlTVVhRWI1d3lUOXN2U1hSUHFEOUZwbW5sa2VnSExoZWh0VTJtZnk4SlJQZUFCbi8K"
     },
     "allowlist": {
       "path": {
