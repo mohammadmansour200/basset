@@ -1,0 +1,63 @@
+{
+  "inputErr": "Error opening input file",
+  "outputErr": "Error creating output file",
+  "streamErr": "File is corrupted",
+  "errTitle": "Something went wrong",
+  "successBody": "Done :)",
+  "successTitle": "Process finished",
+  "onboard": {
+    "greetings": "As-salamu alaykum... Basset is a free open source utility, its goals are: ",
+    "goals": {
+      "simplicity": "Simplicity and ease [Basset means simple in Arabic :)] ✨",
+      "speed": "Speed ⚡",
+      "privacy": "Privacy 🔏"
+    },
+    "features": "Basset lets you cut/trim, convert, compress, downgrade quality of your Audio/Video file. moreover you can convert Audio files to Video files using a still Image you choose",
+    "steps": "steps: choose your Video/Audio file --> choose your wanted operation"
+  },
+  "header": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "system": "System default",
+    "customDir": "Custom",
+    "defaultDir": "Default",
+    "notificationLabel": "Notifications",
+    "notificationOn": "Enabled",
+    "notificationOff": "Enable"
+  },
+  "uploadPage": {
+    "uploadFileLabel": "Choose a file"
+  },
+  "tabs": {
+    "cutTab": "Cut",
+    "trimTab": "Trim",
+    "compressTab": "Compress",
+    "compressTip": "16% is the sweet spot (less file size + very little change in quality)",
+    "vidToAudioTab": "Video to Audio",
+    "convertorTab": "Convert Audio/Video",
+    "vidQualityTab": "Video quality",
+    "audioToVidTab": "Audio to Video",
+    "uploadImageBtn": "Upload file",
+    "convertBtn": "Convert",
+    "cutBtn": "Cut",
+    "cutOutputDuration": "Output file duration",
+    "cutPreview": "Preview",
+    "startBtn": "Start"
+  },
+  "formatSelect": {
+    "placeholder": "Choose a format",
+    "label": "Output format",
+    "recommended": "(recommended)"
+  },
+  "executeBtn": {
+    "outputFile": "File:"
+  },
+  "AVControlsComponent": {
+    "AVLoop": "Repeat",
+    "jumpToTimestampLabel": "Jump to",
+    "jumpToTimestampPlaceholder": "HH:MM:SS",
+    "jumpToTimestampSubmit": "Jump",
+    "jumpToTimestampRegexValid": "Type in a correctly formatted timestamp",
+    "jumpToTimestampRefineValid": "Timestamp can't be greater than the duration"
+  }
+}
