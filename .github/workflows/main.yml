@@ -1,19 +1,11 @@
-name: "publish"
-
+name: "build"
 on:
   push:
     tags:
       - "v*"
   workflow_dispatch:
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  ARCH: x86_64
-  DEPENDENCIES_RPM: "javascriptcoregtk4.0, webkit2gtk4.0, libappindicator-gtk3"
 jobs:
-  build-tauri:
+  publish-tauri:
     permissions:
       contents: write
     strategy:
@@ -28,11 +20,9 @@ jobs:
             args: ""
           - platform: "windows-latest"
             args: ""
-
     runs-on: ${{ matrix.settings.platform }}
     steps:
       - uses: actions/checkout@v4
-
       - name: install dependencies (ubuntu only)
         if: matrix.settings.platform == 'ubuntu-20.04' # This must match the platform value defined above.
         run: |
@@ -40,28 +30,25 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
         # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
-
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: "npm" # Set this to npm, yarn or pnpm.
-
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
           # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ matrix.settings.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
-
       - name: install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: npm install # change this to npm or pnpm depending on which one you use.
 
+      - uses: tauri-apps/tauri-action@v0
       - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,58 +58,6 @@ jobs:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "Basset v__VERSION__"
           releaseBody: "See the assets to download this version and install."
-
-      - name: get-npm-version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-
-      - name: create rpm.spec file (ubuntu only)
-        if: matrix.settings.platform == 'ubuntu-20.04'
-        run: |
-          mkdir -p basset-bin
-          cat <<EOF > ./basset-bin/rpm.spec
-          Name: basset
-          Version: ${{ steps.package-version.outputs.current-version}}
-          BuildArch: x86_64
-          Release: 1
-          Summary: Utility for video/audio cutting, compressing, converting and quality changing
-          Requires: ${{ env.DEPENDENCIES_RPM }}
-          License:  GPL-3.0 
-          Source0: basset-${{ steps.package-version.outputs.current-version}}-${{ env.ARCH }}.deb
-
-          %description
-          Utility for video/audio cutting, compressing, converting and quality changing
-
-          %prep
-          ar x %{SOURCE0}
-
-          %build
-          rm -rf control.tar.gz
-          tar xvf data.tar.gz
-                            
-          %install
-          cp -fr usr/ %{buildroot}
-
-          %files
-          %{_bindir}/basset
-          /usr/share/applications/basset.desktop
-          /usr/share/icons/hicolor/**/*
-          EOF
-          cat basset-bin/rpm.spec
-
-      - name: create rpm package (ubuntu only)
-        if: matrix.settings.platform == 'ubuntu-20.04'
-        uses: Antikythera/build-rpm@latest
-        with:
-          spec_file: basset-bin/rpm.spec
-          sources: basset-bin/basset-${{ steps.package-version.outputs.current-version}}-${{ env.ARCH }}.deb
-
-      - name: upload arch && rpm release (ubuntu only)
-        if: matrix.settings.platform == 'ubuntu-20.04'
-        uses: softprops/action-gh-release@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: v__VERSION__
-          files: |
-            RPMS/basset-${{ steps.package-version.outputs.current-version}}-1.x86_64.rpm
+          releaseDraft: true
           prerelease: false
+          args: ${{ matrix.settings.args }}
