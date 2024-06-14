@@ -205,6 +205,7 @@ function AVPlayer({
           className="flex items-start justify-start gap-2 text-center"
         >
           <input
+            name="timestamp"
             onChange={onStartTimestampInputChange}
             ref={startTimestampElRef}
             type="text"
@@ -213,6 +214,7 @@ function AVPlayer({
           />
           :
           <input
+            name="timestamp"
             ref={endTimestampElRef}
             onChange={onEndTimestampInputChange}
             type="text"
@@ -282,6 +284,7 @@ function AVPlayer({
           className="flex items-start justify-start gap-2 text-center"
         >
           <input
+            name="timestamp"
             ref={startTimestampElRef}
             onChange={onStartTimestampInputChange}
             type="text"
@@ -290,6 +293,7 @@ function AVPlayer({
           />
           :
           <input
+            name="timestamp"
             ref={endTimestampElRef}
             onChange={onEndTimestampInputChange}
             type="text"

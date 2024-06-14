@@ -93,9 +93,10 @@
 
 *::-webkit-scrollbar-thumb {
   border-radius: 11px;
-  background-color: hsl(var(--muted));
 }
 
-#navbar::-webkit-scrollbar-thumb {
+#navbar::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  border: 0.2px solid hsl(var(--border));
   background-color: hsl(var(--muted-foreground));
 }

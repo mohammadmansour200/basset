@@ -1,15 +1,18 @@
+import { BaseDirectory, appLocalDataDir, extname } from "@tauri-apps/api/path";
+import { writeTextFile } from "@tauri-apps/api/fs";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Ripple } from "react-ripple-click";
+
 import FormatSelect from "../utils/FormatSelect";
 import ExecuteBtn from "../utils/ExecuteBtn";
 import QualitySelect from "../utils/QualitySelect";
 import CompressSlider from "../utils/CompressSlider";
-import { BaseDirectory, appLocalDataDir, extname } from "@tauri-apps/api/path";
-import AVPlayer from "./AV/AVPlayer";
 import formatTimestamp from "@/utils/timestampFormatter";
-import { writeTextFile } from "@tauri-apps/api/fs";
 import ImageFileUploader from "../utils/ImageFileUploader";
+import AudioQualitySelect from "../utils/AudioQualitySelect";
+
+import { Ripple } from "react-ripple-click";
+import AVPlayer from "./AV/AVPlayer";
 
 interface ITabsProps {
   filePath: string;
@@ -22,7 +25,8 @@ function Tabs({ filePath }: ITabsProps) {
   const [txtFilePath, setTxtFilePath] = useState("");
   const [imageFilePath, setImageFilePath] = useState("");
   const [quality, setQuality] = useState("1280:720");
-  const [compressRate, setCompressRate] = useState(4);
+  const [audioQuality, setAudioQuality] = useState("128k");
+  const [compressRate, setCompressRate] = useState(8);
   const [cmdProcessing, setCmdProcessing] = useState(false);
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([
     4, 100,
@@ -181,15 +185,21 @@ function Tabs({ filePath }: ITabsProps) {
       )}
       {tab === "compress" && (
         <div className="flex flex-col items-center gap-2">
-          <CompressSlider
-            compressRate={compressRate}
-            setCompressRate={setCompressRate}
-          />
+          {isAudio ? (
+            <AudioQualitySelect setAudioQuality={setAudioQuality} />
+          ) : (
+            <CompressSlider
+              compressRate={compressRate}
+              setCompressRate={setCompressRate}
+            />
+          )}
           <ExecuteBtn
             setCmdProcessing={setCmdProcessing}
             text={t("tabs.startBtn")}
             inputFilePath={filePath}
-            command={`-crf ${compressRate + 20}`}
+            command={
+              isAudio ? `-b:a ${audioQuality}` : `-crf ${compressRate + 20}`
+            }
           />
         </div>
       )}

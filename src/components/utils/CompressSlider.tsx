@@ -25,8 +25,9 @@ function CompressSlider({
       <Slider
         onValueChange={(value) => setCompressRate(Number(value))}
         min={0}
+        step={0.2}
         max={25}
-        defaultValue={[4]}
+        defaultValue={[8]}
       />
       <p className="w-[20%] rounded-md border border-border text-center">
         {compressPercentage}%

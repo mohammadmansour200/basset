@@ -32,7 +32,7 @@
     "cutTab": "قص (منتصف)",
     "trimTab": "قص (الأطراف)",
     "compressTab": "ضغط",
-    "compressTip": "الضغط ب16% هو الأفضل (مساحة أقل وفقد جودة قليل جدًا)",
+    "compressTip": "الضغط ب32% هو الأفضل (مساحة أقل وفقد جودة قليل جدًا)",
     "vidToAudioTab": "تحويل لصوتي",
     "convertorTab": "تحويل لصيغة",
     "vidQualityTab": "الجودة",
@@ -48,6 +48,12 @@
     "placeholder": "اختر الصيغة",
     "label": "صيغة الملف المخرج",
     "recommended": "(الأفضل)"
+  },
+  "audioQualitySelect": {
+    "selectLabel": "اختر جودة",
+    "high": "جودة عالية",
+    "medium": "جودة متوسطة",
+    "low": "جودة قليلة"
   },
   "executeBtn": {
     "outputFile": "الملف"

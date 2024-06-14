@@ -32,7 +32,7 @@
     "cutTab": "Cut",
     "trimTab": "Trim",
     "compressTab": "Compress",
-    "compressTip": "16% is the sweet spot (less file size + very little change in quality)",
+    "compressTip": "32% is the sweet spot (less file size + very little change in quality)",
     "vidToAudioTab": "Video to Audio",
     "convertorTab": "Convert Audio/Video",
     "vidQualityTab": "Video quality",
@@ -48,6 +48,12 @@
     "placeholder": "Choose a format",
     "label": "Output format",
     "recommended": "(recommended)"
+  },
+  "audioQualitySelect": {
+    "selectLabel": "Select quality",
+    "high": "High quality",
+    "medium": "Medium quality",
+    "low": "Low quality"
   },
   "executeBtn": {
     "outputFile": "File:"
