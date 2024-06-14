@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "Basset",
-    "version": "0.1.0-beta"
+    "version": "0.1.0"
   },
   "tauri": {
     "updater": {

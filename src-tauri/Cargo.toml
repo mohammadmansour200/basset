@@ -1,6 +1,6 @@
 [package]
 name = "basset"
-version = "0.1.0-beta"
+version = "0.1.0"
 description = "Utility for video/audio cutting, compressing, converting and quality changing"
 authors = ["Mohmmad Abdul-Tawab"]
 edition = "2021"
