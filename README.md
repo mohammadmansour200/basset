@@ -10,7 +10,7 @@ its goals are:
 Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 </center>
 
-<hr><a href="#platform-support">Platform support</a> &bull; <a href="#features">Features</a> &bull; <a href="#download-links">Download Links</a> &bull; <a href="#contributing">Contributing</a> &bull; <a href="#localization">Localization</a> &bull; <a href="#contact">Contact</a> &bull; <a href="#license">License</a></p>
+<hr><a href="#demo">Demo</a> &bull; <a href="#features">Features</a> &bull; <a href="#platform-support">Platform support</a> &bull; <a href="#download-links">Download Links</a> &bull;  <a href="#contributing">Contributing</a> &bull; <a href="#localization">Localization</a> &bull; <a href="#contact">Contact</a> &bull; <a href="#license">License</a></p>
 <hr>
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/mohammadmansour200/basset)
@@ -18,13 +18,12 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/mohammadmansour200/basset)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-## Platform Support 🖥️
+## Demo 📷
 
-| Platform | Versions        |
-| :------- | :-------------- |
-| Windows  | 7 and above     |
-| macOS    | 10.15 and above |
-| Linux    | -               |
+<img src="https://i.imgur.com/lF9EO8H.png" width=300> <img src="https://i.imgur.com/9Fel7qw.png" width=300>
+<img src="https://i.imgur.com/28ZB9cM.png" width=300>
+<img src="https://i.imgur.com/V0avyKf.png" width=300>
+<img src="https://i.imgur.com/mGErtTU.png" width=300>
 
 ## Features 🌟
 
@@ -37,6 +36,14 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 - 🌗 **Dark/Light mode**
 - 🧠 **Low RAM usage (thanks to Tuari)**
 - 🔒 **Privacy-focused (everything happens locally)**
+
+## Platform Support 🖥️
+
+| Platform | Versions        |
+| :------- | :-------------- |
+| Windows  | 7 and above     |
+| macOS    | 10.15 and above |
+| Linux    | -               |
 
 ## Download Links 📥
 
