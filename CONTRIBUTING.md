@@ -11,7 +11,7 @@ Please follow these guidelines before starting to code you feature or bugfix.
 
 Please follow these guidelines before sending your pull request and making contributions.
 
-- When you submit a pull request, you agree that your code is published under the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html)
+- When you submit a pull request, you agree that your code is published under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.html)
 - Please link the issue you are referring to.
 - Do not include non-free software or modules with your code.
 - Make sure your pull request is set up to merge your branch to FreeTube's development branch.
