@@ -47,12 +47,12 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 
 ## Download Links 📥
 
-- [GitHub Releases](https://github.com/mohammadmansour200/basset/releases) (under development)
-- [Basset Website](https://basset-website.example.com) (under development)
+- [GitHub Releases](https://github.com/mohammadmansour200/basset/releases) 
+- [Basset Website](https://basset.vercel.app/) 
 
 ## Contributing 🤝
 
-We welcome contributions! Please review our [Contribution Guidelines](https://github.com/mohammadmansour200/basset/CONTRIBUTING.md) before submitting a pull request.
+We welcome contributions! Please review our [Contribution Guidelines](https://github.com/mohammadmansour200/basset/blob/main/CONTRIBUTING.md) before submitting a pull request.
 
 ## Localization 🌍
 
