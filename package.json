@@ -1,6 +1,6 @@
 {
   "name": "basset",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "author": "Mohammad Abdul-Tawab",
   "description": "Utility for video/audio cutting, compressing, converting and quality changing",

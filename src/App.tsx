@@ -17,7 +17,7 @@ function App() {
 
   //Remove context menu
   useEffect(() => {
-    // document.addEventListener("contextmenu", (event) => event.preventDefault());
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
   }, []);
 
   //Kill FFmpeg commands on app exit

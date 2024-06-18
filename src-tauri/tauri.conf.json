@@ -6,18 +6,9 @@
     "devUrl": "http://localhost:1420"
   },
   "bundle": {
-    "externalBin": [
-      "bin/ffmpeg",
-      "bin/ffprobe"
-    ],
+    "externalBin": ["bin/ffmpeg", "bin/ffprobe"],
     "active": true,
-    "targets": [
-      "deb",
-      "msi",
-      "app",
-      "dmg",
-      "updater"
-    ],
+    "targets": ["deb", "msi", "app", "dmg", "updater"],
     "windows": {
       "webviewInstallMode": {
         "type": "embedBootstrapper"
@@ -33,7 +24,7 @@
     ]
   },
   "productName": "Basset",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "identifier": "com.basset.app",
   "plugins": {
     "updater": {
@@ -46,9 +37,7 @@
   "app": {
     "security": {
       "assetProtocol": {
-        "scope": [
-          "**"
-        ],
+        "scope": ["**"],
         "enable": true
       }
     },
