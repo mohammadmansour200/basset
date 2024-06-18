@@ -1,5 +1,6 @@
 {
   "inputErr": "لا يمكن فتح الملف المدخل",
+  "somethingWentWrongErr": "حدث خطأ ما، جرب ملفًا آخر",
   "outputErr": "لم يمكننا إنشاء الملف",
   "streamErr": "الملف غير صالح",
   "errTitle": "حدث خطأ ما :(",

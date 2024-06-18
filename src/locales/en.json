@@ -1,6 +1,7 @@
 {
   "inputErr": "Error opening input file",
   "outputErr": "Error creating output file",
+  "somethingWentWrongErr": "Something went wrong, try a different file",
   "streamErr": "File is corrupted",
   "errTitle": "Something went wrong",
   "successBody": "Done :)",

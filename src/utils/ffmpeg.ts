@@ -86,11 +86,15 @@ const runCommand = async (
     }
 
     const inputErrRegex = /Error opening input/;
+    const somethingWentWrongRegex = /Conversion failed/;
     const outputErrRegex = /Error opening output/;
     const streamErrRegex = /Output file does not contain any stream/;
     if (data.match(inputErrRegex)) setErrInfo(t("inputErr"));
 
     if (data.match(outputErrRegex)) setErrInfo(t("outputErr"));
+
+    if (data.match(somethingWentWrongRegex))
+      setErrInfo(t("somethingWentWrongErr"));
 
     if (data.match(streamErrRegex) || data.match(outputErrRegex))
       setErrInfo(t("streamErr"));
