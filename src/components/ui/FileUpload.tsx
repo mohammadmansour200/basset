@@ -49,8 +49,8 @@ function FileUpload({ setFilePath }: IFileUploadProps) {
           },
         ],
       });
-
-      setFilePath(selectedFile?.path as string);
+      if (selectedFile?.path === undefined) return;
+      setFilePath(selectedFile.path as string);
     },
     [setFilePath],
   );

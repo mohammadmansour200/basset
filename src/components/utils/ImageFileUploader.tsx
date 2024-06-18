@@ -22,7 +22,7 @@ function ImageFileUploader({
         },
       ],
     });
-    if (selectedImageFile) {
+    if (selectedImageFile && selectedImageFile.path !== undefined) {
       setImageFilePath(selectedImageFile.path as string);
     }
   }
