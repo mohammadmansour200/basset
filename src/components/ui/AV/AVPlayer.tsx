@@ -1,6 +1,6 @@
-import { convertFileSrc } from "@tauri-apps/api/tauri";
-import { getVidDuration } from "@/utils/ffmpeg";
+import { convertFileSrc } from "@tauri-apps/api/core";
 
+import { getVidDuration } from "@/utils/ffmpeg";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 

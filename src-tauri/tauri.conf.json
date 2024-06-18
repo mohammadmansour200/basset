@@ -2,57 +2,54 @@
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "Basset",
-    "version": "0.1.0"
+  "bundle": {
+    "externalBin": [
+      "bin/ffmpeg",
+      "bin/ffprobe"
+    ],
+    "active": true,
+    "targets": [
+      "deb",
+      "msi",
+      "app",
+      "dmg",
+      "updater"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "embedBootstrapper"
+      }
+    },
+    "category": "Utility",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
   },
-  "tauri": {
+  "productName": "Basset",
+  "version": "0.1.0",
+  "identifier": "com.basset.app",
+  "plugins": {
     "updater": {
-      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxMkVDQjc1QTA0Q0ZGQTMKUldTai8weWdkY3N1WVRiMW9udTNXcGllUHdibGR3UklUQ2VQYXdqc05qNmg5TmF1cmF5allTTHEK",
       "endpoints": [
         "https://github.com/mohammadmansour200/basset/releases/latest/download/latest.json"
-      ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxMkVDQjc1QTA0Q0ZGQTMKUldTai8weWdkY3N1WVRiMW9udTNXcGllUHdibGR3UklUQ2VQYXdqc05qNmg5TmF1cmF5allTTHEK"
-    },
-    "allowlist": {
-      "path": {
-        "all": true
-      },
-      "fs": {
-        "readFile": true,
-        "writeFile": true,
-        "createDir": true,
-        "exists": true,
+      ]
+    }
+  },
+  "app": {
+    "security": {
+      "assetProtocol": {
         "scope": [
-          "$APPLOCALDATA/inputTxtFiles",
-          "$APPLOCALDATA/inputTxtFiles/*"
-        ]
-      },
-      "protocol": {
-        "all": true,
-        "asset": true,
-        "assetScope": ["**"]
-      },
-      "notification": {
-        "all": true
-      },
-      "all": false,
-      "dialog": {
-        "open": true
-      },
-      "shell": {
-        "all": false,
-        "open": ".",
-        "sidecar": true,
-        "execute": true,
-        "scope": [
-          { "name": "bin/ffmpeg", "args": true, "sidecar": true },
-          { "name": "bin/ffprobe", "args": true, "sidecar": true }
-        ]
+          "**"
+        ],
+        "enable": true
       }
     },
     "windows": [
@@ -63,25 +60,6 @@
         "minWidth": 650,
         "minHeight": 450
       }
-    ],
-    "bundle": {
-      "externalBin": ["bin/ffmpeg", "bin/ffprobe"],
-      "active": true,
-      "targets": ["deb", "msi", "app", "dmg", "updater"],
-      "identifier": "com.basset.app",
-      "category": "Utility",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "windows": {
-        "webviewInstallMode": {
-          "type": "embedBootstrapper"
-        }
-      }
-    }
+    ]
   }
 }

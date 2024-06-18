@@ -1,5 +1,5 @@
-import { BaseDirectory, appLocalDataDir, extname } from "@tauri-apps/api/path";
-import { writeTextFile } from "@tauri-apps/api/fs";
+import { appLocalDataDir, extname } from "@tauri-apps/api/path";
+import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -83,7 +83,7 @@ function Tabs({ filePath }: ITabsProps) {
     async function getTxtFilePath() {
       if (tab === "cut") {
         const txtFilePath = await appLocalDataDir();
-        setTxtFilePath(`${txtFilePath}inputTxtFiles`);
+        setTxtFilePath(`${txtFilePath}/inputTxtFiles`);
       }
     }
     getTxtFilePath();
@@ -270,10 +270,11 @@ function Tabs({ filePath }: ITabsProps) {
               await writeTextFile(
                 "inputTxtFiles/input.txt",
                 `file '${filePath}'
-inpoint ${cutTimestamps[0]}
-outpoint ${cutTimestamps[1]}`,
+                outpoint ${cutTimestamps[0]}
+                file '${filePath}'
+                inpoint ${cutTimestamps[1]}`,
                 {
-                  dir: BaseDirectory.AppLocalData,
+                  baseDir: BaseDirectory.AppLocalData,
                 },
               )
             }

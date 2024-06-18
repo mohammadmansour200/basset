@@ -1,4 +1,4 @@
-import { open } from "@tauri-apps/api/dialog";
+import { open } from "@tauri-apps/plugin-dialog";
 import { useTranslation } from "react-i18next";
 
 interface IImageFileUploaderProps {
@@ -23,7 +23,7 @@ function ImageFileUploader({
       ],
     });
     if (selectedImageFile) {
-      setImageFilePath(selectedImageFile as string);
+      setImageFilePath(selectedImageFile.path as string);
     }
   }
 

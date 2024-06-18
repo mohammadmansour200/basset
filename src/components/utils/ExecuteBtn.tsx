@@ -1,9 +1,9 @@
 import {
   isPermissionGranted,
   sendNotification,
-} from "@tauri-apps/api/notification";
+} from "@tauri-apps/plugin-notification";
 import { basename, downloadDir, extname } from "@tauri-apps/api/path";
-import { open } from "@tauri-apps/api/shell";
+import { open } from "@tauri-apps/plugin-shell";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 
@@ -79,7 +79,7 @@ function ExecuteBtn({
 
     let cmd: string[];
 
-    const outputFilePath = `${outputPath}${customPath === null ? "" : "/"}${fileName}_${outputFileDate}.${outputFileFormat}`;
+    const outputFilePath = `${outputPath}/${fileName}_${outputFileDate}.${outputFileFormat}`;
 
     if (command === "") {
       cmd = ["-i", `${inputFilePath}`];

@@ -1,5 +1,5 @@
-import { BaseDirectory, createDir, exists } from "@tauri-apps/api/fs";
-import { open } from "@tauri-apps/api/dialog";
+import { BaseDirectory, mkdir, exists } from "@tauri-apps/plugin-fs";
+import { open } from "@tauri-apps/plugin-dialog";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -17,11 +17,11 @@ function FileUpload({ setFilePath }: IFileUploadProps) {
   useEffect(() => {
     async function createAppDataDir() {
       const dirExists = await exists("inputTxtFiles", {
-        dir: BaseDirectory.AppLocalData,
+        baseDir: BaseDirectory.AppLocalData,
       });
 
       if (!dirExists) {
-        await createDir("inputTxtFiles", { dir: BaseDirectory.AppLocalData });
+        await mkdir("inputTxtFiles", { baseDir: BaseDirectory.AppLocalData });
       }
     }
     createAppDataDir();
@@ -49,7 +49,8 @@ function FileUpload({ setFilePath }: IFileUploadProps) {
           },
         ],
       });
-      setFilePath(selectedFile as string);
+
+      setFilePath(selectedFile?.path as string);
     },
     [setFilePath],
   );

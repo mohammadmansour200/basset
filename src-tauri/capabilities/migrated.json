@@ -1,0 +1,76 @@
+{
+  "identifier": "migrated",
+  "description": "permissions that were migrated from v1",
+  "local": true,
+  "windows": ["main"],
+  "permissions": [
+    "path:default",
+    "event:default",
+    "window:default",
+    "app:default",
+    "resources:default",
+    "menu:default",
+    "tray:default",
+    "fs:allow-read-file",
+    "fs:allow-write-file",
+    "fs:allow-mkdir",
+    "fs:allow-exists",
+    "fs:allow-applocaldata-write",
+    {
+      "identifier": "fs:scope",
+      "allow": ["$APPLOCALDATA/inputTxtFiles", "$APPLOCALDATA/inputTxtFiles/*"]
+    },
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "args": true,
+          "name": "bin/ffmpeg",
+          "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "bin/ffprobe",
+          "sidecar": true
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-spawn",
+      "allow": [
+        {
+          "args": true,
+          "name": "bin/ffmpeg",
+          "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "bin/ffprobe",
+          "sidecar": true
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-kill",
+      "allow": [
+        {
+          "args": true,
+          "name": "bin/ffmpeg",
+          "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "bin/ffprobe",
+          "sidecar": true
+        }
+      ]
+    },
+    "shell:allow-open",
+    "dialog:allow-open",
+    "notification:default",
+    "fs:default",
+    "shell:default",
+    "dialog:default",
+    "notification:default"
+  ]
+}

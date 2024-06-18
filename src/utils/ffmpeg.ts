@@ -1,10 +1,10 @@
-import { Child, Command } from "@tauri-apps/api/shell";
+import { Child, Command } from "@tauri-apps/plugin-shell";
 import React, { Dispatch } from "react";
 import unformatTimestamp from "./timestampUnformatter";
 import {
   isPermissionGranted,
   sendNotification,
-} from "@tauri-apps/api/notification";
+} from "@tauri-apps/plugin-notification";
 import { t } from "i18next";
 import { getPercentage } from "./getPercentage";
 

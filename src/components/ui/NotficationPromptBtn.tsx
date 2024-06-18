@@ -1,7 +1,7 @@
 import {
   isPermissionGranted,
   requestPermission,
-} from "@tauri-apps/api/notification";
+} from "@tauri-apps/plugin-notification";
 import { LucideBellRing } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

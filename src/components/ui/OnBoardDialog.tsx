@@ -43,13 +43,13 @@ function OnBoardDialog() {
           v{appVersion}
         </DialogHeader>
         <hr className="mt-2 h-[2px] border-none bg-border" />
-        <p dir="auto">
-          {t("onboard.greetings")}
-          <ul className="ms-4 list-disc">
-            <li>{t("onboard.goals.simplicity")}</li>
-            <li>{t("onboard.goals.speed")}</li>
-            <li>{t("onboard.goals.privacy")}</li>
-          </ul>
+        <p dir="auto">{t("onboard.greetings")}</p>
+        <ul className="ms-4 list-disc">
+          <li>{t("onboard.goals.simplicity")}</li>
+          <li>{t("onboard.goals.speed")}</li>
+          <li>{t("onboard.goals.privacy")}</li>
+        </ul>
+        <p>
           <br />
           {t("onboard.features")}
           <br />
