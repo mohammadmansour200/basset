@@ -34,10 +34,10 @@
     "trimTab": "قص (الأطراف)",
     "compressTab": "ضغط",
     "compressTip": "الضغط ب32% هو الأفضل (مساحة أقل وفقد جودة قليل جدًا)",
-    "vidToAudioTab": "تحويل لصوتي",
-    "convertorTab": "تحويل لصيغة",
-    "vidQualityTab": "الجودة",
-    "audioToVidTab": "صوتي لمرئي",
+    "convertToAudioTab": "تحويل لصوتي",
+    "convertTab": "تحويل لصيغة",
+    "qualityTab": "الجودة",
+    "convertToVideoTab": "صوتي لمرئي",
     "uploadImageBtn": "رفع الملف",
     "convertBtn": "تحويل",
     "cutBtn": "قص",
@@ -58,13 +58,5 @@
   },
   "executeBtn": {
     "outputFile": "الملف"
-  },
-  "AVControlsComponent": {
-    "AVLoop": "تكرار",
-    "jumpToTimestampLabel": "اقفز إلى",
-    "jumpToTimestampPlaceholder": "ثواني:دقائق:ساعة",
-    "jumpToTimestampSubmit": "اقفز",
-    "jumpToTimestampRegexValid": "صيغة المدة غير صحيحة",
-    "jumpToTimestampRefineValid": "المدة المكتوبة أكبر من مدة المقطع"
   }
 }

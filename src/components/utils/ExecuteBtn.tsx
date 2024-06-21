@@ -12,7 +12,7 @@ import { killCommand, runCommand } from "@/utils/ffmpeg";
 import { CheckCircle2, TriangleAlert, X } from "lucide-react";
 
 interface IExecuteBtnProps {
-  command: string | string[];
+  command: string[];
   text?: string;
   inputFilePath: string;
   outputFormat?: string;
@@ -81,12 +81,14 @@ function ExecuteBtn({
 
     const outputFilePath = `${outputPath}/${fileName}_${outputFileDate}.${outputFileFormat}`;
 
-    if (command === "") {
+    //If there are no options (for video converting)
+    if (command.length === 0) {
       cmd = ["-i", `${inputFilePath}`];
+      //Some ffmpeg commands doesn't start with the -i option
     } else if (cmdCustom) {
       cmd = [...command];
     } else {
-      cmd = ["-i", `${inputFilePath}`, ...(command as string).split(" ")];
+      cmd = ["-i", `${inputFilePath}`, ...command];
     }
 
     runCommand(

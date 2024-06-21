@@ -28,16 +28,16 @@ function ImageFileUploader({
   }
 
   return (
-    <div className="flex w-[250px] items-center gap-2">
-      <div className="flex-grow">
-        <ImageIcon />
-      </div>
+    <div className="flex w-[250px] justify-center">
       <button
         onClick={onUploadImageBtnClick}
-        className="rounded-md bg-muted px-3 py-1 font-semibold"
+        className="flex items-center gap-1 rounded-md bg-muted px-8 py-1 font-semibold"
       >
         {imageFilePath === "" ? (
-          <p>{t("tabs.uploadImageBtn")}</p>
+          <>
+            <ImageIcon />
+            <p>{t("tabs.uploadImageBtn")}</p>
+          </>
         ) : (
           <p className="text-blue-500">...{imageFilePath.slice(15)}</p>
         )}
@@ -54,7 +54,7 @@ function ImageIcon() {
       viewBox="0 0 16 16"
       fill="none"
       version="1.1"
-      width="24px"
+      width="20px"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g strokeWidth="0"></g>

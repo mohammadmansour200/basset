@@ -16,7 +16,7 @@ function QualitySelect({ setQuality }: IQualitySelectProps) {
   const { i18n, t } = useTranslation();
   return (
     <div className="flex w-[250px] items-center gap-2" dir={i18n.dir()}>
-      <p className="whitespace-nowrap">{t("tabs.vidQualityTab")}</p>
+      <p className="whitespace-nowrap">{t("tabs.qualityTab")}</p>
       <Select
         defaultValue="1280:720"
         onValueChange={(value) => setQuality(value)}

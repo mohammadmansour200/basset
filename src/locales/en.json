@@ -34,10 +34,10 @@
     "trimTab": "Trim",
     "compressTab": "Compress",
     "compressTip": "32% is the sweet spot (less file size + very little change in quality)",
-    "vidToAudioTab": "Video to Audio",
-    "convertorTab": "Convert Audio/Video",
-    "vidQualityTab": "Video quality",
-    "audioToVidTab": "Audio to Video",
+    "convertToAudioTab": "Video to Audio",
+    "convertTab": "Convert Audio/Video",
+    "qualityTab": "Video quality",
+    "convertToVideoTab": "Audio to Video",
     "uploadImageBtn": "Upload file",
     "convertBtn": "Convert",
     "cutBtn": "Cut",
@@ -58,13 +58,5 @@
   },
   "executeBtn": {
     "outputFile": "File:"
-  },
-  "AVControlsComponent": {
-    "AVLoop": "Repeat",
-    "jumpToTimestampLabel": "Jump to",
-    "jumpToTimestampPlaceholder": "HH:MM:SS",
-    "jumpToTimestampSubmit": "Jump",
-    "jumpToTimestampRegexValid": "Type in a correctly formatted timestamp",
-    "jumpToTimestampRefineValid": "Timestamp can't be greater than the duration"
   }
 }

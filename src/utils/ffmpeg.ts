@@ -1,16 +1,68 @@
-import { Child, Command } from "@tauri-apps/plugin-shell";
 import React, { Dispatch } from "react";
-import unformatTimestamp from "./timestampUnformatter";
+import { t } from "i18next";
+
+import { Child, Command } from "@tauri-apps/plugin-shell";
 import {
   isPermissionGranted,
   sendNotification,
 } from "@tauri-apps/plugin-notification";
-import { t } from "i18next";
+
+import unformatTimestamp from "./timestampUnformatter";
 import { getPercentage } from "./getPercentage";
 
 let videoDuration = 0;
 let ffmpeg: Child;
-let ffprobe: Child;
+let ffprobeGetDuration: Child;
+
+//This is crucial for not having a jitter and frame freeze for cutting Media files in ffmpeg without re-encoding
+const getNearestTimestamp = async (
+  filePath: string,
+  cutTimestamps: [number, number],
+) => {
+  const nearestTimestampCmd = (cutTimestamp: number) => {
+    return [
+      "-read_intervals",
+      `${cutTimestamp + 2}%${cutTimestamp + 2}`,
+      "-v",
+      "error",
+      "-skip_frame",
+      "nokey",
+      "-show_entries",
+      "frame=pkt_pts_time",
+      "-select_streams",
+      "v",
+      "-of",
+      "csv=p=0",
+      filePath,
+    ];
+  };
+
+  // Function to execute ffprobe and return nearest timestamp
+  const executeFfprobe = async (cmd: string[]) => {
+    return new Promise<number>((resolve) => {
+      const ffprobe = Command.sidecar("bin/ffprobe", cmd);
+
+      ffprobe.stdout.on("data", (data) => {
+        const nearestTimestamp = parseFloat(data.toString());
+        resolve(nearestTimestamp);
+      });
+
+      ffprobe.spawn();
+    });
+  };
+
+  const nearestTSTask1 = executeFfprobe(nearestTimestampCmd(cutTimestamps[0]));
+
+  const nearestTSTask2 = executeFfprobe(nearestTimestampCmd(cutTimestamps[1]));
+
+  // Wait for both tasks to complete
+  const [nearestTS1, nearestTS2] = await Promise.all([
+    nearestTSTask1,
+    nearestTSTask2,
+  ]);
+
+  return { nearestTS1, nearestTS2 };
+};
 
 const getVidDuration = async (
   filePath: string,
@@ -37,7 +89,7 @@ const getVidDuration = async (
     }
   });
 
-  ffprobe = await ffprobeSidecar.spawn();
+  ffprobeGetDuration = await ffprobeSidecar.spawn();
 };
 
 const runCommand = async (
@@ -107,7 +159,7 @@ const killCommand = () => {
   try {
     ffmpeg.kill();
     if (videoDuration === 0) {
-      ffprobe.kill();
+      ffprobeGetDuration.kill();
     }
   } catch (err) {
     console.log(err);
@@ -125,4 +177,4 @@ function extractProgress(data: string, AVDuration: number) {
 
   return progressPercentage;
 }
-export { runCommand, killCommand, getVidDuration };
+export { runCommand, killCommand, getVidDuration, getNearestTimestamp };

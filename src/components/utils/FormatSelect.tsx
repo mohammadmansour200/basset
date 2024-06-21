@@ -10,7 +10,7 @@ import {
 
 interface IFormatSelectProps {
   setFormat: React.Dispatch<React.SetStateAction<string>>;
-  isAudio?: boolean;
+  isAudio?: boolean | null;
 }
 
 function FormatSelect({ setFormat, isAudio = false }: IFormatSelectProps) {

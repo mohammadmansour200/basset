@@ -4,6 +4,7 @@
   "type": "module",
   "author": "Mohammad Abdul-Tawab",
   "description": "Utility for video/audio cutting, compressing, converting and quality changing",
+  "license": "GPL-3.0-only",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

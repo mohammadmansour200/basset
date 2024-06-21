@@ -3,6 +3,7 @@ import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { getNearestTimestamp } from "@/utils/ffmpeg";
 import FormatSelect from "../utils/FormatSelect";
 import ExecuteBtn from "../utils/ExecuteBtn";
 import QualitySelect from "../utils/QualitySelect";
@@ -11,8 +12,8 @@ import formatTimestamp from "@/utils/timestampFormatter";
 import ImageFileUploader from "../utils/ImageFileUploader";
 import AudioQualitySelect from "../utils/AudioQualitySelect";
 
-import { Ripple } from "react-ripple-click";
 import AVPlayer from "./AV/AVPlayer";
+import TabItem from "./TabItem";
 
 interface ITabsProps {
   filePath: string;
@@ -20,17 +21,22 @@ interface ITabsProps {
 
 function Tabs({ filePath }: ITabsProps) {
   const [tab, setTab] = useState("cut");
-  const [isAudio, setIsAudio] = useState(false);
+  const [isAudio, setIsAudio] = useState<boolean | null>(null);
+
   const [outputFormat, setOutputFormat] = useState("");
+  const [cmdProcessing, setCmdProcessing] = useState(false);
   const [txtFilePath, setTxtFilePath] = useState("");
+
   const [imageFilePath, setImageFilePath] = useState("");
+
   const [quality, setQuality] = useState("1280:720");
   const [audioQuality, setAudioQuality] = useState("128k");
   const [compressRate, setCompressRate] = useState(8);
-  const [cmdProcessing, setCmdProcessing] = useState(false);
+
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([
     4, 100,
   ]);
+
   const { i18n, t } = useTranslation();
   const navElRef = useRef<HTMLDivElement>(null);
   const activeIndicatorElRef = useRef<HTMLDivElement>(null);
@@ -107,67 +113,18 @@ function Tabs({ filePath }: ITabsProps) {
           className="flex gap-2 whitespace-nowrap"
           style={{ direction: `${i18n.dir() === "ltr" ? "ltr" : "rtl"}` }}
         >
-          <button
-            style={{ cursor: cmdProcessing ? "not-allowed" : "" }}
-            data-tab="cut"
-            className="ripple z-10 rounded-md px-2 py-1 font-semibold transition-all hover:bg-background/50"
-          >
-            <Ripple />
-            {t("tabs.cutTab")}
-          </button>
-          <button
-            style={{ cursor: cmdProcessing ? "not-allowed" : "" }}
-            data-tab="trim"
-            className="ripple z-10 rounded-md px-2 py-1 font-semibold transition-all hover:bg-background/50"
-          >
-            <Ripple />
-            {t("tabs.trimTab")}
-          </button>
-          <button
-            style={{ cursor: cmdProcessing ? "not-allowed" : "" }}
-            data-tab="compress"
-            className="ripple z-10 rounded-md px-2 py-1 font-semibold transition-all hover:bg-background/50"
-          >
-            <Ripple />
-            {t("tabs.compressTab")}
-          </button>
-          <button
-            style={{ cursor: cmdProcessing ? "not-allowed" : "" }}
-            data-tab="convert"
-            className="ripple z-10 rounded-md px-2 py-1 font-semibold transition-all hover:bg-background/50"
-          >
-            <Ripple />
-            {t("tabs.convertorTab")}
-          </button>
+          <TabItem name="cut" cmdProcessing={cmdProcessing} />
+          <TabItem name="trim" cmdProcessing={cmdProcessing} />
+          <TabItem name="compress" cmdProcessing={cmdProcessing} />
+          <TabItem name="convert" cmdProcessing={cmdProcessing} />
           {!isAudio && (
             <>
-              <button
-                style={{ cursor: cmdProcessing ? "not-allowed" : "" }}
-                data-tab="convertToAudio"
-                className="ripple z-10 rounded-md px-2 py-1 font-semibold transition-all hover:bg-background/50"
-              >
-                <Ripple />
-                {t("tabs.vidToAudioTab")}
-              </button>
-              <button
-                style={{ cursor: cmdProcessing ? "not-allowed" : "" }}
-                data-tab="quality"
-                className="ripple z-10 rounded-md px-2 py-1 font-semibold transition-all hover:bg-background/50"
-              >
-                <Ripple />
-                {t("tabs.vidQualityTab")}
-              </button>
+              <TabItem name="convertToAudio" cmdProcessing={cmdProcessing} />
+              <TabItem name="quality" cmdProcessing={cmdProcessing} />
             </>
           )}
           {isAudio && (
-            <button
-              style={{ cursor: cmdProcessing ? "not-allowed" : "" }}
-              data-tab="convertToVideo"
-              className="ripple z-10 rounded-md px-2 py-1 font-semibold transition-all hover:bg-background/50"
-            >
-              <Ripple />
-              {t("tabs.audioToVidTab")}
-            </button>
+            <TabItem name="convertToVideo" cmdProcessing={cmdProcessing} />
           )}
         </div>
       </nav>
@@ -179,7 +136,7 @@ function Tabs({ filePath }: ITabsProps) {
             text={t("tabs.convertBtn")}
             inputFilePath={filePath}
             outputFormat={outputFormat}
-            command="-vn"
+            command={["-vn"]}
           />
         </div>
       )}
@@ -198,7 +155,9 @@ function Tabs({ filePath }: ITabsProps) {
             text={t("tabs.startBtn")}
             inputFilePath={filePath}
             command={
-              isAudio ? `-b:a ${audioQuality}` : `-crf ${compressRate + 20}`
+              isAudio
+                ? ["-b:a", `${audioQuality}`]
+                : ["-crf", `${compressRate + 20}`]
             }
           />
         </div>
@@ -210,7 +169,7 @@ function Tabs({ filePath }: ITabsProps) {
             setCmdProcessing={setCmdProcessing}
             text={t("tabs.startBtn")}
             inputFilePath={filePath}
-            command={`-vf scale=${quality}`}
+            command={["-vf", `scale=${quality}`]}
           />
         </div>
       )}
@@ -222,7 +181,7 @@ function Tabs({ filePath }: ITabsProps) {
             text={t("tabs.convertBtn")}
             inputFilePath={filePath}
             outputFormat={outputFormat}
-            command=""
+            command={[]}
           />
         </div>
       )}
@@ -266,18 +225,23 @@ function Tabs({ filePath }: ITabsProps) {
             setCmdProcessing={setCmdProcessing}
             text={t("tabs.cutBtn")}
             inputFilePath={filePath}
-            customFunc={async () =>
+            customFunc={async () => {
+              const { nearestTS1, nearestTS2 } = await getNearestTimestamp(
+                filePath,
+                cutTimestamps,
+              );
+
               await writeTextFile(
                 "inputTxtFiles/input.txt",
                 `file '${filePath}'
-                outpoint ${cutTimestamps[0]}
-                file '${filePath}'
-                inpoint ${cutTimestamps[1]}`,
+outpoint ${nearestTS1}
+file '${filePath}'
+inpoint ${nearestTS2}`,
                 {
                   baseDir: BaseDirectory.AppLocalData,
                 },
-              )
-            }
+              );
+            }}
             cmdCustom
             command={[
               "-f",

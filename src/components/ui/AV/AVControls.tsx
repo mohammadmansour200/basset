@@ -1,16 +1,19 @@
 import { RefObject, useRef } from "react";
 
-import { cn } from "@/lib/utils";
-
 import { Ripple } from "react-ripple-click";
 
 interface IProps {
   AVElRef: RefObject<HTMLVideoElement> | RefObject<HTMLAudioElement>;
   sliderElRef: RefObject<HTMLInputElement>;
   AVPaused: boolean;
-  className: string;
+  setAVCurrDurationPer: React.Dispatch<React.SetStateAction<number>>;
 }
-function AVControls({ AVElRef, sliderElRef, AVPaused, className }: IProps) {
+function AVControls({
+  AVElRef,
+  sliderElRef,
+  AVPaused,
+  setAVCurrDurationPer,
+}: IProps) {
   const AVControlsElRef = useRef<HTMLDivElement>(null);
 
   //AV play and pause toggle
@@ -24,8 +27,8 @@ function AVControls({ AVElRef, sliderElRef, AVPaused, className }: IProps) {
 
   //Handle slider input sliding
   function onSliderInput(e: React.FormEvent<HTMLInputElement>) {
+    setAVCurrDurationPer(Number(e.currentTarget.value));
     if (sliderElRef.current) {
-      sliderElRef.current.style.backgroundSize = `${e.currentTarget.value}% 100%`;
       sliderElRef.current.value = e.currentTarget.value;
     }
     if (AVElRef.current) {
@@ -38,15 +41,11 @@ function AVControls({ AVElRef, sliderElRef, AVPaused, className }: IProps) {
     <div
       dir="ltr"
       ref={AVControlsElRef}
-      className={cn(
-        "cubic group-hover:pointer-fine:pointer-events-auto group-hover:pointer-fine:opacity-100 z-[5] flex w-[90%] flex-col items-center gap-1 rounded-md p-2 opacity-100 backdrop-blur duration-300 group-focus-within:pointer-events-auto group-focus-within:opacity-100 sm:w-[570px]",
-        className,
-      )}
+      className="z-[5] mb-2 flex items-center gap-1 rounded-md opacity-100 backdrop-blur"
     >
-      {/* AV upper controls */}
-      <div className="flex w-full items-center justify-center">
+      <div className="flex w-full flex-col items-center justify-center">
         {/* Play button  */}
-        <div>
+        <div className="mb-2">
           <button
             onClick={playPauseToggle}
             className="ripple cubic h-fit rounded-full p-2 duration-200 active:scale-90"
@@ -65,7 +64,7 @@ function AVControls({ AVElRef, sliderElRef, AVPaused, className }: IProps) {
             type="range"
             ref={sliderElRef}
             defaultValue="0"
-            className="absolute z-[4] h-[6px] w-full cursor-pointer select-none appearance-none rounded-2xl bg-foreground/50 bg-gradient-to-r from-foreground to-foreground bg-[length:0%_100%] bg-no-repeat"
+            className="absolute z-[4] h-[8px] w-full cursor-pointer select-none appearance-none rounded-2xl bg-muted opacity-40"
           />
         </div>
       </div>

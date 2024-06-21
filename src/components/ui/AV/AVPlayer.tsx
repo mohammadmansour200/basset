@@ -12,7 +12,7 @@ import AVControls from "./AVControls";
 import { Slider } from "../shadcn/slider";
 
 interface IAVPlayerProps {
-  isAudio: boolean;
+  isAudio: boolean | null;
   srcPath: string;
   cutType: "trim" | "cut";
   cutTimestamps: [number, number];
@@ -130,13 +130,13 @@ function AVPlayer({
 
   function handleAVDurationAndIndicator() {
     const durationPer =
-      ((AVElRef.current?.currentTime as number) /
-        (AVElRef.current?.duration as number)) *
-        100 || 0;
+      getPercentage(
+        AVElRef.current?.currentTime as number,
+        AVElRef.current?.duration as number,
+      ) || 0;
 
     setAVCurrDurationPer(durationPer);
     if (sliderElRef.current) {
-      sliderElRef.current.style.backgroundSize = `${durationPer}% 100%`;
       sliderElRef.current.value = `${durationPer}`;
     }
   }
@@ -155,42 +155,34 @@ function AVPlayer({
           <p dir="auto" className="font-medium">
             {t("tabs.cutPreview")}:
           </p>
-          <>
-            <AVControls
-              sliderElRef={sliderElRef}
-              AVElRef={AVElRef as RefObject<HTMLAudioElement>}
-              AVPaused={AVPaused}
-              className="pointer-events-auto bg-muted opacity-100"
-            />
-            <audio
-              src={convertFileSrc(srcPath)}
-              ref={AVElRef as RefObject<HTMLAudioElement>}
-              onTimeUpdate={() => {
-                handleAVDurationAndIndicator();
-              }}
-              loop
-              onPlay={() => {
-                setAVPaused(false);
-              }}
-              onPause={() => setAVPaused(true)}
-            />
-          </>
+          <audio
+            src={convertFileSrc(srcPath)}
+            ref={AVElRef as RefObject<HTMLAudioElement>}
+            onTimeUpdate={() => {
+              handleAVDurationAndIndicator();
+            }}
+            loop
+            onPlay={() => {
+              setAVPaused(false);
+            }}
+            onPause={() => setAVPaused(true)}
+          />
         </div>
-        <p>
-          {t("tabs.cutOutputDuration")}:
+        <p className="rounded-md border border-border p-1">
+          {t("tabs.cutOutputDuration")}:{" "}
           {formatTimestamp(
             cutType === "cut"
               ? Math.max(0, initialAVDuration - AVDuration)
               : Math.max(0, AVDuration),
           )}
         </p>
-        <div className="relative mt-8 w-full">
-          <p
-            className="absolute -top-8 rounded-md border border-border px-2"
-            style={{ left: `${AVCurrDurationPer - 3}%` }}
-          >
-            {formatTimestamp(AVElRef.current?.currentTime as number)}
-          </p>
+        <div className="relative mb-8 w-[600px]">
+          <AVControls
+            setAVCurrDurationPer={setAVCurrDurationPer}
+            sliderElRef={sliderElRef}
+            AVElRef={AVElRef as RefObject<HTMLVideoElement>}
+            AVPaused={AVPaused}
+          />
           <CutSlider
             AVEl={AVElRef.current}
             cutType={cutType}
@@ -198,6 +190,11 @@ function AVPlayer({
             setCutTimestamps={setCutTimestamps}
             cutTimestamps={cutTimestamps}
             initialAVDuration={initialAVDuration}
+          />
+          <CurrTimeIndicator
+            sliderElRef={sliderElRef}
+            AVElRef={AVElRef}
+            AVCurrDurationPer={AVCurrDurationPer}
           />
         </div>
         <div
@@ -232,12 +229,6 @@ function AVPlayer({
             {t("tabs.cutPreview")}:
           </p>
           <div className="group relative mb-1 inline-flex h-full w-[600px] flex-col items-center justify-center overflow-hidden overflow-y-hidden rounded-md sm:w-auto">
-            <AVControls
-              sliderElRef={sliderElRef}
-              AVElRef={AVElRef as RefObject<HTMLVideoElement>}
-              AVPaused={AVPaused}
-              className="absolute bottom-2 bg-background/75"
-            />
             <video
               loop
               src={convertFileSrc(srcPath)}
@@ -255,21 +246,21 @@ function AVPlayer({
             />
           </div>
         </div>
-        <p>
-          {t("tabs.cutOutputDuration")}:
+        <p className="rounded-md border border-border p-1">
+          {t("tabs.cutOutputDuration")}:{" "}
           {formatTimestamp(
             cutType === "cut"
               ? Math.max(0, initialAVDuration - AVDuration)
               : Math.max(0, AVDuration),
           )}
         </p>
-        <div className="relative mt-8 w-full">
-          <p
-            className="absolute -top-8 rounded-md border border-border px-2"
-            style={{ left: `${AVCurrDurationPer - 3}%` }}
-          >
-            {formatTimestamp(AVElRef.current?.currentTime as number)}
-          </p>
+        <div className="relative mb-8 w-full">
+          <AVControls
+            setAVCurrDurationPer={setAVCurrDurationPer}
+            sliderElRef={sliderElRef}
+            AVElRef={AVElRef as RefObject<HTMLVideoElement>}
+            AVPaused={AVPaused}
+          />
           <CutSlider
             AVEl={AVElRef.current}
             cutType={cutType}
@@ -277,6 +268,11 @@ function AVPlayer({
             setCutTimestamps={setCutTimestamps}
             cutTimestamps={cutTimestamps}
             initialAVDuration={initialAVDuration}
+          />
+          <CurrTimeIndicator
+            sliderElRef={sliderElRef}
+            AVElRef={AVElRef}
+            AVCurrDurationPer={AVCurrDurationPer}
           />
         </div>
         <div
@@ -359,6 +355,36 @@ function CutSlider({
         getPercentage(cutTimestamps[1] || 0, initialAVDuration),
       ]}
     />
+  );
+}
+
+interface ICurrTimeIndicatorProps {
+  AVCurrDurationPer: number;
+  AVElRef: RefObject<HTMLVideoElement> | RefObject<HTMLAudioElement>;
+  sliderElRef: RefObject<HTMLInputElement>;
+}
+function CurrTimeIndicator({
+  AVCurrDurationPer,
+  AVElRef,
+  sliderElRef,
+}: ICurrTimeIndicatorProps) {
+  return (
+    <>
+      <div
+        className="pointer-events-none absolute top-[50px] h-8 w-[4px] border border-border bg-foreground"
+        style={{ left: `${sliderElRef.current?.value}%` }}
+      />
+      <div
+        className="pointer-events-none absolute top-[40px] h-0 w-0 -translate-x-[6px] border-x-8 border-t-[14px] border-x-transparent border-t-foreground"
+        style={{ left: `${sliderElRef.current?.value}%` }}
+      />
+      <p
+        className="absolute top-[82px] rounded-md border border-border px-2"
+        style={{ left: `${AVCurrDurationPer}%` }}
+      >
+        {formatTimestamp(AVElRef.current?.currentTime as number)}
+      </p>
+    </>
   );
 }
 
