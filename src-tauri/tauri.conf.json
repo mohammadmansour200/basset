@@ -31,7 +31,10 @@
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDYxMkVDQjc1QTA0Q0ZGQTMKUldTai8weWdkY3N1WVRiMW9udTNXcGllUHdibGR3UklUQ2VQYXdqc05qNmg5TmF1cmF5allTTHEK",
       "endpoints": [
         "https://github.com/mohammadmansour200/basset/releases/latest/download/latest.json"
-      ]
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
     }
   },
   "app": {

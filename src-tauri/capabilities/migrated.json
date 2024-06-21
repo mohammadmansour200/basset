@@ -2,7 +2,9 @@
   "identifier": "migrated",
   "description": "permissions that were migrated from v1",
   "local": true,
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "path:default",
     "event:default",
@@ -18,7 +20,10 @@
     "fs:allow-applocaldata-write",
     {
       "identifier": "fs:scope",
-      "allow": ["$APPLOCALDATA/inputTxtFiles", "$APPLOCALDATA/inputTxtFiles/*"]
+      "allow": [
+        "$APPLOCALDATA/inputTxtFiles",
+        "$APPLOCALDATA/inputTxtFiles/*"
+      ]
     },
     {
       "identifier": "shell:allow-execute",
@@ -71,6 +76,7 @@
     "fs:default",
     "shell:default",
     "dialog:default",
-    "notification:default"
+    "notification:default",
+    "updater:default"
   ]
 }
