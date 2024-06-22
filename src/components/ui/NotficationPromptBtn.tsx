@@ -32,7 +32,7 @@ function NotficationPromptBtn() {
       </div>
       <button
         onClick={onNotificationBtnClick}
-        className="rounded-full bg-foreground px-2 py-1 font-medium text-background"
+        className="rounded-full bg-foreground px-4 py-1 font-medium text-background"
       >
         {permissionGranted
           ? t("header.notificationOn")

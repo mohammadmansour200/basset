@@ -1,20 +1,54 @@
+import { ask, message } from "@tauri-apps/plugin-dialog";
+import { check } from "@tauri-apps/plugin-updater";
+import { relaunch } from "@tauri-apps/plugin-process";
+
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-} from "@/components/ui/shadcn/dialog";
+
 import LanguageSelect from "../utils/LanguageSelect";
 import { ModeToggle } from "../utils/ModeToggle";
 import OutputPath from "../utils/OutputPath";
+
 import NotficationPromptBtn from "./NotficationPromptBtn";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/shadcn/dialog";
 
 interface IHeaderProps {
   children: React.ReactNode;
 }
 function Header({ children }: IHeaderProps) {
-  const { i18n } = useTranslation();
+  const [updateChecking, setUpdateChecking] = useState<boolean | null>(null);
+  const [updateDownloading, setUpdateDownloading] = useState<boolean | null>(
+    null,
+  );
+  const { i18n, t } = useTranslation();
+
+  async function onCheckForUpdatesBtnClick() {
+    setUpdateChecking(true);
+    const update = await check();
+    setUpdateChecking(null);
+
+    if (update?.available) {
+      //If there is an update, prompt the user with the update dialog
+      const updateAskDialog = await ask(t("updater.updaterMessage"), {
+        okLabel: t("updater.okLabel"),
+        cancelLabel: t("updater.cancelLabel"),
+        title: `${t("updater.updaterTitle")} ${update.version}`,
+      });
+      //If user clicks the update button
+      if (updateAskDialog) {
+        setUpdateDownloading(true);
+        await update.downloadAndInstall();
+        await relaunch();
+      }
+    } else {
+      await message(t("noUpdate.message"), { okLabel: t("noUpdate.okLabel") });
+    }
+  }
+
   return (
     <header
       className="fixed top-0 z-30 flex h-12 w-full items-center gap-1.5 border-b border-border bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
@@ -26,14 +60,20 @@ function Header({ children }: IHeaderProps) {
           <DialogTrigger>
             <SettingsIcon />
           </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <LanguageSelect className="my-2 flex gap-2" />
-              <ModeToggle className="my-2 flex gap-2" />
-              <hr className="mt-2 h-[2px] border-none bg-border" />
-              <OutputPath />
-              <NotficationPromptBtn />
-            </DialogHeader>
+          <DialogContent className="gap-2">
+            <LanguageSelect className="mt-3" />
+            <ModeToggle />
+            <hr className="my-2 h-[2px] border-none bg-border" />
+            <OutputPath />
+            <NotficationPromptBtn />
+            <button
+              onClick={onCheckForUpdatesBtnClick}
+              className="rounded-md bg-muted py-2 transition-colors duration-300 hover:bg-muted/50"
+            >
+              {updateDownloading && t("header.updateDownloading")}
+              {updateChecking && t("header.updateLoading")}
+              {!updateChecking && !updateDownloading && t("header.update")}
+            </button>
           </DialogContent>
         </Dialog>
       </div>

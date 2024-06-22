@@ -24,7 +24,10 @@
     "defaultDir": "Default",
     "notificationLabel": "Notifications",
     "notificationOn": "Enabled",
-    "notificationOff": "Enable"
+    "notificationOff": "Enable",
+    "update": "Check for updates...",
+    "updateDownloading": "Downloading updates...",
+    "updateLoading": "Checking..."
   },
   "uploadPage": {
     "uploadFileLabel": "Choose a file"
@@ -58,5 +61,15 @@
   },
   "executeBtn": {
     "outputFile": "File:"
+  },
+  "updater": {
+    "updaterTitle": "New update available!",
+    "okLabel": "Update",
+    "cancelLabel": "No thanks",
+    "updaterMessage": "Update Basset to have the latest changes like performance improvements, bug fixes, and much more"
+  },
+  "noUpdate": {
+    "message": "Basset is up to date",
+    "okLabel": "Ok"
   }
 }

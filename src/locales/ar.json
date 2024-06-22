@@ -24,7 +24,10 @@
     "defaultDir": "افتراضي",
     "notificationLabel": "الإشعارات",
     "notificationOn": "مفعل",
-    "notificationOff": "فعِّل"
+    "notificationOff": "فعِّل",
+    "update": "البحث عن تحديثات...",
+    "updateDownloading": "يتم تحميل التحديث...",
+    "updateLoading": "يتم البحث..."
   },
   "uploadPage": {
     "uploadFileLabel": "اختر ملفًا"
@@ -58,5 +61,15 @@
   },
   "executeBtn": {
     "outputFile": "الملف"
+  },
+  "updater": {
+    "updaterTitle": "تحديث جديد!",
+    "okLabel": "تحديث",
+    "cancelLabel": "لا شكرا",
+    "updaterMessage": "حدث بسيط لتحصل على التحديثات الجديدة مثل تحسينات الأداء، وإصلاح الأخطاء وغير ذلك"
+  },
+  "noUpdate": {
+    "message": "أنت بالفعل تستخدم أحدث إصدار",
+    "okLabel": "حسنًا"
   }
 }
