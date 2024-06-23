@@ -9,15 +9,10 @@
     "externalBin": ["bin/ffmpeg", "bin/ffprobe"],
     "active": true,
     "license": "GPL-3.0",
-    "targets": ["deb", "nsis", "app", "dmg", "updater"],
+    "targets": ["deb", "msi", "app", "dmg", "updater"],
     "windows": {
       "webviewInstallMode": {
         "type": "embedBootstrapper"
-      },
-      "nsis": {
-        "displayLanguageSelector": true,
-        "installerIcon": "icons/icon.ico",
-        "sidebarImage": "icons/basset.bmp"
       }
     },
     "publisher": "Mohammad Abdul-Tawab",
