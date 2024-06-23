@@ -4,6 +4,7 @@ version = "0.1.2"
 description = "Utility for video/audio cutting, compressing, converting and quality changing"
 authors = ["Mohmmad Abdul-Tawab"]
 edition = "2021"
+repository = "https://github.com/mohammadmansour200/basset"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

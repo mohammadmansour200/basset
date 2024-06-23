@@ -8,12 +8,20 @@
   "bundle": {
     "externalBin": ["bin/ffmpeg", "bin/ffprobe"],
     "active": true,
-    "targets": ["deb", "msi", "app", "dmg", "updater"],
+    "license": "GPL-3.0",
+    "targets": ["deb", "nsis", "app", "dmg", "updater"],
     "windows": {
       "webviewInstallMode": {
         "type": "embedBootstrapper"
+      },
+      "nsis": {
+        "displayLanguageSelector": true,
+        "installerIcon": "icons/icon.ico",
+        "sidebarImage": "icons/basset.bmp"
       }
     },
+    "publisher": "Mohammad Abdul-Tawab",
+    "shortDescription": "An Audio/Video utility for cutting, converting, compressing",
     "category": "Utility",
     "icon": [
       "icons/32x32.png",
