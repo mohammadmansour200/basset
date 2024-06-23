@@ -20,10 +20,10 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 
 ## Demo 📷
 
-<img src="https://i.imgur.com/lF9EO8H.png" width=300> <img src="https://i.imgur.com/9Fel7qw.png" width=300>
-<img src="https://i.imgur.com/28ZB9cM.png" width=300>
+<img src="https://i.imgur.com/lF9EO8H.png" width=300> <img src="https://i.imgur.com/MpgWd9U.png" width=300>
+<img src="https://i.imgur.com/BtueYAd.png" width=300>
 <img src="https://i.imgur.com/V0avyKf.png" width=300>
-<img src="https://i.imgur.com/mGErtTU.png" width=300>
+<img src="https://i.imgur.com/laZvSTE.png" width=300>
 
 ## Features 🌟
 
@@ -47,8 +47,8 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 
 ## Download Links 📥
 
-- [GitHub Releases](https://github.com/mohammadmansour200/basset/releases) 
-- [Basset Website](https://basset.vercel.app/) 
+- [GitHub Releases](https://github.com/mohammadmansour200/basset/releases)
+- [Basset Website](https://basset.vercel.app/)
 
 ## Contributing 🤝
 
