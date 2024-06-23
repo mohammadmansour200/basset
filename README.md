@@ -10,7 +10,7 @@ its goals are:
 Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 </center>
 
-<hr><a href="#demo">Demo</a> &bull; <a href="#features">Features</a> &bull; <a href="#platform-support">Platform support</a> &bull; <a href="#download-links">Download Links</a> &bull;  <a href="#contributing">Contributing</a> &bull; <a href="#localization">Localization</a> &bull; <a href="#contact">Contact</a> &bull; <a href="#license">License</a></p>
+<hr><a href="#demo-">Demo</a> &bull; <a href="#features-">Features</a> &bull; <a href="#platform-support-%EF%B8%8F">Platform support</a> &bull; <a href="#download-links-">Download Links</a> &bull;  <a href="#contributing-">Contributing</a> &bull; <a href="#localization-">Localization</a> &bull; <a href="#contact-">Contact</a> &bull; <a href="#license-">License</a></p>
 <hr>
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/mohammadmansour200/basset)
