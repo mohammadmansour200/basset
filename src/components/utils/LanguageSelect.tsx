@@ -40,6 +40,7 @@ function LanguageSelect({ className }: LanguageSelectProps) {
         <SelectContent>
           <SelectItem value="ar">العربية</SelectItem>
           <SelectItem value="en">English</SelectItem>
+          <SelectItem value="pt">Português</SelectItem>
         </SelectContent>
       </Select>
     </div>
