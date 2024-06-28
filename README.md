@@ -56,7 +56,7 @@ We welcome contributions! Please review our [Contribution Guidelines](https://gi
 
 ## Localization 🌍
 
-Currently, Basset supports Arabic and English. We encourage you to contribute additional languages by submitting a pull request.
+Currently, Basset supports Arabic, Portuguese, and English. We encourage you to contribute additional languages by submitting a pull request.
 
 ## Contact 📧
 
