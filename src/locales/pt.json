@@ -1,0 +1,75 @@
+{
+  "inputErr": "Erro ao abrir arquivo de entrada",
+  "outputErr": "Erro ao criar arquivo de saída",
+  "somethingWentWrongErr": "Algo deu errado, tente um arquivo diferente",
+  "streamErr": "O arquivo está corrompido",
+  "errTitle": "Algo deu errado",
+  "successBody": "Concluído :)",
+  "successTitle": "Processo finalizado",
+  "onboard": {
+    "greetings": "As-salamu alaykum... Basset é um utilitário gratuito de código aberto, seus objetivos são: ",
+    "goals": {
+      "simplicity": "Simplicidade e facilidade [Basset significa simples em Árabe :)] ✨",
+      "speed": "Velocidade ⚡",
+      "privacy": "Privacidade 🔏"
+    },
+    "features": "Basset permite que você corte/separe, converta, comprima e reduza a qualidade do seu arquivo de áudio/vídeo. Além disso, você pode converter arquivos de áudio para vídeo usando uma imagem estática da sua escolha",
+    "steps": "passos: escolha seu arquivo de vídeo/áudio --> escolha a operação que você quer"
+  },
+  "header": {
+    "darkMode": "Modo escuro",
+    "lightMode": "Modo claro",
+    "system": "Padrão do sistema",
+    "customDir": "Customizado",
+    "defaultDir": "Padrão",
+    "notificationLabel": "Notificações",
+    "notificationOn": "Habilitado",
+    "notificationOff": "Habilitar",
+    "update": "Procurar por atualizações...",
+    "updateDownloading": "Baixando atualizações...",
+    "updateLoading": "Procurando..."
+  },
+  "uploadPage": {
+    "uploadFileLabel": "Escolha um arquivo"
+  },
+  "tabs": {
+    "cutTab": "Cortar",
+    "trimTab": "Separar",
+    "compressTab": "Comprimir",
+    "compressTip": "32% é o ponto ideal (menor tamanho do arquivo + muito pouca mudança de qualidade)",
+    "convertToAudioTab": "Vídeo para Áudio",
+    "convertTab": "Converter Áudio/Vídeo",
+    "qualityTab": "Qualidade do vídeo",
+    "convertToVideoTab": "Áudio para Vídeo",
+    "uploadImageBtn": "Escolher arquivo",
+    "convertBtn": "Converter",
+    "cutBtn": "Cortar",
+    "cutOutputDuration": "Duração do arquivo de saída",
+    "cutPreview": "Prévia",
+    "startBtn": "Iniciar"
+  },
+  "formatSelect": {
+    "placeholder": "Escolha um formato",
+    "label": "Formato de saída",
+    "recommended": "(recomendado)"
+  },
+  "audioQualitySelect": {
+    "selectLabel": "Selecionar qualidade",
+    "high": "Alta qualidade",
+    "medium": "Média qualidade",
+    "low": "Baixa qualidade"
+  },
+  "executeBtn": {
+    "outputFile": "Arquivo:"
+  },
+  "updater": {
+    "updaterTitle": "Nova atualização disponível!",
+    "okLabel": "Atualizar",
+    "cancelLabel": "Não, obrigado",
+    "updaterMessage": "Atualize o Basset para obter as últimas mudanças, como melhorias de performance, correções de bugs e muito mais"
+  },
+  "noUpdate": {
+    "message": "Basset está atualizado",
+    "okLabel": "Ok"
+  }
+}
