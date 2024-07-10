@@ -1,75 +1,77 @@
 {
-  "inputErr": "لا يمكن فتح الملف المدخل",
-  "somethingWentWrongErr": "حدث خطأ ما، جرب ملفًا آخر",
-  "outputErr": "لم يمكننا إنشاء الملف",
-  "streamErr": "الملف غير صالح",
-  "errTitle": "حدث خطأ ما :(",
-  "successBody": "تم بحمدالله :)",
-  "successTitle": "انتهت العملية",
-  "onboard": {
-    "greetings": "السلام عليكم ورحمة الله وبركاته... \n بسيط هي أداة مجانية مفتوحة المصدر من أهدافها:",
-    "goals": {
-      "simplicity": "البساطة والسهولة ✨",
-      "speed": "السرعة ⚡",
-      "privacy": "الخصوصية الكاملة (كل شيء يتم داخل جهازك) 🔏"
-    },
-    "features": "بسيط يتيح للمستخدم قص (سواء من الطرف أو المنتصف)، تحويل لصيغة أخرى، ضغط، وتقليل الجودة للفيديوهات والصوتيات.. بالإضافة لذلك، تحويل الصوتية لفيديو عن طريق الصورة التي تريدها.",
-    "steps": "الخطوات: اختر الصوتية أو الفيديو --> ثم اختر العملية المرادة"
-  },
-  "header": {
-    "darkMode": "داكن",
-    "lightMode": "فاتح",
-    "system": "النظام",
-    "customDir": "مخصص",
-    "defaultDir": "افتراضي",
-    "notificationLabel": "الإشعارات",
-    "notificationOn": "مفعل",
-    "notificationOff": "فعِّل",
-    "update": "البحث عن تحديثات...",
-    "updateDownloading": "يتم تحميل التحديث...",
-    "updateLoading": "يتم البحث..."
-  },
-  "uploadPage": {
-    "uploadFileLabel": "اختر ملفًا"
-  },
-  "tabs": {
-    "cutTab": "قص (منتصف)",
-    "trimTab": "قص (الأطراف)",
-    "compressTab": "ضغط",
-    "compressTip": "الضغط ب32% هو الأفضل (مساحة أقل وفقد جودة قليل جدًا)",
-    "convertToAudioTab": "تحويل لصوتي",
-    "convertTab": "تحويل لصيغة",
-    "qualityTab": "الجودة",
-    "convertToVideoTab": "صوتي لمرئي",
-    "uploadImageBtn": "رفع الملف",
-    "convertBtn": "تحويل",
-    "cutBtn": "قص",
-    "cutOutputDuration": "مدة الملف المخرج",
-    "cutPreview": "المعاينة",
-    "startBtn": "بدأ"
-  },
-  "formatSelect": {
-    "placeholder": "اختر الصيغة",
-    "label": "صيغة الملف المخرج",
-    "recommended": "(الأفضل)"
-  },
-  "audioQualitySelect": {
-    "selectLabel": "اختر جودة",
-    "high": "جودة عالية",
-    "medium": "جودة متوسطة",
-    "low": "جودة قليلة"
-  },
-  "executeBtn": {
-    "outputFile": "الملف"
-  },
-  "updater": {
-    "updaterTitle": "تحديث جديد!",
-    "okLabel": "تحديث",
-    "cancelLabel": "لا شكرا",
-    "updaterMessage": "حدث بسيط لتحصل على التحديثات الجديدة مثل تحسينات الأداء، وإصلاح الأخطاء وغير ذلك"
-  },
-  "noUpdate": {
-    "message": "أنت بالفعل تستخدم أحدث إصدار",
-    "okLabel": "حسنًا"
-  }
+	"inputErr": "لا يمكن فتح الملف المدخل",
+	"somethingWentWrongErr": "حدث خطأ ما، جرب ملفًا آخر",
+	"outputErr": "لم يمكننا إنشاء الملف",
+	"streamErr": "الملف غير صالح",
+	"errTitle": "حدث خطأ ما :(",
+	"successBody": "تم بحمدالله :)",
+	"successTitle": "انتهت العملية",
+	"onboard": {
+		"greetings": "السلام عليكم ورحمة الله وبركاته... \n بسيط هي أداة مجانية مفتوحة المصدر من أهدافها:",
+		"goals": {
+			"simplicity": "البساطة والسهولة ✨",
+			"speed": "السرعة ⚡",
+			"privacy": "الخصوصية الكاملة (كل شيء يتم داخل جهازك) 🔏"
+		},
+		"features": "بسيط يتيح للمستخدم قص (سواء من الطرف أو المنتصف)، تحويل لصيغة أخرى، ضغط، وتقليل الجودة للفيديوهات والصوتيات.. بالإضافة لذلك، تحويل الصوتية لفيديو عن طريق الصورة التي تريدها.",
+		"steps": "الخطوات: اختر الصوتية أو الفيديو --> ثم اختر العملية المرادة"
+	},
+	"header": {
+		"backBtn": "الرجوع للوراء",
+		"darkMode": "داكن",
+		"lightMode": "فاتح",
+		"system": "النظام",
+		"customDir": "مخصص",
+		"defaultDir": "افتراضي",
+		"notificationLabel": "الإشعارات",
+		"notificationOn": "مفعل",
+		"notificationOff": "فعِّل",
+		"update": "البحث عن تحديثات...",
+		"updateDownloading": "يتم تحميل التحديث...",
+		"updateLoading": "يتم البحث..."
+	},
+	"uploadPage": {
+		"uploadFileLabel": "اختر ملفًا"
+	},
+	"tabs": {
+		"cutTab": "قص (منتصف)",
+		"trimTab": "قص (الأطراف)",
+		"compressTab": "ضغط",
+		"playBtn": "تشغيل/إيقاف",
+		"compressTip": "الضغط ب32% هو الأفضل (مساحة أقل وفقد جودة قليل جدًا)",
+		"convertToAudioTab": "تحويل لصوتي",
+		"convertTab": "تحويل لصيغة",
+		"qualityTab": "الجودة",
+		"convertToVideoTab": "صوتي لمرئي",
+		"uploadImageBtn": "رفع الملف",
+		"convertBtn": "تحويل",
+		"cutBtn": "قص",
+		"cutOutputDuration": "مدة الملف المخرج",
+		"cutPreview": "المعاينة",
+		"startBtn": "بدأ"
+	},
+	"formatSelect": {
+		"placeholder": "اختر الصيغة",
+		"label": "صيغة الملف المخرج",
+		"recommended": "(الأفضل)"
+	},
+	"audioQualitySelect": {
+		"selectLabel": "اختر جودة",
+		"high": "جودة عالية",
+		"medium": "جودة متوسطة",
+		"low": "جودة قليلة"
+	},
+	"executeBtn": {
+		"outputFile": "الملف"
+	},
+	"updater": {
+		"updaterTitle": "تحديث جديد!",
+		"okLabel": "تحديث",
+		"cancelLabel": "لا شكرا",
+		"updaterMessage": "حدث بسيط لتحصل على التحديثات الجديدة مثل تحسينات الأداء، وإصلاح الأخطاء وغير ذلك"
+	},
+	"noUpdate": {
+		"message": "أنت بالفعل تستخدم أحدث إصدار",
+		"okLabel": "حسنًا"
+	}
 }

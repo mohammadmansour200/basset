@@ -3,62 +3,63 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
+	Dialog,
+	DialogContent,
+	DialogHeader,
 } from "@/components/ui/shadcn/dialog";
 
 function OnBoardDialog() {
-  const [appVersion, setAppVersion] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(() => {
-    return localStorage.getItem("onboard");
-  });
-  const { t } = useTranslation();
+	const [appVersion, setAppVersion] = useState("");
+	const [isDialogOpen, setIsDialogOpen] = useState(() => {
+		return localStorage.getItem("onboard");
+	});
+	const { t } = useTranslation();
 
-  useEffect(() => {
-    async function getAppVersion() {
-      setAppVersion(await getVersion());
-    }
-    getAppVersion();
-  }, []);
+	useEffect(() => {
+		async function getAppVersion() {
+			setAppVersion(await getVersion());
+		}
+		getAppVersion();
+	}, []);
 
-  return (
-    <Dialog
-      onOpenChange={(open) => {
-        if (open === false) {
-          localStorage.setItem("onboard", "");
-          setIsDialogOpen("");
-        }
-      }}
-      open={isDialogOpen === "" ? false : true}
-    >
-      <DialogContent className="select-none">
-        <DialogHeader className="flex flex-col items-center">
-          <img
-            draggable={false}
-            src="/typography.png"
-            className="w-32"
-            alt="Basset logo"
-          />
-          v{appVersion}
-        </DialogHeader>
-        <hr className="mt-2 h-[2px] border-none bg-border" />
-        <p dir="auto">{t("onboard.greetings")}</p>
-        <ul className="ms-4 list-disc">
-          <li>{t("onboard.goals.simplicity")}</li>
-          <li>{t("onboard.goals.speed")}</li>
-          <li>{t("onboard.goals.privacy")}</li>
-        </ul>
-        <p>
-          <br />
-          {t("onboard.features")}
-          <br />
-          <br />
-          {t("onboard.steps")}
-        </p>
-      </DialogContent>
-    </Dialog>
-  );
+	return (
+		<Dialog
+			onOpenChange={(open) => {
+				if (open === false) {
+					localStorage.setItem("onboard", "");
+					setIsDialogOpen("");
+				}
+			}}
+			// biome-ignore lint/complexity/noUselessTernary: actually it is useful :)
+			open={isDialogOpen === "" ? false : true}
+		>
+			<DialogContent className="select-none">
+				<DialogHeader className="flex flex-col items-center">
+					<img
+						draggable={false}
+						src="/typography.png"
+						className="w-32"
+						alt="Basset logo"
+					/>
+					v{appVersion}
+				</DialogHeader>
+				<hr className="mt-2 h-[2px] border-none bg-border" />
+				<p dir="auto">{t("onboard.greetings")}</p>
+				<ul className="ms-4 list-disc">
+					<li>{t("onboard.goals.simplicity")}</li>
+					<li>{t("onboard.goals.speed")}</li>
+					<li>{t("onboard.goals.privacy")}</li>
+				</ul>
+				<p>
+					<br />
+					{t("onboard.features")}
+					<br />
+					<br />
+					{t("onboard.steps")}
+				</p>
+			</DialogContent>
+		</Dialog>
+	);
 }
 
 export default OnBoardDialog;
