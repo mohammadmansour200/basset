@@ -69,7 +69,7 @@ function Tabs({ filePath }: ITabsProps) {
 			) as HTMLElement;
 
 			if (
-				activeIndicatorElRef.current &&
+				activeIndicatorElRef?.current &&
 				activeTabEl !== null &&
 				navElRef !== null
 			) {
@@ -112,8 +112,8 @@ function Tabs({ filePath }: ITabsProps) {
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: this will induce bugs */}
 				<div
 					onClick={onTabClick}
-					className="flex gap-2 whitespace-nowrap"
-					style={{ direction: `${i18n.dir() === "ltr" ? "ltr" : "rtl"}` }}
+					className="flex gap-2 whitespace-nowrap w-fit"
+					style={{ direction: i18n.dir() }}
 				>
 					<TabItem name="cut" cmdProcessing={cmdProcessing} />
 					<TabItem name="trim" cmdProcessing={cmdProcessing} />
