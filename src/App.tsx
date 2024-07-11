@@ -78,8 +78,8 @@ function App() {
 				)}
 			</Header>
 			<main>
-				{/* If file path is asigned show tabs, or else show file uploader */}
-				{filePath === null ? (
+				{/* If file path is assigned show tabs, or else show file uploader */}
+				{filePath !== null ? (
 					<FileUpload setFilePath={setFilePath} />
 				) : (
 					<Tabs filePath={filePath} />

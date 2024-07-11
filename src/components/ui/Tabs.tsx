@@ -101,7 +101,7 @@ function Tabs({ filePath }: ITabsProps) {
 			<nav
 				id="navbar"
 				ref={navElRef}
-				className="relative m-2 my-3 flex max-w-full overflow-hidden overflow-x-auto rounded-md bg-muted p-1 min-[580px]:max-w-none"
+				className="relative m-2 my-3 flex w-[90vw] overflow-hidden overflow-x-auto rounded-md bg-muted p-1 md:w-fit"
 				dir="ltr"
 			>
 				<div

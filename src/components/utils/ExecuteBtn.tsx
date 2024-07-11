@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { killCommand, runCommand } from "@/utils/ffmpeg";
 
 import { CheckCircle2, TriangleAlert, X } from "lucide-react";
+import { Ripple } from "react-ripple-click";
 
 interface IExecuteBtnProps {
 	command: string[];
@@ -131,7 +132,7 @@ function ExecuteBtn({
 	}
 
 	return (
-		<div className="flex w-[250px] flex-col items-center justify-center">
+		<div className="flex md:w-[250px] w-[90vw] flex-col items-center justify-center">
 			{/* show success indicator on command success */}
 			{cmdStatus === "success" && (
 				<div className="mb-2 flex gap-1 whitespace-nowrap" dir="auto">
@@ -159,7 +160,7 @@ function ExecuteBtn({
 
 			<div
 				dir="ltr"
-				className={`flex justify-center ${cmdRunning ? "h-6 w-[500px]" : "h-8 w-full"} gap-1 transition-all duration-300`}
+				className={`flex justify-center ${cmdRunning ? "h-6 md:w-[500px] w-[90vw]" : "h-8 w-[50vw]"} gap-1 transition-all duration-300`}
 			>
 				{/* Progress rate */}
 				{cmdRunning && <p>{Math.trunc(progress)}%</p>}
@@ -170,8 +171,9 @@ function ExecuteBtn({
 					style={{ backgroundSize: `${progress}% 100%` }}
 					onClick={onStartBtnClick}
 					disabled={outputFormat === "" ? true : false || disabled}
-					className={`flex w-full items-center justify-center rounded-md font-semibold text-background ${cmdRunning ? "cursor-wait appearance-none bg-gradient-to-r from-foreground to-foreground bg-[length:0%_100%] bg-no-repeat" : "bg-foreground"} cursor-pointer border border-border transition-all duration-300 disabled:cursor-not-allowed`}
+					className={`flex w-full items-center justify-center rounded-md font-semibold text-background ${cmdRunning ? "cursor-wait appearance-none bg-gradient-to-r from-foreground to-foreground bg-[length:0%_100%] bg-no-repeat" : "bg-foreground"} cursor-pointer border border-border transition-all duration-300 disabled:cursor-not-allowed ripple`}
 				>
+					<Ripple />
 					{!cmdRunning && <p>{text}</p>}
 				</button>
 

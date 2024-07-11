@@ -228,7 +228,7 @@ function AVPlayer({
 				<p dir="auto" className="font-medium">
 					{t("tabs.cutPreview")}:
 				</p>
-				<div className="group relative mb-1 inline-flex h-full w-[600px] flex-col items-center justify-center overflow-hidden overflow-y-hidden rounded-md sm:w-auto">
+				<div className="group relative mb-1 inline-flex h-full md:w-[600px] w-[90vw] flex-col items-center justify-center overflow-hidden overflow-y-hidden rounded-md sm:w-auto">
 					{/* biome-ignore lint/a11y/useMediaCaption: captions aren't needed */}
 					<video
 						loop
