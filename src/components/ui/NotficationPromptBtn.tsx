@@ -20,8 +20,12 @@ function NotficationPromptBtn() {
 	}, []);
 
 	async function onNotificationBtnClick() {
-		if (!permissionGranted) return;
-		await requestPermission();
+		if (!permissionGranted) {
+			const permission = await requestPermission();
+			permission === "granted"
+				? setPermissionGranted(true)
+				: setPermissionGranted(false);
+		}
 	}
 
 	return (

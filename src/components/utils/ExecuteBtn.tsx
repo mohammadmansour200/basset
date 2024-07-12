@@ -160,7 +160,7 @@ function ExecuteBtn({
 
 			<div
 				dir="ltr"
-				className={`flex justify-center ${cmdRunning ? "h-6 md:w-[500px] w-[90vw]" : "h-8 w-[50vw]"} gap-1 transition-all duration-300`}
+				className={`flex justify-center ${cmdRunning ? "h-6 md:w-[500px] w-[90vw]" : "h-8 w-[50vw] md:w-full"} gap-1 transition-all duration-300`}
 			>
 				{/* Progress rate */}
 				{cmdRunning && <p>{Math.trunc(progress)}%</p>}

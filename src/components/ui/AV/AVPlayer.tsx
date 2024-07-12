@@ -176,7 +176,7 @@ function AVPlayer({
 							: Math.max(0, AVDuration),
 					)}
 				</p>
-				<div className="relative mb-8 w-[600px]">
+				<div className="relative mb-8 md:w-[600px] w-[90vw]">
 					<AVControls
 						setAVCurrDurationPer={setAVCurrDurationPer}
 						sliderElRef={sliderElRef}
