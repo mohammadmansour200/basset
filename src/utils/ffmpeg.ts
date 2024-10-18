@@ -9,10 +9,10 @@ import {
 
 import unformatTimestamp from "./timestampUnformatter";
 import { getPercentage } from "./getPercentage";
+import { copyTmpMediaToMediaDir, deleteMediaTemp } from "./fsUtils";
 
-let videoDuration = 0;
+let mediaDuration = 0;
 let ffmpeg: Child;
-let ffprobeGetDuration: Child;
 
 //This is crucial for not having a jitter and frame freeze for cutting Media files in ffmpeg without re-encoding
 const getNearestTimestamp = async (
@@ -64,11 +64,11 @@ const getNearestTimestamp = async (
   return { nearestTS1, nearestTS2 };
 };
 
-const getVidDuration = async (
+const getMediaDuration = async (
   filePath: string,
-  setAVDuration?: Dispatch<React.SetStateAction<number>>,
+  setAVDuration?: (duration: number) => void,
 ) => {
-  const videoDurationCmd = [
+  const durationCmd = [
     "-v",
     "error",
     "-select_streams",
@@ -80,16 +80,16 @@ const getVidDuration = async (
     filePath,
   ];
 
-  const ffprobeSidecar = Command.sidecar("bin/ffprobe", videoDurationCmd);
+  const ffprobeSidecar = Command.sidecar("bin/ffprobe", durationCmd);
 
   ffprobeSidecar.stdout.on("data", (data) => {
-    videoDuration = parseFloat(data.toString());
+    mediaDuration = parseFloat(data.toString());
     if (setAVDuration) {
       setAVDuration(parseFloat(data.toString()));
     }
   });
 
-  ffprobeGetDuration = await ffprobeSidecar.spawn();
+  await ffprobeSidecar.spawn();
 };
 
 const runCommand = async (
@@ -97,11 +97,12 @@ const runCommand = async (
   setCmdStatus: Dispatch<React.SetStateAction<"success" | "error" | undefined>>,
   setProgress: Dispatch<React.SetStateAction<number>>,
   setErrInfo: Dispatch<React.SetStateAction<string>>,
+  setCmdProcessing: Dispatch<React.SetStateAction<boolean>>,
   filePath: string,
   outputPath: string,
 ) => {
-  if (videoDuration === 0) {
-    getVidDuration(filePath);
+  if (mediaDuration === 0) {
+    getMediaDuration(filePath);
   }
 
   const ffmpegSidecar = Command.sidecar("bin/ffmpeg", [
@@ -114,7 +115,9 @@ const runCommand = async (
     if (code) {
       setCmdStatus("error");
     } else {
+      await copyTmpMediaToMediaDir(outputPath);
       setCmdStatus("success");
+      setCmdProcessing(false);
       const permissionGranted = await isPermissionGranted();
 
       if (permissionGranted) {
@@ -132,7 +135,7 @@ const runCommand = async (
   });
 
   ffmpegSidecar.stderr.on("data", (data) => {
-    const progress = extractProgress(data.toString(), videoDuration);
+    const progress = extractProgress(data.toString(), mediaDuration);
     if (progress !== undefined) {
       setProgress(progress);
     }
@@ -155,12 +158,10 @@ const runCommand = async (
   ffmpeg = await ffmpegSidecar.spawn();
 };
 
-const killCommand = () => {
+const killCommand = async () => {
   try {
-    ffmpeg.kill();
-    if (videoDuration === 0) {
-      ffprobeGetDuration.kill();
-    }
+    await ffmpeg.kill();
+    await deleteMediaTemp();
   } catch (err) {
     console.log(err);
   }
@@ -177,4 +178,4 @@ function extractProgress(data: string, AVDuration: number) {
 
   return progressPercentage;
 }
-export { runCommand, killCommand, getVidDuration, getNearestTimestamp };
+export { runCommand, killCommand, getMediaDuration, getNearestTimestamp };

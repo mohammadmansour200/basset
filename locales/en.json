@@ -1,0 +1,80 @@
+{
+  "inputErr": "Error opening input file",
+  "outputErr": "Error creating output file",
+  "somethingWentWrongErr": "Something went wrong, try a different file",
+  "streamErr": "File is corrupted",
+  "errTitle": "Something went wrong",
+  "successBody": "Done :)",
+  "successTitle": "Process finished",
+  "onboard": {
+    "greetings": "As-salamu alaykum... Basset is a free open source utility, its goals are: ",
+    "goals": {
+      "simplicity": "Simplicity and ease [Basset means simple in Arabic :)] ✨",
+      "speed": "Speed ⚡",
+      "privacy": "Privacy 🔏"
+    },
+    "features": "Basset lets you cut/trim, convert, compress, downgrade quality of your Audio/Video file. moreover you can convert Audio files to Video files using a still Image you choose",
+    "steps": "steps: choose your Video/Audio file --> choose your wanted operation"
+  },
+  "header": {
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "system": "System default",
+    "customDir": "Custom",
+    "defaultDir": "Default",
+    "notificationLabel": "Notifications",
+    "notificationOn": "Enabled",
+    "notificationOff": "Enable",
+    "update": "Check for updates...",
+    "updateDownloading": "Downloading updates...",
+    "updateLoading": "Checking..."
+  },
+  "uploadPage": {
+    "uploadFileLabel": "Choose a file"
+  },
+  "tabs": {
+    "cutTab": "Cut",
+    "trimTab": "Trim",
+    "compressTab": "Compress",
+    "compressTip": "32% is the sweet spot (less file size + very little change in quality)",
+    "convertToAudioTab": "Video to Audio",
+    "convertTab": "Convert",
+    "qualityTab": "Quality",
+    "convertToVideoTab": "Audio to Video",
+    "uploadImageBtn": "Choose an image",
+    "uploadImageDescription": "The image will be still throughout the video",
+    "convertBtn": "Convert",
+    "cutBtn": "Cut",
+    "cutOutputDuration": "Output file duration",
+    "cutPreview": "Preview",
+    "startBtn": "Start"
+  },
+  "formatSelect": {
+    "placeholder": "Choose a format",
+    "label": "Output format",
+    "recommended": "(recommended)",
+    "explanationTitle": "What are formats?",
+    "explanation": "Formats determine how videos/audios are saved. Each format has its own distinguishing features in terms of quality, file size, or compatibility with applications; anyways, I recommend using MP4/MP3 unless you have a different purpose."
+  },
+  "qualitySelect": {
+    "selectLabel": "Select quality",
+    "explanationTitle": "Quality downgrading VS Compression",
+    "explanation": "Compression reduces the file size without degrading the quality. Quality, on the other hand, reduces both and quality.",
+    "high": "High quality",
+    "medium": "Medium quality",
+    "low": "Low quality"
+  },
+  "executeBtn": {
+    "outputFile": "File:"
+  },
+  "updater": {
+    "updaterTitle": "New update available!",
+    "okLabel": "Update",
+    "cancelLabel": "No thanks",
+    "updaterMessage": "Update Basset to have the latest changes like performance improvements, bug fixes, and much more"
+  },
+  "noUpdate": {
+    "message": "Basset is up to date",
+    "okLabel": "Ok"
+  }
+}

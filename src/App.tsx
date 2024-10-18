@@ -3,21 +3,21 @@ import { ask } from "@tauri-apps/plugin-dialog";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { killCommand } from "./utils/ffmpeg";
 
 import { ThemeProvider } from "./contexts/ThemeProvider";
+import { useFile } from "./contexts/FileProvider";
 
-import FileUpload from "./components/ui/FileUpload";
-import Header from "./components/ui/Header";
-import Tabs from "./components/ui/Tabs";
-import { Ripple } from "react-ripple-click";
+import FileUpload from "./components/screens/FileUpload/FileUpload";
+import Header from "./components/ui/Header/Header";
+import Home from "./components/screens/Home/Home";
 import "react-ripple-click/dist/index.css";
 
 function App() {
-  const [filePath, setFilePath] = useState<string | null>(null);
+  const { filePath, setFilePath } = useFile();
   const { t } = useTranslation();
 
   //Remove context menu
@@ -61,50 +61,14 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
-      <Header>
-        {/* Remove back button if current state is file uploading */}
-        {filePath !== null && (
-          <button
-            onClick={() => {
-              setFilePath(null);
-              killCommand();
-            }}
-            className="ripple rounded-full"
-          >
-            <Ripple />
-            <BackIcon />
-          </button>
-        )}
-      </Header>
+      <Header />
       <main>
-        {/* If file path is asigned show tabs, or else show file uploader */}
-        {filePath === null ? (
-          <FileUpload setFilePath={setFilePath} />
-        ) : (
-          <Tabs filePath={filePath} />
-        )}
+        {/* If file path is asigned show tabs, or else show file uploader screen */}
+        {filePath === "" && <FileUpload setFilePath={setFilePath} />}
+        {filePath !== "" && <Home filePath={filePath} />}
       </main>
     </ThemeProvider>
   );
 }
 
 export default App;
-
-function BackIcon() {
-  return (
-    <svg
-      className="ltr:rotate-360 rtl:rotate-180"
-      fill="currentColor"
-      width="15px"
-      height="15px"
-      viewBox="0 0 1024 1024"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g strokeWidth="0"></g>
-      <g strokeLinecap="round" strokeLinejoin="round"></g>
-      <g>
-        <path d="M222.927 580.115l301.354 328.512c24.354 28.708 20.825 71.724-7.883 96.078s-71.724 20.825-96.078-7.883L19.576 559.963a67.846 67.846 0 01-13.784-20.022 68.03 68.03 0 01-5.977-29.488l.001-.063a68.343 68.343 0 017.265-29.134 68.28 68.28 0 011.384-2.6 67.59 67.59 0 0110.102-13.687L429.966 21.113c25.592-27.611 68.721-29.247 96.331-3.656s29.247 68.721 3.656 96.331L224.088 443.784h730.46c37.647 0 68.166 30.519 68.166 68.166s-30.519 68.166-68.166 68.166H222.927z"></path>
-      </g>
-    </svg>
-  );
-}
