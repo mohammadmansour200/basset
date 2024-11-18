@@ -92,7 +92,7 @@ const getMediaDuration = async (
   await ffprobeSidecar.spawn();
 };
 
-const runCommand = async (
+const runFFmpeg = async (
   command: string[],
   setCmdStatus: Dispatch<React.SetStateAction<"success" | "error" | undefined>>,
   setProgress: Dispatch<React.SetStateAction<number>>,
@@ -158,7 +158,7 @@ const runCommand = async (
   ffmpeg = await ffmpegSidecar.spawn();
 };
 
-const killCommand = async () => {
+const killFFmpeg = async () => {
   try {
     await ffmpeg.kill();
     await deleteMediaTemp();
@@ -178,4 +178,4 @@ function extractProgress(data: string, AVDuration: number) {
 
   return progressPercentage;
 }
-export { runCommand, killCommand, getMediaDuration, getNearestTimestamp };
+export { runFFmpeg, killFFmpeg, getMediaDuration, getNearestTimestamp };

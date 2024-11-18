@@ -3,7 +3,7 @@ import {
   sendNotification,
 } from "@tauri-apps/plugin-notification";
 import {
-  appLocalDataDir,
+  tempDir,
   audioDir,
   basename,
   extname,
@@ -14,7 +14,7 @@ import { open } from "@tauri-apps/plugin-shell";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 
-import { killCommand, runCommand } from "@/utils/ffmpeg";
+import { killFFmpeg, runFFmpeg } from "@/utils/ffmpeg";
 import { ensureDir, getIsAudio } from "@/utils/fsUtils";
 
 import { CheckCircle2, TriangleAlert, X } from "lucide-react";
@@ -50,8 +50,6 @@ function ExecuteBtn({
 
   const { filePath } = useFile();
 
-  const isAudio = getIsAudio(filePath);
-
   useEffect(() => {
     if (cmdStatus !== undefined) setCmdRunning(false);
   }, [cmdStatus]);
@@ -77,11 +75,11 @@ function ExecuteBtn({
       outputFormat === undefined ? fileExt : outputFormat;
 
     const outputFilePath = await join(
-      await appLocalDataDir(),
+      await tempDir(),
       "output",
       `${fileName}_${outputFileDate}.${outputFileFormat}`,
     );
-
+    const isAudio = getIsAudio(outputFilePath);
     const finalPath = await join(
       isAudio ? await audioDir() : await videoDir(),
       `${fileName}_${outputFileDate}.${outputFileFormat}`,
@@ -89,7 +87,7 @@ function ExecuteBtn({
 
     setOutputPath(finalPath);
 
-    runCommand(
+    runFFmpeg(
       command,
       setCmdStatus,
       setProgress,
@@ -132,7 +130,7 @@ function ExecuteBtn({
               onClick={openOutputPath}
               className="cursor-pointer text-blue-500 no-underline hover:underline"
             >
-              {outputPath.slice(0, 20)}...
+              {outputPath}...
             </span>
           </p>
         </div>
@@ -173,7 +171,7 @@ function ExecuteBtn({
               setCmdStatus(undefined);
               setProgress(0);
               setErrInfo("");
-              await killCommand();
+              await killFFmpeg();
               setOutputPath("");
             }}
           >

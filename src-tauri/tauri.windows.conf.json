@@ -6,11 +6,12 @@
     "devUrl": "http://localhost:1420"
   },
   "bundle": {
-    "createUpdaterArtifacts": "v1Compatible",
+    "resources": ["resources/**/**"],
     "externalBin": ["bin/ffmpeg", "bin/ffprobe"],
+    "createUpdaterArtifacts": "v1Compatible",
     "active": true,
     "license": "GPL-3.0",
-    "targets": ["deb", "msi", "app", "dmg"],
+    "targets": ["msi"],
     "windows": {
       "webviewInstallMode": {
         "type": "embedBootstrapper"

@@ -1,7 +1,7 @@
 import { ask, message } from "@tauri-apps/plugin-dialog";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
-import { killCommand } from "@/utils/ffmpeg";
+import { killFFmpeg } from "@/utils/ffmpeg";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -53,7 +53,7 @@ function Header() {
       <button
         onClick={() => {
           setFilePath("");
-          killCommand();
+          killFFmpeg();
         }}
         className="ripple rounded-full"
       >

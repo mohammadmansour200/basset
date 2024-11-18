@@ -38,9 +38,9 @@ function FileUpload({ setFilePath }: FileUploadProps) {
           },
         ],
       });
-      if (selectedFile?.path === undefined) return;
-      await getMediaDuration(selectedFile.path as string, setDuration);
-      setFilePath(selectedFile.path as string);
+      if (selectedFile === undefined) return;
+      await getMediaDuration(selectedFile as string, setDuration);
+      setFilePath(selectedFile as string);
     },
     [setFilePath],
   );

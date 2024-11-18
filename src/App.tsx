@@ -6,7 +6,7 @@ import { relaunch } from "@tauri-apps/plugin-process";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { killCommand } from "./utils/ffmpeg";
+import { killFFmpeg } from "./utils/ffmpeg";
 
 import { ThemeProvider } from "./contexts/ThemeProvider";
 import { useFile } from "./contexts/FileProvider";
@@ -53,7 +53,7 @@ function App() {
   useEffect(() => {
     async function onAppExit() {
       await listen<string>("tauri://close-requested", () => {
-        killCommand();
+        killFFmpeg();
       });
     }
     onAppExit();

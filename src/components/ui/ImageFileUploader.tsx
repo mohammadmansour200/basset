@@ -25,8 +25,8 @@ function ImageFileUploader({
         },
       ],
     });
-    if (selectedImageFile && selectedImageFile.path !== undefined) {
-      setImageFilePath(selectedImageFile.path as string);
+    if (selectedImageFile && selectedImageFile !== undefined) {
+      setImageFilePath(selectedImageFile);
     }
   }
 

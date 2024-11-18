@@ -4,21 +4,22 @@
   "local": true,
   "windows": ["main"],
   "permissions": [
-    "path:default",
-    "event:default",
-    "window:default",
-    "app:default",
-    "resources:default",
-    "menu:default",
-    "tray:default",
+    "core:path:default",
+    "core:event:default",
+    "core:window:default",
+    "core:app:default",
+    "core:resources:default",
+    "core:menu:default",
+    "core:tray:default",
     "fs:allow-read-file",
     "fs:allow-write-file",
     "fs:allow-mkdir",
     "fs:allow-exists",
-    "fs:allow-applocaldata-write",
+    "fs:allow-temp-write",
+    "fs:allow-resource-read-recursive",
     {
       "identifier": "fs:scope",
-      "allow": ["$APPLOCALDATA/**/*", "$VIDEO/*", "$AUDIO/*"]
+      "allow": ["$TEMP/**/*", "$VIDEO/*", "$AUDIO/*"]
     },
     {
       "identifier": "shell:allow-execute",
@@ -31,6 +32,11 @@
         {
           "args": true,
           "name": "bin/ffprobe",
+          "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "resources/spleeter",
           "sidecar": true
         }
       ]
@@ -47,6 +53,11 @@
           "args": true,
           "name": "bin/ffprobe",
           "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "resources/spleeter",
+          "sidecar": true
         }
       ]
     },
@@ -61,6 +72,11 @@
         {
           "args": true,
           "name": "bin/ffprobe",
+          "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "resources/spleeter",
           "sidecar": true
         }
       ]
