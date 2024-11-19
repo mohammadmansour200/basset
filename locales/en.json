@@ -35,6 +35,7 @@
   "tabs": {
     "cutTab": "Cut",
     "trimTab": "Trim",
+    "spleeterTab": "Remove music",
     "compressTab": "Compress",
     "compressTip": "32% is the sweet spot (less file size + very little change in quality)",
     "convertToAudioTab": "Video to Audio",

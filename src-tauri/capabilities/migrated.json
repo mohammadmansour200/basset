@@ -36,7 +36,7 @@
         },
         {
           "args": true,
-          "name": "resources/spleeter",
+          "name": "bin/SpleeterExe",
           "sidecar": true
         }
       ]
@@ -56,7 +56,7 @@
         },
         {
           "args": true,
-          "name": "resources/spleeter",
+          "name": "bin/SpleeterExe",
           "sidecar": true
         }
       ]
@@ -76,7 +76,7 @@
         },
         {
           "args": true,
-          "name": "resources/spleeter",
+          "name": "bin/SpleeterExe",
           "sidecar": true
         }
       ]

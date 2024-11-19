@@ -14,7 +14,8 @@ function NotficationPromptBtn() {
 
   useEffect(() => {
     async function checkPermissionState() {
-      setPermissionGranted(await isPermissionGranted());
+      const permissionStatus = await isPermissionGranted();
+      setPermissionGranted(permissionStatus);
     }
     checkPermissionState();
   }, []);

@@ -6,8 +6,6 @@ import { relaunch } from "@tauri-apps/plugin-process";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { killFFmpeg } from "./utils/ffmpeg";
-
 import { ThemeProvider } from "./contexts/ThemeProvider";
 import { useFile } from "./contexts/FileProvider";
 
@@ -15,10 +13,14 @@ import FileUpload from "./components/screens/FileUpload/FileUpload";
 import Header from "./components/ui/Header/Header";
 import Home from "./components/screens/Home/Home";
 import "react-ripple-click/dist/index.css";
+import useFFmpeg from "./hooks/useFFmpeg";
+import useSpleeter from "./hooks/useSpleeter";
 
 function App() {
   const { filePath, setFilePath } = useFile();
   const { t } = useTranslation();
+  const { killFFmpeg } = useFFmpeg();
+  const { killSpleeter } = useSpleeter();
 
   //Remove context menu
   useEffect(() => {
@@ -54,10 +56,11 @@ function App() {
     async function onAppExit() {
       await listen<string>("tauri://close-requested", () => {
         killFFmpeg();
+        killSpleeter()
       });
     }
     onAppExit();
-  }, []);
+  }, [killFFmpeg, killSpleeter]);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">

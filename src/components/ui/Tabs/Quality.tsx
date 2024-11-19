@@ -9,11 +9,7 @@ import QualitySelect from "@/components/ui/QualitySelect";
 import AudioQualitySelect from "../AudioQualitySelect";
 import { Alert, AlertDescription, AlertTitle } from "../Alert";
 
-interface QualityProps {
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Quality({ setCmdProcessing }: QualityProps) {
+function Quality() {
   const [quality, setQuality] = useState("1280:720");
   const [audioQuality, setAudioQuality] = useState("128k");
   const { t } = useTranslation();
@@ -42,7 +38,6 @@ function Quality({ setCmdProcessing }: QualityProps) {
         <QualitySelect setQuality={setQuality} />
       )}
       <ExecuteBtn
-        setCmdProcessing={setCmdProcessing}
         text={t("tabs.startBtn")}
         command={
           isAudio

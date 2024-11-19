@@ -7,11 +7,7 @@ import { useFile } from "@/contexts/FileProvider";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import FormatSelect from "@/components/ui/FormatSelect";
 
-interface ConvertProps {
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Convert({ setCmdProcessing }: ConvertProps) {
+function Convert() {
   const [outputFormat, setOutputFormat] = useState("");
   const { t } = useTranslation();
   const { filePath } = useFile();
@@ -21,7 +17,6 @@ function Convert({ setCmdProcessing }: ConvertProps) {
     <div className="flex flex-col items-center gap-2">
       <FormatSelect isAudio={isAudio} setFormat={setOutputFormat} />
       <ExecuteBtn
-        setCmdProcessing={setCmdProcessing}
         text={t("tabs.convertBtn")}
         outputFormat={outputFormat}
         command={

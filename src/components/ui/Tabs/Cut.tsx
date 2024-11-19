@@ -4,16 +4,12 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useFile } from "@/contexts/FileProvider";
-import { getNearestTimestamp } from "@/utils/ffmpeg";
+import { getNearestTimestamp } from "@/utils/ffmpegHelperUtils";
 
 import AVPlayer from "../AVPlayer/AVPlayer";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 
-interface CutProps {
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Cut({ setCmdProcessing }: CutProps) {
+function Cut() {
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([
     0, 100,
   ]);
@@ -40,7 +36,6 @@ function Cut({ setCmdProcessing }: CutProps) {
         setCutTimestamps={setCutTimestamps}
       />
       <ExecuteBtn
-        setCmdProcessing={setCmdProcessing}
         text={t("tabs.cutBtn")}
         customFunction={async () => {
           const { nearestTS1, nearestTS2 } = await getNearestTimestamp(

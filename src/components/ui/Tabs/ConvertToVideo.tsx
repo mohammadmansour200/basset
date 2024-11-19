@@ -5,11 +5,7 @@ import { useFile } from "@/contexts/FileProvider";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import ImageFileUploader from "@/components/ui/ImageFileUploader";
 
-interface ConvertToVideoProps {
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function ConvertToVideo({ setCmdProcessing }: ConvertToVideoProps) {
+function ConvertToVideo() {
   const [imageFilePath, setImageFilePath] = useState("");
   const { t } = useTranslation();
   const { filePath } = useFile();
@@ -21,7 +17,6 @@ function ConvertToVideo({ setCmdProcessing }: ConvertToVideoProps) {
       />
       <ExecuteBtn
         disabled={imageFilePath === "" ? true : false}
-        setCmdProcessing={setCmdProcessing}
         text={t("tabs.convertBtn")}
         outputFormat="mp4"
         command={[

@@ -21,7 +21,7 @@ export function getIsAudio(file: string) {
 }
 
 export async function deleteMediaTemp() {
-  await remove("output/", {
+  await remove("output", {
     baseDir: BaseDirectory.Temp,
     recursive: true,
   });

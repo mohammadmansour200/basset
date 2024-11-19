@@ -7,11 +7,7 @@ import { useFile } from "@/contexts/FileProvider";
 import AVPlayer from "../AVPlayer/AVPlayer";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 
-interface TrimProps {
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Trim({ setCmdProcessing }: TrimProps) {
+function Trim() {
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([
     0, 100,
   ]);
@@ -26,7 +22,6 @@ function Trim({ setCmdProcessing }: TrimProps) {
         setCutTimestamps={setCutTimestamps}
       />
       <ExecuteBtn
-        setCmdProcessing={setCmdProcessing}
         text={t("tabs.cutBtn")}
         command={[
           "-ss",

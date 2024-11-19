@@ -5,54 +5,64 @@ import {
 import {
   tempDir,
   audioDir,
-  basename,
   extname,
   join,
   videoDir,
+  basename,
 } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-shell";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 
-import { killFFmpeg, runFFmpeg } from "@/utils/ffmpeg";
 import { ensureDir, getIsAudio } from "@/utils/fsUtils";
 
 import { CheckCircle2, TriangleAlert, X } from "lucide-react";
 import { useFile } from "@/contexts/FileProvider";
+import useFFmpeg from "@/hooks/useFFmpeg";
+import useSpleeter from "@/hooks/useSpleeter";
 
 interface ExecuteBtnProps {
-  command: string[];
+  command?: string[];
+  isSpleeter?: boolean;
   text?: string;
   outputFormat?: string;
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
   customFunction?: () => Promise<void> | null;
   disabled?: boolean;
 }
 
 function ExecuteBtn({
   command,
+  isSpleeter = false,
   text,
   outputFormat,
-  setCmdProcessing,
   customFunction,
   disabled = false,
 }: ExecuteBtnProps) {
-  const [cmdStatus, setCmdStatus] = useState<"success" | "error">();
-  const [errInfo, setErrInfo] = useState("");
-  const [progress, setProgress] = useState(0);
+  const {
+    runFFmpeg,
+    killFFmpeg,
+    cmdStatus: cmdStatusFFmpeg,
+    progress: progressFFmpeg,
+    errInfo: errInfoFFmpeg,
+  } = useFFmpeg();
+  const {
+    runSpleeter,
+    killSpleeter,
+    cmdStatus: cmdStatusSpleeter,
+    progress: progressSpleeter,
+    errInfo: errInfoSpleeter,
+  } = useSpleeter();
 
-  const [cmdRunning, setCmdRunning] = useState(
-    () => cmdStatus !== undefined || false,
-  );
+  const cmdStatus = isSpleeter ? cmdStatusSpleeter : cmdStatusFFmpeg;
+  const progress = isSpleeter ? progressSpleeter : progressFFmpeg;
+  const errInfo = isSpleeter ? errInfoSpleeter : errInfoFFmpeg;
+  const killProcess = isSpleeter ? killSpleeter : killFFmpeg;
+
   const [outputPath, setOutputPath] = useState("");
 
   const { t } = useTranslation();
 
-  const { filePath } = useFile();
-
-  useEffect(() => {
-    if (cmdStatus !== undefined) setCmdRunning(false);
-  }, [cmdStatus]);
+  const { filePath, cmdProcessing } = useFile();
 
   async function onStartBtnClick() {
     if (outputFormat === "") return;
@@ -61,13 +71,9 @@ function ExecuteBtn({
 
     if (customFunction) await customFunction();
 
-    setCmdProcessing(true);
-    setCmdRunning(true);
-    setCmdStatus(undefined);
-    setProgress(0);
-
     const fileExt = await extname(filePath);
-    const fileName = (await basename(filePath, fileExt)).replace(".", "");
+    const fileName = (await basename(filePath)).replace(`.${fileExt}`, "");
+
     const date = new Date();
     const outputFileDate = `${date.getFullYear()}_${Math.random().toString().slice(2, 7)}_${date.getMonth()}`;
 
@@ -86,22 +92,14 @@ function ExecuteBtn({
     );
 
     setOutputPath(finalPath);
-
-    runFFmpeg(
-      command,
-      setCmdStatus,
-      setProgress,
-      setErrInfo,
-      setCmdProcessing,
-      filePath,
-      outputFilePath,
-    );
+    isSpleeter
+      ? runSpleeter(`${fileName}_${outputFileDate}.${outputFileFormat}`)
+      : runFFmpeg(command as string[], outputFilePath);
   }
 
   useEffect(() => {
     async function ffmpegErr() {
       if (errInfo !== "" && cmdStatus === "error") {
-        setCmdProcessing(false);
         const permissionGranted = await isPermissionGranted();
         if (permissionGranted) {
           sendNotification({
@@ -112,7 +110,7 @@ function ExecuteBtn({
       }
     }
     ffmpegErr();
-  }, [errInfo, t, cmdStatus, setCmdProcessing]);
+  }, [errInfo, t, cmdStatus]);
 
   async function openOutputPath() {
     await open(outputPath);
@@ -130,7 +128,7 @@ function ExecuteBtn({
               onClick={openOutputPath}
               className="cursor-pointer text-blue-500 no-underline hover:underline"
             >
-              {outputPath}...
+              {outputPath.slice(0, 20)}...
             </span>
           </p>
         </div>
@@ -146,32 +144,27 @@ function ExecuteBtn({
 
       <div
         dir="ltr"
-        className={`flex justify-center ${cmdRunning ? "h-6 w-[500px]" : "h-8 w-full"} gap-1 transition-all duration-300`}
+        className={`flex justify-center ${cmdProcessing ? "h-6 w-[500px]" : "h-8 w-full"} gap-1 transition-all duration-300`}
       >
         {/* Progress rate */}
-        {cmdRunning && <p>{Math.trunc(progress)}%</p>}
+        {cmdProcessing && <p>{Math.trunc(progress)}%</p>}
 
         {/* Command execute button/progress bar */}
         <button
           style={{ backgroundSize: `${progress}% 100%` }}
           onClick={onStartBtnClick}
           disabled={outputFormat === "" ? true : false || disabled}
-          className={`flex w-full items-center justify-center rounded-md font-semibold text-background ${cmdRunning ? "cursor-wait appearance-none bg-gradient-to-r from-foreground to-foreground bg-[length:0%_100%] bg-no-repeat" : "bg-foreground"} cursor-pointer border border-border transition-all duration-300 disabled:cursor-not-allowed`}
+          className={`flex w-full items-center justify-center rounded-md font-semibold text-background ${cmdProcessing ? "cursor-wait appearance-none bg-gradient-to-r from-foreground to-foreground bg-[length:0%_100%] bg-no-repeat" : "bg-foreground"} cursor-pointer border border-border transition-all duration-300 disabled:cursor-not-allowed`}
         >
-          {!cmdRunning && <p>{text}</p>}
+          {!cmdProcessing && <p>{text}</p>}
         </button>
 
         {/* Kill command button */}
-        {cmdRunning && (
+        {cmdProcessing && (
           <button
             className="flex items-center rounded-md bg-muted px-1 py-2"
             onClick={async () => {
-              setCmdProcessing(false);
-              setCmdRunning(false);
-              setCmdStatus(undefined);
-              setProgress(0);
-              setErrInfo("");
-              await killFFmpeg();
+              await killProcess();
               setOutputPath("");
             }}
           >

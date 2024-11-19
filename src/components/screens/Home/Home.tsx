@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { platform } from "@tauri-apps/plugin-os";
 
 import { getIsAudio } from "@/utils/fsUtils";
 
@@ -11,19 +12,24 @@ import Quality from "@/components/ui/Tabs/Quality";
 import Trim from "@/components/ui/Tabs/Trim";
 import Cut from "@/components/ui/Tabs/Cut";
 import ConvertToVideo from "@/components/ui/Tabs/ConvertToVideo";
+import { useFile } from "@/contexts/FileProvider";
+import RemoveMusic from "@/components/ui/Tabs/RemoveMusic";
 
 interface HomeProps {
   filePath: string;
 }
 
-function Home({ filePath }: HomeProps) {
-  const [tab, setTab] = useState("trim");
-  const [cmdProcessing, setCmdProcessing] = useState(false);
+const platformName = platform();
 
+function Home({ filePath }: HomeProps) {
+  const [tab, setTab] = useState(
+    platformName === "windows" ? "spleeter" : "trim",
+  );
+  console.log(platformName);
   const { i18n } = useTranslation();
   const navElRef = useRef<HTMLDivElement>(null);
   const activeIndicatorElRef = useRef<HTMLDivElement>(null);
-
+  const { cmdProcessing } = useFile();
   const isAudio = getIsAudio(filePath);
 
   function onTabClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -76,33 +82,29 @@ function Home({ filePath }: HomeProps) {
           className="flex gap-2 whitespace-nowrap"
           style={{ direction: `${i18n.dir() === "ltr" ? "ltr" : "rtl"}` }}
         >
-          <TabItem name="trim" cmdProcessing={cmdProcessing} />
-          <TabItem name="cut" cmdProcessing={cmdProcessing} />
-          <TabItem name="convert" cmdProcessing={cmdProcessing} />
+          {platformName === "windows" && <TabItem name="spleeter" />}
+          <TabItem name="trim" />
+          <TabItem name="cut" />
+          <TabItem name="convert" />
           {!isAudio && (
             <>
-              <TabItem name="convertToAudio" cmdProcessing={cmdProcessing} />
-              <TabItem name="compress" cmdProcessing={cmdProcessing} />
+              <TabItem name="convertToAudio" />
+              <TabItem name="compress" />
             </>
           )}
-          <TabItem name="quality" cmdProcessing={cmdProcessing} />
-          {isAudio && (
-            <TabItem name="convertToVideo" cmdProcessing={cmdProcessing} />
-          )}
+          <TabItem name="quality" />
+          {isAudio && <TabItem name="convertToVideo" />}
         </div>
       </nav>
 
-      {tab === "trim" && <Trim setCmdProcessing={setCmdProcessing} />}
-      {tab === "cut" && <Cut setCmdProcessing={setCmdProcessing} />}
-      {tab === "compress" && <Compress setCmdProcessing={setCmdProcessing} />}
-      {tab === "convert" && <Convert setCmdProcessing={setCmdProcessing} />}
-      {tab === "convertToAudio" && (
-        <ConvertToAudio setCmdProcessing={setCmdProcessing} />
-      )}
-      {tab === "convertToVideo" && (
-        <ConvertToVideo setCmdProcessing={setCmdProcessing} />
-      )}
-      {tab === "quality" && <Quality setCmdProcessing={setCmdProcessing} />}
+      {tab === "trim" && <Trim />}
+      {tab === "cut" && <Cut />}
+      {tab === "spleeter" && <RemoveMusic />}
+      {tab === "compress" && <Compress />}
+      {tab === "convert" && <Convert />}
+      {tab === "convertToAudio" && <ConvertToAudio />}
+      {tab === "convertToVideo" && <ConvertToVideo />}
+      {tab === "quality" && <Quality />}
     </div>
   );
 }

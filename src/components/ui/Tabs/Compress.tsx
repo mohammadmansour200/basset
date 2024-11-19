@@ -5,11 +5,7 @@ import CompressSlider from "@/components/ui/CompressSlider";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import { useFile } from "@/contexts/FileProvider";
 
-interface CompressProps {
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Compress({ setCmdProcessing }: CompressProps) {
+function Compress() {
   const [compressRate, setCompressRate] = useState(8);
   const { filePath } = useFile();
   const { t } = useTranslation();
@@ -21,7 +17,6 @@ function Compress({ setCmdProcessing }: CompressProps) {
         setCompressRate={setCompressRate}
       />
       <ExecuteBtn
-        setCmdProcessing={setCmdProcessing}
         text={t("tabs.startBtn")}
         command={["-i", `${filePath}`, "-crf", `${compressRate + 20}`]}
       />

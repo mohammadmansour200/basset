@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { Ripple } from "react-ripple-click";
 import OnBoardDialog from "./OnBoardDialog";
-import { getMediaDuration } from "@/utils/ffmpeg";
+import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
 import { useFile } from "@/contexts/FileProvider";
 
 interface FileUploadProps {
@@ -39,10 +39,13 @@ function FileUpload({ setFilePath }: FileUploadProps) {
         ],
       });
       if (selectedFile === undefined) return;
-      await getMediaDuration(selectedFile as string, setDuration);
-      setFilePath(selectedFile as string);
+      await getMediaDuration(selectedFile as string).then((data) => {
+        setDuration(data);
+
+        setFilePath(selectedFile as string);
+      });
     },
-    [setFilePath],
+    [setFilePath, setDuration],
   );
 
   //Press ctrl+O to open the file uploader

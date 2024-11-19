@@ -20,6 +20,7 @@ tauri-plugin-dialog = "2"
 tauri-plugin-notification = "2"
 tauri-plugin-shell = "2"
 tauri-plugin-process = "2"
+tauri-plugin-os = "2"
 
 [profile.release]
 panic = "abort" # Strip expensive panic clean-up logic

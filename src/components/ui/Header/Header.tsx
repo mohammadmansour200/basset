@@ -1,7 +1,6 @@
 import { ask, message } from "@tauri-apps/plugin-dialog";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
-import { killFFmpeg } from "@/utils/ffmpeg";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,6 +12,8 @@ import { useFile } from "@/contexts/FileProvider";
 import NotficationPromptBtn from "./NotficationPromptBtn";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { Ripple } from "react-ripple-click";
+import useFFmpeg from "@/hooks/useFFmpeg";
+import useSpleeter from "@/hooks/useSpleeter";
 
 function Header() {
   const [updateChecking, setUpdateChecking] = useState<boolean | null>(null);
@@ -21,6 +22,8 @@ function Header() {
   );
   const { i18n, t } = useTranslation();
   const { setFilePath } = useFile();
+  const { killFFmpeg } = useFFmpeg();
+  const { killSpleeter } = useSpleeter();
 
   async function onCheckForUpdatesBtnClick() {
     setUpdateChecking(true);
@@ -54,6 +57,7 @@ function Header() {
         onClick={() => {
           setFilePath("");
           killFFmpeg();
+          killSpleeter();
         }}
         className="ripple rounded-full"
       >

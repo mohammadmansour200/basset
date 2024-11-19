@@ -35,6 +35,7 @@
   "tabs": {
     "cutTab": "قص (منتصف)",
     "trimTab": "قص (الأطراف)",
+    "spleeterTab": "إزالة الموسيقى",
     "compressTab": "ضغط",
     "compressTip": "الضغط ب32% هو الأفضل (مساحة أقل وفقد جودة قليل جدًا)",
     "convertToAudioTab": "تحويل لصوتي",

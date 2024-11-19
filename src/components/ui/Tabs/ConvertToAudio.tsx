@@ -4,11 +4,7 @@ import { useFile } from "@/contexts/FileProvider";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-interface ConvertToAudioProps {
-  setCmdProcessing: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function ConvertToAudio({ setCmdProcessing }: ConvertToAudioProps) {
+function ConvertToAudio() {
   const [outputFormat, setOutputFormat] = useState("");
   const { t } = useTranslation();
   const { filePath } = useFile();
@@ -16,7 +12,6 @@ function ConvertToAudio({ setCmdProcessing }: ConvertToAudioProps) {
     <div className="flex flex-col items-center gap-2">
       <FormatSelect isAudio={true} setFormat={setOutputFormat} />
       <ExecuteBtn
-        setCmdProcessing={setCmdProcessing}
         text={t("tabs.convertBtn")}
         outputFormat={outputFormat}
         command={
