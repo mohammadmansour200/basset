@@ -21,7 +21,9 @@ function NotficationPromptBtn() {
   }, []);
 
   async function onNotificationBtnClick() {
-    await requestPermission();
+    await requestPermission().then(
+      (data) => data === "granted" && setPermissionGranted(true),
+    );
   }
 
   return (

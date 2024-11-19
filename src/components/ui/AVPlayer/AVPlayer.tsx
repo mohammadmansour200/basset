@@ -11,7 +11,6 @@ import { useFile } from "@/contexts/FileProvider";
 import AVControls from "./AVControls";
 import CutSlider from "./CutSlider";
 import CurrTimeIndicator from "./CurrTimeIndicator";
-import CutTimestampsInput from "./CutTimestampsInput";
 
 export interface AVPlayerProps {
   cutType: "trim" | "cut";
@@ -55,17 +54,66 @@ export default function AVPlayer({
   }, [cutTimestamps]);
 
   function handleAVDurationAndIndicator() {
-    const durationPer =
-      getPercentage(
-        AVElRef.current?.currentTime as number,
-        AVElRef.current?.duration as number,
-      ) || 0;
+    if (!AVElRef.current) return;
+    if (!sliderElRef.current) return;
 
-    setAVCurrDurationPer(durationPer);
-    if (sliderElRef.current) {
-      sliderElRef.current.value = `${durationPer}`;
+    const currentTime = AVElRef.current.currentTime;
+
+    if (cutType === "cut") {
+      // For trimming, prevent entering the cut region
+      if (currentTime > cutTimestamps[0] && currentTime < cutTimestamps[1]) {
+        // If coming from left, snap to left boundary
+        if (AVElRef.current.currentTime <= cutTimestamps[0]) {
+          AVElRef.current.currentTime = cutTimestamps[0];
+          const startPercentage =
+            (cutTimestamps[0] / AVElRef.current.duration) * 100;
+          setAVCurrDurationPer(startPercentage);
+
+          sliderElRef.current.value = `${startPercentage}`;
+        } else {
+          // If coming from right, snap to right boundary
+          AVElRef.current.currentTime = cutTimestamps[1];
+          const endPercentage =
+            (cutTimestamps[1] / AVElRef.current.duration) * 100;
+          setAVCurrDurationPer(endPercentage);
+
+          sliderElRef.current.value = `${endPercentage}`;
+        }
+        return;
+      }
+    } else {
+      // For cutting, keep within the boundaries
+      if (currentTime < cutTimestamps[0]) {
+        AVElRef.current.currentTime = cutTimestamps[0];
+        const startPercentage =
+          (cutTimestamps[0] / AVElRef.current.duration) * 100;
+        setAVCurrDurationPer(startPercentage);
+
+        sliderElRef.current.value = `${startPercentage}`;
+
+        return;
+      }
+
+      if (currentTime > cutTimestamps[1]) {
+        AVElRef.current.currentTime = cutTimestamps[0];
+        const endPercentage =
+          (cutTimestamps[1] / AVElRef.current.duration) * 100;
+        setAVCurrDurationPer(endPercentage);
+
+        sliderElRef.current.value = `${endPercentage}`;
+
+        return;
+      }
     }
+
+    // If within allowed region, proceed normally
+    const durationPer =
+      getPercentage(currentTime, AVElRef.current.duration) || 0;
+    setAVCurrDurationPer(durationPer);
+
+    sliderElRef.current.value = `${durationPer}`;
   }
+
   return (
     <>
       <div
@@ -78,6 +126,7 @@ export default function AVPlayer({
       >
         {isAudio ? (
           <audio
+            preload="none"
             src={convertFileSrc(filePath)}
             ref={AVElRef as React.RefObject<HTMLAudioElement>}
             onTimeUpdate={() => {
@@ -92,6 +141,7 @@ export default function AVPlayer({
         ) : (
           <div className="group relative mb-1 inline-flex h-full w-[600px] flex-col items-center justify-center overflow-hidden overflow-y-hidden rounded-md sm:w-auto">
             <video
+              preload="none"
               loop
               src={convertFileSrc(filePath)}
               playsInline
@@ -109,20 +159,18 @@ export default function AVPlayer({
           </div>
         )}
       </div>
-      <p className="rounded-md border border-border p-1">
-        {t("tabs.cutOutputDuration")}:{" "}
-        {formatTimestamp(
-          cutType === "cut"
-            ? Math.max(0, initialAVDuration - AVDuration)
-            : Math.max(0, AVDuration),
-        )}
-      </p>
-      <div className="relative mb-8 w-[600px]">
+
+      <div className="relative mb-6 w-[600px]">
         <AVControls
           setAVCurrDurationPer={setAVCurrDurationPer}
           sliderElRef={sliderElRef}
           AVElRef={AVElRef as React.RefObject<HTMLVideoElement>}
           AVPaused={AVPaused}
+          cutType={cutType}
+          cutTimestamps={cutTimestamps}
+          setCutTimestamps={setCutTimestamps}
+          startTimestampElRef={startTimestampElRef}
+          endTimestampElRef={endTimestampElRef}
         />
         <CutSlider
           AVEl={AVElRef.current}
@@ -138,14 +186,14 @@ export default function AVPlayer({
           AVCurrDurationPer={AVCurrDurationPer}
         />
       </div>
-      <CutTimestampsInput
-        cutType={cutType}
-        cutTimestamps={cutTimestamps}
-        setCutTimestamps={setCutTimestamps}
-        AVElRef={AVElRef}
-        startTimestampElRef={startTimestampElRef}
-        endTimestampElRef={endTimestampElRef}
-      />
+      <p className="rounded-md border border-border p-1">
+        {t("tabs.cutOutputDuration")}:{" "}
+        {formatTimestamp(
+          cutType === "cut"
+            ? Math.max(0, initialAVDuration - AVDuration)
+            : Math.max(0, AVDuration),
+        )}
+      </p>
     </>
   );
 }

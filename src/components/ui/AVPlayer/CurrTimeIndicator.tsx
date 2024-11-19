@@ -16,15 +16,15 @@ export default function CurrTimeIndicator({
   return (
     <>
       <div
-        className="pointer-events-none absolute top-[50px] z-50 h-8 w-[4px] border border-border bg-foreground"
+        className="pointer-events-none absolute top-[55px] z-50 h-8 w-[4px] border border-border bg-foreground"
         style={{ left: `${sliderElRef.current?.value || 0}%` }}
       />
       <div
-        className="pointer-events-none absolute top-[40px] z-50 h-0 w-0 -translate-x-[6px] border-x-8 border-t-[14px] border-x-transparent border-t-foreground"
+        className="pointer-events-none absolute top-[45px] z-50 h-0 w-0 -translate-x-[6px] border-x-8 border-t-[14px] border-x-transparent border-t-foreground"
         style={{ left: `${sliderElRef.current?.value || 0}%` }}
       />
       <p
-        className="absolute top-[82px] rounded-md border border-border px-2"
+        className="absolute top-[85px] rounded-md border border-border px-2"
         style={{ left: `${AVCurrDurationPer || 0}%` }}
       >
         {formatTimestamp(AVElRef.current?.currentTime || 0)}

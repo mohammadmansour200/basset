@@ -46,6 +46,7 @@
     "uploadImageDescription": "The image will be still throughout the video",
     "convertBtn": "Convert",
     "cutBtn": "Cut",
+    "spleeterBtn": "Remove",
     "cutOutputDuration": "Output file duration",
     "cutPreview": "Preview",
     "startBtn": "Start"
@@ -64,6 +65,12 @@
     "high": "High quality",
     "medium": "Medium quality",
     "low": "Low quality"
+  },
+  "removeMusic": {
+    "noticeTitle": "Notices",
+    "notice1": "This operation uses AI, and can make mistakes in recognizing music.",
+    "notice2": "You can remove noise and background sounds using this operation too.",
+    "notice3": "This operation is unlimited and compatible with all audio and video lengths."
   },
   "executeBtn": {
     "outputFile": "File:"

@@ -28,10 +28,10 @@ const Slider = React.forwardRef<
       />
     </SliderPrimitive.Track>
     <SliderPrimitive.Thumb
-      className={`block ${doubleThumbs ? "h-7 w-3 rounded-sm" : "h-5 w-5 rounded-full"} border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50`}
+      className={`block ${doubleThumbs ? "h-7 w-2 rounded-sm" : "h-5 w-5 rounded-full"} border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50`}
     />
     {doubleThumbs && (
-      <SliderPrimitive.Thumb className="block h-7 w-3 rounded-sm border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
+      <SliderPrimitive.Thumb className="block h-7 w-2 rounded-sm border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
     )}
   </SliderPrimitive.Root>
 ));
