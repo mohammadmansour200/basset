@@ -11,7 +11,7 @@ function RemoveMusic() {
       <Alert className="flex flex-row gap-1">
         <img
           draggable={false}
-          src="src/assets/pin.png"
+          src="/pin.png"
           width="38"
           height="38"
           className="object-contain"

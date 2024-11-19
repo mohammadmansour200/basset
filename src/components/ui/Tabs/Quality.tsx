@@ -22,7 +22,7 @@ function Quality() {
       <Alert className="flex flex-row gap-1">
         <img
           draggable={false}
-          src="src/assets/star.png"
+          src="/star.png"
           width="38"
           height="38"
           className="object-contain"

@@ -2,7 +2,7 @@
  <img alt="Basset logo" width=300 src="https://raw.githubusercontent.com/mohammadmansour200/basset/main/public/appIcon.png">
 </center>
 
-Basset (translates to simple in Arabic) is a free open source FFmpeg GUI utility.
+Basset (translates to simple in Arabic) is a free open source FFmpeg and Spleeter GUI utility.
 <br/>
 its goals are:
 
@@ -27,6 +27,7 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 
 ## Features 🌟
 
+- 🤖 **AI Spleeter model Instruments removing (currently only supports Windows)**
 - ✂️ **Media cutting and trimming with preview**
 - 🔄 **Media conversion**
 - 📉 **Media compression**
@@ -34,7 +35,7 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 - ⚙️ **Full customizability**
 - 🌐 **Multi-lingual support**
 - 🌗 **Dark/Light mode**
-- 🧠 **Low RAM usage (thanks to Tuari)**
+- 🧠 **Low RAM usage (thanks to Tauri)**
 - 🔒 **Privacy-focused (everything happens locally)**
 
 ## Platform Support 🖥️
@@ -62,7 +63,7 @@ Currently, Basset supports Arabic, Portuguese, and English. We encourage you to 
 
 If you have any questions or need assistance, please reach out:
 
-- **Email:** [abdultawab940@gmail.com](mailto:abdultawab940@gmail.com)
+- **Email:** [mohammadamansour03@gmail.com](mailto:mohammadamansour03@gmail.com)
 - **Telegram:** [Mohammedmansour200](https://t.me/Mohammedmansour200)
 
 ## License 📜
