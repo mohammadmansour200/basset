@@ -65,20 +65,21 @@ function useSpleeter() {
       const progress = parseFloat(match[1]);
 
       setProgress(progress);
+    });
 
-      const inputErrRegex = /Error opening input/;
-      const somethingWentWrongRegex = /Conversion failed/;
-      const outputErrRegex = /Error opening output/;
-      const streamErrRegex = /Output file does not contain any stream/;
+    spleeterSidecar.stderr.on("data", (data) => {
+      const inputErrRegex = /Failed to open input file/;
+      const somethingWentWrongRegex = /Processing error:/;
+      const outputErrRegex = /Failed to open output file/;
+      const createOutputErrRegex = /Failed to create final output file/;
+
       if (data.match(inputErrRegex)) setErrInfo(t("inputErr"));
 
-      if (data.match(outputErrRegex)) setErrInfo(t("outputErr"));
+      if (data.match(outputErrRegex) || data.match(createOutputErrRegex))
+        setErrInfo(t("outputErr"));
 
       if (data.match(somethingWentWrongRegex))
         setErrInfo(t("somethingWentWrongErr"));
-
-      if (data.match(streamErrRegex) || data.match(outputErrRegex))
-        setErrInfo(t("streamErr"));
     });
 
     const spleeterChild = await spleeterSidecar.spawn();
