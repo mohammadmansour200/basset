@@ -83,7 +83,7 @@
     "updaterTitle": "New update available!",
     "okLabel": "Update",
     "cancelLabel": "No thanks",
-    "updaterMessage": "Update Basset to have the latest changes like performance improvements, bug fixes, and much more"
+    "updaterMessage": "Update Basset to have the latest changes like performance improvements, bug fixes, and much more. Update will download in background."
   },
   "noUpdate": {
     "message": "Basset is up to date",
