@@ -69,6 +69,7 @@ export default ImageFileUploader;
 function ImageIcon() {
   return (
     <svg
+      role="graphics-symbol"
       viewBox="0 0 16 16"
       fill="none"
       version="1.1"

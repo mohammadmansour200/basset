@@ -2,11 +2,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-} from "@/components/ui/Dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/Dialog";
 
 function OnBoardDialog() {
   const [appVersion, setAppVersion] = useState("");
@@ -50,7 +46,6 @@ function OnBoardDialog() {
           <li>{t("onboard.goals.privacy")}</li>
         </ul>
         <p>
-          <br />
           {t("onboard.features")}
           <br />
           <br />

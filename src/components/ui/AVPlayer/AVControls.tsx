@@ -1,4 +1,5 @@
 import { RefObject, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Ripple } from "react-ripple-click";
 import CutTimestampsInput from "./CutTimestampsInput";
@@ -167,6 +168,7 @@ function AVControls({
 }
 
 function PauseBtn() {
+  const { t } = useTranslation();
   return (
     <svg
       version="1.1"
@@ -177,6 +179,7 @@ function PauseBtn() {
       xmlSpace="preserve"
       fill="currentColor"
     >
+      <title>{t("playBtnTitle")}</title>
       <g>
         <path
           d="M7,5.8c-0.7,0-1.2,0.5-1.2,1v19.5c0,0.6,0.5,1,1.2,1h3.8c0.7,0,1.2-0.5,1.2-1V6.8c0-0.6-0.5-1-1.2-1C10.9,5.8,7,5.8,7,5.8z
@@ -188,6 +191,7 @@ M19.1,5.8c-0.7,0-1.2,0.5-1.2,1v19.5c0,0.6,0.5,1,1.2,1H23c0.7,0,1.2-0.5,1.2-1V6.8
 }
 
 function PlayBtn() {
+  const { t } = useTranslation();
   return (
     <svg
       fill="currentColor"
@@ -196,6 +200,7 @@ function PlayBtn() {
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{t("playBtnTitle")}</title>
       <g strokeWidth="0"></g>
       <g strokeLinecap="round" strokeLinejoin="round"></g>
       <g>
@@ -206,6 +211,7 @@ function PlayBtn() {
 }
 
 function PlaybackSpeedBtn() {
+  const { t } = useTranslation();
   return (
     <svg
       viewBox="0 0 24 24"
@@ -213,6 +219,7 @@ function PlaybackSpeedBtn() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{t("playbackSpeedBtnTitle")}</title>
       <g></g>
       <g strokeLinecap="round" strokeLinejoin="round">
         <path

@@ -92,6 +92,7 @@ function Header() {
 export default Header;
 
 function SettingsIcon() {
+  const { t } = useTranslation();
   return (
     <svg
       className="inline-block"
@@ -101,6 +102,7 @@ function SettingsIcon() {
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{t("settingsBtnTitle")}</title>
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -111,6 +113,7 @@ function SettingsIcon() {
 }
 
 function BackIcon() {
+  const { t } = useTranslation();
   return (
     <svg
       className="ltr:rotate-360 rtl:rotate-180"
@@ -120,6 +123,7 @@ function BackIcon() {
       viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <title>{t("backBtnTitle")}</title>
       <g strokeWidth="0"></g>
       <g strokeLinecap="round" strokeLinejoin="round"></g>
       <g>

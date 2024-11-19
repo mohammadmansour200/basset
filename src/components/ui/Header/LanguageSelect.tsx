@@ -52,6 +52,7 @@ export default LanguageSelect;
 function LanguageIcon() {
   return (
     <svg
+      role="graphics-symbol"
       viewBox="0 0 24 24"
       width="25px"
       fill="none"

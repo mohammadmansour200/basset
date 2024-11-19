@@ -1,4 +1,8 @@
 {
+  "playBtnTitle": "Play/Pause",
+  "playbackSpeedBtnTitle": "Playback speed",
+  "backBtnTitle": "Go back",
+  "settingsBtnTitle": "Settings",
   "inputErr": "Error opening input file",
   "outputErr": "Error creating output file",
   "somethingWentWrongErr": "Something went wrong, try a different file",
@@ -7,14 +11,14 @@
   "successBody": "Done :)",
   "successTitle": "Process finished",
   "onboard": {
-    "greetings": "As-salamu alaykum... Basset is a free open source utility, its goals are: ",
+    "greetings": "Basset is a free open source utility, its goals are: ",
     "goals": {
       "simplicity": "Simplicity and ease [Basset means simple in Arabic :)] ✨",
       "speed": "Speed ⚡",
       "privacy": "Privacy 🔏"
     },
-    "features": "Basset lets you cut/trim, convert, compress, downgrade quality of your Audio/Video file. moreover you can convert Audio files to Video files using a still Image you choose",
-    "steps": "steps: choose your Video/Audio file --> choose your wanted operation"
+    "features": "Basset lets you remove music, cut/trim, convert, compress, downgrade quality of your Audio/Video file. moreover you can convert Audio files to Video files using a still Image you choose.",
+    "steps": "steps: choose your Video/Audio file --> choose your wanted operation."
   },
   "header": {
     "darkMode": "Dark mode",

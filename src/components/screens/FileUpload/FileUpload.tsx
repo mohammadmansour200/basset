@@ -93,6 +93,7 @@ export default FileUpload;
 function OpenFileIcon() {
   return (
     <svg
+      role="graphics-symbol"
       viewBox="0 0 24 24"
       width="30px"
       height="30px"
