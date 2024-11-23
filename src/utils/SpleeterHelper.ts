@@ -12,10 +12,16 @@ import { t } from "i18next";
 export class SpleeterHelper {
   private filepath: string;
   private finalOutputName: string;
+  private setLogs: (logs: string[] | string) => void;
 
-  constructor(filepath: string, finalOutputName: string) {
+  constructor(
+    filepath: string,
+    finalOutputName: string,
+    setLogs: (logs: string[] | string) => void,
+  ) {
     this.filepath = filepath;
     this.finalOutputName = finalOutputName;
+    this.setLogs = setLogs;
   }
 
   /**
@@ -25,7 +31,7 @@ export class SpleeterHelper {
    *
    * @returns Preprocessed .pcm file path
    */
-  async preprocessFile() {
+  async preprocessFile(): Promise<string> {
     const tempFolder = await appLocalDataDir();
     const outputFolder = await join(
       tempFolder,
@@ -48,8 +54,20 @@ export class SpleeterHelper {
       outputFolder,
     ]);
 
-    await ffmpegSidecar.spawn();
-    return outputFolder;
+    return new Promise((resolve) => {
+      ffmpegSidecar.on("close", ({ code }) => {
+        if (code === 0) {
+          resolve(outputFolder);
+          this.setLogs("File processed successfully");
+        }
+      });
+
+      ffmpegSidecar.on("error", (error) =>
+        this.setLogs(`Processing error: ${error}`),
+      );
+
+      ffmpegSidecar.spawn();
+    });
   }
 
   /**
@@ -124,6 +142,7 @@ export class SpleeterHelper {
     ]);
 
     ffmpegSidecar.on("close", async () => {
+      this.setLogs("File converted successfully");
       isAudio
         ? await copyTmpMediaToMediaDir(outputFile)
         : await this.exchangeVideoAudioTrack(outputFile);

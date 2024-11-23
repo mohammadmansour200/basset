@@ -19,11 +19,11 @@ function useSpleeter() {
   const [progress, setProgress] = useState(0);
 
   const { filePath } = useFileStore();
-  const { setCmdProcessing, setLogs, process, setProcess, logs } =
+  const { setCmdProcessing, setLogs, process, setProcess } =
     useOperationStore();
 
   async function runSpleeter(outputName: string) {
-    setLogs([""]);
+    setLogs([]);
     setCmdStatus(undefined);
     setProgress(0);
     setCmdProcessing(true);
@@ -31,7 +31,7 @@ function useSpleeter() {
     const ensureSpleeterFolderPath = await join("output", "spleeter");
     await ensureDir(ensureSpleeterFolderPath);
 
-    const spleeterHelper = new SpleeterHelper(filePath, outputName);
+    const spleeterHelper = new SpleeterHelper(filePath, outputName, setLogs);
     const preprocessedInputFilePath = await spleeterHelper.preprocessFile();
 
     const tempfolder = await appLocalDataDir();
@@ -44,8 +44,7 @@ function useSpleeter() {
 
     const duration = await getMediaDuration(filePath);
 
-    const newLog = [...logs, `File duration: ${duration}`];
-    setLogs(newLog);
+    setLogs(`File duration: ${duration}`);
 
     const spleeterSidecar = Command.sidecar("bin/SpleeterExe", [
       preprocessedInputFilePath,
@@ -58,18 +57,17 @@ function useSpleeter() {
       if (code === 0) {
         await remove(preprocessedInputFilePath);
         await spleeterHelper.postprocessPcmFile(setCmdStatus, setCmdProcessing);
-      } else if (code !== null) {
-        if (errInfo === "") {
-          setErrInfo(t("somethingWentWrongErr"));
-        }
+      }
+      if (code === 1) {
+        await process?.kill();
         setCmdStatus("error");
         setCmdProcessing(false);
+        setErrInfo(t("somethingWentWrongErr"));
       }
     });
 
     spleeterSidecar.on("error", (error) => {
-      const newLog = [...logs, error];
-      setLogs(newLog);
+      setLogs(error);
 
       setCmdStatus("error");
       setCmdProcessing(false);
@@ -77,8 +75,7 @@ function useSpleeter() {
     });
 
     spleeterSidecar.stdout.on("data", (data) => {
-      const newLog = [...logs, data];
-      setLogs(newLog);
+      setLogs(data);
 
       const match = data.match(/Progress:\s([\d.]+)%/);
 
@@ -89,9 +86,8 @@ function useSpleeter() {
       setProgress(progress);
     });
 
-    spleeterSidecar.stderr.on("data", (data) => {
-      const newLog = [...logs, data];
-      setLogs(newLog);
+    spleeterSidecar.stderr.on("data", async (data) => {
+      setLogs(data);
 
       const inputErrRegex = /Failed to open input file/;
       // const somethingWentWrongRegex = /Processing error:/;

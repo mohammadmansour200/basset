@@ -71,7 +71,7 @@ function Home({ filePath }: HomeProps) {
       <nav
         id="navbar"
         ref={navElRef}
-        className="relative m-2 my-3 flex max-w-full overflow-hidden overflow-x-auto rounded-md bg-muted p-1 min-[580px]:max-w-none"
+        className="relative m-4 my-3 flex max-w-full overflow-hidden overflow-x-auto rounded-md bg-muted p-1 max-[740px]:max-w-[94vw]"
         dir="ltr"
       >
         <div
@@ -84,8 +84,9 @@ function Home({ filePath }: HomeProps) {
           className="flex gap-2 whitespace-nowrap"
           style={{ direction: `${i18n.dir() === "ltr" ? "ltr" : "rtl"}` }}
         >
-          {platformName === "windows" ||
-            (platformName === "linux" && <TabItem name="spleeter" />)}
+          {(platformName === "windows" || platformName === "linux") && (
+            <TabItem name="spleeter" />
+          )}
           <TabItem name="trim" />
           <TabItem name="cut" />
           <TabItem name="convert" />

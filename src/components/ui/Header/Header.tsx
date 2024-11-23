@@ -19,16 +19,19 @@ import {
 import { Ripple } from "react-ripple-click";
 import { useFileStore } from "@/stores/useFileStore";
 import { useOperationStore } from "@/stores/useOperationStore";
+import { Check, Copy } from "lucide-react";
 
 function Header() {
   const [updateChecking, setUpdateChecking] = useState<boolean | null>(null);
   const [updateDownloading, setUpdateDownloading] = useState<boolean | null>(
     null,
   );
+  const [isCopied, setIsCopied] = useState(false);
+
   const { i18n, t } = useTranslation();
   const { setFilePath } = useFileStore();
   const { logs, cmdProcessing } = useOperationStore();
-  console.log(logs);
+
   async function onCheckForUpdatesBtnClick() {
     setUpdateChecking(true);
     const update = await check();
@@ -81,9 +84,26 @@ function Header() {
             <DialogDescription className="text-center">
               {t("bugModalDesc")}
             </DialogDescription>
-            <div role="log" aria-live="polite">
-              <pre className="font-mono">
-                {/* {logs !== undefined && logs?.join("\n")} */}
+            <div
+              dir="ltr"
+              role="log"
+              aria-live="polite"
+              className="relative flex max-h-[250px] flex-col-reverse overflow-y-auto rounded-md bg-accent p-4"
+            >
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(logs.join("\n"));
+                  setIsCopied(true);
+                  setTimeout(function () {
+                    setIsCopied(false);
+                  }, 2000);
+                }}
+                className="absolute right-0 top-0 m-1 rounded-md bg-background p-1.5"
+              >
+                {isCopied ? <Check width={19} /> : <Copy width={19} />}
+              </button>
+              <pre className="text-wrap font-mono text-sm">
+                {logs.join("\n")}
               </pre>
             </div>
           </DialogContent>

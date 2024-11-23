@@ -21,10 +21,10 @@ function useFFmpeg() {
   const { duration } = useFileStore();
   const { setCmdProcessing } = useOperationStore();
 
-  const { setProcess, setLogs, process, logs } = useOperationStore();
+  const { setProcess, setLogs, process } = useOperationStore();
 
   async function runFFmpeg(command: string[], outputPath: string) {
-    setLogs([""]);
+    setLogs([]);
     setCmdStatus(undefined);
     setProgress(0);
     setCmdProcessing(true);
@@ -54,8 +54,7 @@ function useFFmpeg() {
     });
 
     ffmpegSidecar.on("error", (error) => {
-      const newLog = [...logs, error];
-      setLogs(newLog);
+      setLogs(error);
 
       setCmdStatus("error");
       setCmdProcessing(false);
@@ -63,13 +62,11 @@ function useFFmpeg() {
     });
 
     ffmpegSidecar.stdout.on("data", (data) => {
-      const newLog = [...logs, data];
-      setLogs(newLog);
+      setLogs(data);
     });
 
     ffmpegSidecar.stderr.on("data", (data) => {
-      const newLog = [...logs, data];
-      setLogs(newLog);
+      setLogs(data);
       const progress = extractFFmpegProgress(data.toString(), duration);
       if (progress !== undefined) {
         setProgress(progress);
