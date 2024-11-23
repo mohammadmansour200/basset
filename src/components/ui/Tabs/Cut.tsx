@@ -1,13 +1,13 @@
-import { tempDir, join } from "@tauri-apps/api/path";
+import { appLocalDataDir, join } from "@tauri-apps/api/path";
 import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useFile } from "@/contexts/FileProvider";
 import { getNearestTimestamp } from "@/utils/ffmpegHelperUtils";
 
 import AVPlayer from "../AVPlayer/AVPlayer";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
+import { useFileStore } from "@/stores/useFileStore";
 
 function Cut() {
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([
@@ -16,12 +16,12 @@ function Cut() {
   const [txtFilePath, setTxtFilePath] = useState("");
 
   const { t } = useTranslation();
-  const { filePath } = useFile();
+  const { filePath } = useFileStore();
 
   //this text file basically is for the cutting timestamps
   useEffect(() => {
     async function getTxtFilePath() {
-      const txtFilePath = await tempDir();
+      const txtFilePath = await appLocalDataDir();
       const path = await join(txtFilePath, "inputTxtFiles");
       setTxtFilePath(path);
     }
@@ -49,7 +49,7 @@ outpoint ${nearestTS1}
 file '${filePath}'
 inpoint ${nearestTS2}`,
             {
-              baseDir: BaseDirectory.Temp,
+              baseDir: BaseDirectory.AppLocalData,
             },
           );
         }}

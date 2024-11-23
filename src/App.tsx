@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ThemeProvider } from "./contexts/ThemeProvider";
-import { useFile } from "./contexts/FileProvider";
 
 import FileUpload from "./components/screens/FileUpload/FileUpload";
 import Header from "./components/ui/Header/Header";
@@ -15,16 +14,17 @@ import Home from "./components/screens/Home/Home";
 import "react-ripple-click/dist/index.css";
 import useFFmpeg from "./hooks/useFFmpeg";
 import useSpleeter from "./hooks/useSpleeter";
+import { useFileStore } from "./stores/useFileStore";
 
 function App() {
-  const { filePath, setFilePath } = useFile();
+  const { filePath, setFilePath } = useFileStore();
   const { t } = useTranslation();
   const { killFFmpeg } = useFFmpeg();
   const { killSpleeter } = useSpleeter();
 
   //Remove context menu
   useEffect(() => {
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
+    // document.addEventListener("contextmenu", (event) => event.preventDefault());
   }, []);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function App() {
     async function onAppExit() {
       await listen<string>("tauri://close-requested", () => {
         killFFmpeg();
-        killSpleeter()
+        killSpleeter();
       });
     }
     onAppExit();

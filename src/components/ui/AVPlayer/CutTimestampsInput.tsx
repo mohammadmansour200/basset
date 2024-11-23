@@ -22,11 +22,11 @@ export default function CutTimestampsInput({
   endTimestampElRef,
 }: CutTimestampsInputProps) {
   function onStartTimestampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.currentTarget.value.length <= 3) return;
+    if (!AVElRef.current) return;
     if (timestampRegex.test(e.currentTarget.value)) {
       const startTimestamp = unformatTimestamp(e.currentTarget.value);
       setCutTimestamps([startTimestamp as number, cutTimestamps[1]]);
-
-      if (!AVElRef.current) return;
 
       if (cutType === "trim") {
         AVElRef.current.currentTime = startTimestamp as number;
@@ -41,11 +41,11 @@ export default function CutTimestampsInput({
   }
 
   function onEndTimestampInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.currentTarget.value.length <= 3) return;
+    if (!AVElRef.current) return;
     if (timestampRegex.test(e.currentTarget.value)) {
       const endTimestamp = unformatTimestamp(e.currentTarget.value);
       setCutTimestamps([cutTimestamps[0], endTimestamp as number]);
-
-      if (!AVElRef.current) return;
 
       if (cutType === "trim") {
         AVElRef.current.currentTime = cutTimestamps[0];

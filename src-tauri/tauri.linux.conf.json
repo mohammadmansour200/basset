@@ -1,7 +1,7 @@
 {
   "bundle": {
     "resources": {
-      "resources-windows/*": "",
+      "resources-linux/*": "lib",
       "models/2stems/*": "models/2stems",
       "models/2stems/variables/*": "models/2stems/variables"
     },

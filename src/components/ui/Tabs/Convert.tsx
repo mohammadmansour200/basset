@@ -2,21 +2,22 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getIsAudio } from "@/utils/fsUtils";
-import { useFile } from "@/contexts/FileProvider";
 
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import FormatSelect from "@/components/ui/FormatSelect";
+import { useFileStore } from "@/stores/useFileStore";
 
 function Convert() {
   const [outputFormat, setOutputFormat] = useState("");
   const { t } = useTranslation();
-  const { filePath } = useFile();
+  const { filePath } = useFileStore();
 
   const isAudio = getIsAudio(filePath);
   return (
     <div className="flex flex-col items-center gap-2">
       <FormatSelect isAudio={isAudio} setFormat={setOutputFormat} />
       <ExecuteBtn
+        disabled={outputFormat === ""}
         text={t("tabs.convertBtn")}
         outputFormat={outputFormat}
         command={

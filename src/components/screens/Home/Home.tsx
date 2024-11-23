@@ -12,8 +12,8 @@ import Quality from "@/components/ui/Tabs/Quality";
 import Trim from "@/components/ui/Tabs/Trim";
 import Cut from "@/components/ui/Tabs/Cut";
 import ConvertToVideo from "@/components/ui/Tabs/ConvertToVideo";
-import { useFile } from "@/contexts/FileProvider";
 import RemoveMusic from "@/components/ui/Tabs/RemoveMusic";
+import { useOperationStore } from "@/stores/useOperationStore";
 
 interface HomeProps {
   filePath: string;
@@ -23,13 +23,15 @@ const platformName = platform();
 
 function Home({ filePath }: HomeProps) {
   const [tab, setTab] = useState(
-    platformName === "windows" ? "spleeter" : "trim",
+    platformName === "windows" || platformName === "linux"
+      ? "spleeter"
+      : "trim",
   );
-  console.log(platformName);
+
   const { i18n } = useTranslation();
   const navElRef = useRef<HTMLDivElement>(null);
   const activeIndicatorElRef = useRef<HTMLDivElement>(null);
-  const { cmdProcessing } = useFile();
+  const { cmdProcessing } = useOperationStore();
   const isAudio = getIsAudio(filePath);
 
   function onTabClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -82,7 +84,8 @@ function Home({ filePath }: HomeProps) {
           className="flex gap-2 whitespace-nowrap"
           style={{ direction: `${i18n.dir() === "ltr" ? "ltr" : "rtl"}` }}
         >
-          {platformName === "windows" && <TabItem name="spleeter" />}
+          {platformName === "windows" ||
+            (platformName === "linux" && <TabItem name="spleeter" />)}
           <TabItem name="trim" />
           <TabItem name="cut" />
           <TabItem name="convert" />

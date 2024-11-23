@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Ripple } from "react-ripple-click";
 import OnBoardDialog from "./OnBoardDialog";
 import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
-import { useFile } from "@/contexts/FileProvider";
+import { useFileStore } from "@/stores/useFileStore";
 
 interface FileUploadProps {
   setFilePath: (filePath: string) => void;
@@ -13,7 +13,7 @@ interface FileUploadProps {
 
 function FileUpload({ setFilePath }: FileUploadProps) {
   const { t } = useTranslation();
-  const { setDuration } = useFile();
+  const { setDuration } = useFileStore();
 
   const onFileUpload = useCallback(
     async function onFileUpload() {

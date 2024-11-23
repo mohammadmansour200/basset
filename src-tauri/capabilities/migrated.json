@@ -15,11 +15,11 @@
     "fs:allow-write-file",
     "fs:allow-mkdir",
     "fs:allow-exists",
-    "fs:allow-temp-write",
+    "fs:allow-applocaldata-write",
     "fs:allow-resource-read-recursive",
     {
       "identifier": "fs:scope",
-      "allow": ["$TEMP/**/*", "$VIDEO/*", "$AUDIO/*"]
+      "allow": ["$APPLOCALDATA/**/*", "$VIDEO/*", "$AUDIO/*"]
     },
     {
       "identifier": "shell:allow-execute",

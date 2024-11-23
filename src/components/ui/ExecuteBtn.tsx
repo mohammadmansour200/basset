@@ -3,7 +3,7 @@ import {
   sendNotification,
 } from "@tauri-apps/plugin-notification";
 import {
-  tempDir,
+  appLocalDataDir,
   audioDir,
   extname,
   join,
@@ -17,9 +17,10 @@ import { useEffect, useState } from "react";
 import { ensureDir, getIsAudio } from "@/utils/fsUtils";
 
 import { CheckCircle2, TriangleAlert, X } from "lucide-react";
-import { useFile } from "@/contexts/FileProvider";
 import useFFmpeg from "@/hooks/useFFmpeg";
 import useSpleeter from "@/hooks/useSpleeter";
+import { useFileStore } from "@/stores/useFileStore";
+import { useOperationStore } from "@/stores/useOperationStore";
 
 interface ExecuteBtnProps {
   command?: string[];
@@ -62,10 +63,10 @@ function ExecuteBtn({
 
   const { t } = useTranslation();
 
-  const { filePath, cmdProcessing } = useFile();
+  const { filePath } = useFileStore();
+  const { cmdProcessing } = useOperationStore();
 
   async function onStartBtnClick() {
-    if (outputFormat === "") return;
     await ensureDir("inputTxtFiles");
     await ensureDir("output");
 
@@ -81,7 +82,7 @@ function ExecuteBtn({
       outputFormat === undefined ? fileExt : outputFormat;
 
     const outputFilePath = await join(
-      await tempDir(),
+      await appLocalDataDir(),
       "output",
       `${fileName}_${outputFileDate}.${outputFileFormat}`,
     );

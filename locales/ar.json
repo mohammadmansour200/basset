@@ -3,6 +3,8 @@
   "playbackSpeedBtnTitle": "سرعة التشغيل",
   "backBtnTitle": "الرجوع للخلف",
   "settingsBtnTitle": "الإعدادات",
+  "bugModalTitle": "سجل العمليات",
+  "bugModalDesc": "أرسلها لي حال حدوث خطأ معك.",
   "inputErr": "لا يمكن فتح الملف المدخل",
   "somethingWentWrongErr": "حدث خطأ ما، جرب ملفًا آخر",
   "outputErr": "لم يمكننا إنشاء الملف",

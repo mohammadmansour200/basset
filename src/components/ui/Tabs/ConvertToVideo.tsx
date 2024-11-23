@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useFile } from "@/contexts/FileProvider";
 
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import ImageFileUploader from "@/components/ui/ImageFileUploader";
+import { useFileStore } from "@/stores/useFileStore";
 
 function ConvertToVideo() {
   const [imageFilePath, setImageFilePath] = useState("");
   const { t } = useTranslation();
-  const { filePath } = useFile();
+  const { filePath } = useFileStore();
   return (
     <div className="flex flex-col items-center gap-2">
       <ImageFileUploader

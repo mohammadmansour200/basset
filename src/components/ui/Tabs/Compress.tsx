@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 
 import CompressSlider from "@/components/ui/CompressSlider";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
-import { useFile } from "@/contexts/FileProvider";
+import { useFileStore } from "@/stores/useFileStore";
 
 function Compress() {
   const [compressRate, setCompressRate] = useState(8);
-  const { filePath } = useFile();
+  const { filePath } = useFileStore();
   const { t } = useTranslation();
 
   return (

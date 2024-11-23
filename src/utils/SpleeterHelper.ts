@@ -1,4 +1,4 @@
-import { join, tempDir } from "@tauri-apps/api/path";
+import { join, appLocalDataDir } from "@tauri-apps/api/path";
 import { Command } from "@tauri-apps/plugin-shell";
 import {
   isPermissionGranted,
@@ -26,7 +26,7 @@ export class SpleeterHelper {
    * @returns Preprocessed .pcm file path
    */
   async preprocessFile() {
-    const tempFolder = await tempDir();
+    const tempFolder = await appLocalDataDir();
     const outputFolder = await join(
       tempFolder,
       "output",
@@ -153,7 +153,7 @@ export class SpleeterHelper {
     >,
     setCmdProcessing: (processing: boolean) => void,
   ) {
-    const tempFolder = await tempDir();
+    const tempFolder = await appLocalDataDir();
     const processedPcmFilePath = await join(tempFolder, "output", "spleeter");
     await this.convertPcmFile(
       processedPcmFilePath,

@@ -7,10 +7,10 @@ import { getPercentage } from "@/utils/getPercentage";
 import formatTimestamp from "@/utils/timestampFormatter";
 import { cn } from "@/utils/cn";
 
-import { useFile } from "@/contexts/FileProvider";
 import AVControls from "./AVControls";
 import CutSlider from "./CutSlider";
 import CurrTimeIndicator from "./CurrTimeIndicator";
+import { useFileStore } from "@/stores/useFileStore";
 
 export interface AVPlayerProps {
   cutType: "trim" | "cut";
@@ -24,13 +24,10 @@ export default function AVPlayer({
   setCutTimestamps,
 }: AVPlayerProps) {
   const [AVPaused, setAVPaused] = useState(true);
-  const [AVDuration, setAVDuration] = useState(
-    cutTimestamps[1] - cutTimestamps[0],
-  );
   const [AVCurrDurationPer, setAVCurrDurationPer] = useState(0);
 
   const { t } = useTranslation();
-  const { duration: initialAVDuration, filePath } = useFile();
+  const { duration: initialAVDuration, filePath } = useFileStore();
   const isAudio = getIsAudio(filePath);
 
   const AVElRef = useRef<HTMLVideoElement | HTMLAudioElement>(null);
@@ -175,7 +172,6 @@ export default function AVPlayer({
         <CutSlider
           AVEl={AVElRef.current}
           cutType={cutType}
-          setAVDuration={setAVDuration}
           setCutTimestamps={setCutTimestamps}
           cutTimestamps={cutTimestamps}
           initialAVDuration={initialAVDuration}
@@ -190,8 +186,11 @@ export default function AVPlayer({
         {t("tabs.cutOutputDuration")}:{" "}
         {formatTimestamp(
           cutType === "cut"
-            ? Math.max(0, initialAVDuration - AVDuration)
-            : Math.max(0, AVDuration),
+            ? Math.max(
+                0,
+                initialAVDuration - (cutTimestamps[1] - cutTimestamps[0]),
+              )
+            : Math.max(0, cutTimestamps[1] - cutTimestamps[0]),
         )}
       </p>
     </>

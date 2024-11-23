@@ -1,4 +1,4 @@
-import { useFile } from "@/contexts/FileProvider";
+import { useOperationStore } from "@/stores/useOperationStore";
 import { useTranslation } from "react-i18next";
 import { Ripple } from "react-ripple-click";
 
@@ -7,7 +7,7 @@ interface TabItemProps {
 }
 function TabItem({ name }: TabItemProps) {
   const { t } = useTranslation();
-  const { cmdProcessing } = useFile();
+  const { cmdProcessing } = useOperationStore();
   return (
     <button
       style={{ cursor: cmdProcessing ? "not-allowed" : "" }}

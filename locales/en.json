@@ -3,6 +3,8 @@
   "playbackSpeedBtnTitle": "Playback speed",
   "backBtnTitle": "Go back",
   "settingsBtnTitle": "Settings",
+  "bugModalTitle": "Operations log",
+  "bugModalDesc": "Send this to me in case an unexpectable behavior happens.",
   "inputErr": "Error opening input file",
   "outputErr": "Error creating output file",
   "somethingWentWrongErr": "Something went wrong, try a different file",

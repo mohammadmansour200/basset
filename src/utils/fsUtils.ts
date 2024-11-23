@@ -22,7 +22,7 @@ export function getIsAudio(file: string) {
 
 export async function deleteMediaTemp() {
   await remove("output", {
-    baseDir: BaseDirectory.Temp,
+    baseDir: BaseDirectory.AppLocalData,
     recursive: true,
   });
 }
@@ -39,10 +39,10 @@ export async function copyTmpMediaToMediaDir(file: string) {
 
 export async function ensureDir(dir: string) {
   const dirExists = await exists(dir, {
-    baseDir: BaseDirectory.Temp,
+    baseDir: BaseDirectory.AppLocalData,
   });
 
   if (!dirExists) {
-    await mkdir(dir, { baseDir: BaseDirectory.Temp });
+    await mkdir(dir, { baseDir: BaseDirectory.AppLocalData });
   }
 }

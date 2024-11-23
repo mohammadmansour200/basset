@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useFile } from "@/contexts/FileProvider";
 
 import { getIsAudio } from "@/utils/fsUtils";
 
@@ -8,12 +7,13 @@ import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import QualitySelect from "@/components/ui/QualitySelect";
 import AudioQualitySelect from "../AudioQualitySelect";
 import { Alert, AlertDescription, AlertTitle } from "../Alert";
+import { useFileStore } from "@/stores/useFileStore";
 
 function Quality() {
   const [quality, setQuality] = useState("1280:720");
   const [audioQuality, setAudioQuality] = useState("128k");
   const { t } = useTranslation();
-  const { filePath } = useFile();
+  const { filePath } = useFileStore();
 
   const isAudio = getIsAudio(filePath);
 

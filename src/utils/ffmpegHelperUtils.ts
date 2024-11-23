@@ -11,7 +11,7 @@ const getNearestTimestamp = async (
   const nearestTimestampCmd = (cutTimestamp: number) => {
     return [
       "-read_intervals",
-      `${cutTimestamp + 2}%${cutTimestamp + 2}`,
+      `${cutTimestamp + 2}%${cutTimestamp + 4}`,
       "-v",
       "error",
       "-skip_frame",
@@ -28,14 +28,14 @@ const getNearestTimestamp = async (
 
   // Function to execute ffprobe and return nearest timestamp
   const executeFfprobe = async (cmd: string[]) => {
-    return new Promise<number>((resolve) => {
+    return new Promise<number>((resolve, reject) => {
       const ffprobe = Command.sidecar("bin/ffprobe", cmd);
 
       ffprobe.stdout.on("data", (data) => {
         const nearestTimestamp = parseFloat(data.toString());
         resolve(nearestTimestamp);
       });
-
+      ffprobe.stderr.on("data", (data) => reject(data));
       ffprobe.spawn();
     });
   };

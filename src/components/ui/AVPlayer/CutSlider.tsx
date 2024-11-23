@@ -3,7 +3,6 @@ import { Slider } from "../Slider";
 import { AVPlayerProps } from "./AVPlayer";
 
 interface CutSliderProps {
-  setAVDuration: React.Dispatch<React.SetStateAction<number>>;
   initialAVDuration: number;
   AVEl: HTMLMediaElement | null;
 }
@@ -12,7 +11,6 @@ type CutSliderTypes = CutSliderProps &
 
 export default function CutSlider({
   cutType,
-  setAVDuration,
   setCutTimestamps,
   cutTimestamps,
   initialAVDuration,
@@ -23,7 +21,6 @@ export default function CutSlider({
       cutType={cutType}
       minStepsBetweenThumbs={5}
       onValueChange={(value) => {
-        setAVDuration(initialAVDuration * ((value[1] - value[0]) / 100));
         setCutTimestamps([
           (value[0] / 100) * initialAVDuration,
           (value[1] / 100) * initialAVDuration,
