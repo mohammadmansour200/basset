@@ -1,5 +1,6 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
+import { X } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
 import { Ripple } from "react-ripple-click";
@@ -48,7 +49,14 @@ function ImageFileUploader({
         </button>
       ) : (
         <div className="flex flex-col items-center">
-          <div className="flex justify-center rounded-md border-2 border-dashed border-border">
+          <div className="relative flex justify-center rounded-md border-2 border-dashed border-border">
+            <button
+              className="ripple absolute right-0 z-10 rounded-sm bg-muted"
+              onClick={() => setImageFilePath("")}
+            >
+              <Ripple />
+              <X />
+            </button>
             <div className="ripple flex h-[200px] w-[90vw] flex-col items-center border-border py-[10vh] md:w-[500px]">
               <img
                 className="absolute inset-0 h-full w-full object-contain"

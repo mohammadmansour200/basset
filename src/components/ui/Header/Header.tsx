@@ -88,7 +88,7 @@ function Header() {
               dir="ltr"
               role="log"
               aria-live="polite"
-              className="relative flex max-h-[250px] flex-col-reverse overflow-y-auto rounded-md bg-accent p-4"
+              className="flex max-h-[250px] flex-col-reverse overflow-y-auto rounded-md bg-accent p-4"
             >
               <button
                 onClick={() => {
@@ -98,7 +98,7 @@ function Header() {
                     setIsCopied(false);
                   }, 2000);
                 }}
-                className="absolute right-0 top-0 m-1 rounded-md bg-background p-1.5"
+                className="fixed right-7 top-20 m-1 rounded-md bg-background p-1.5"
               >
                 {isCopied ? <Check width={19} /> : <Copy width={19} />}
               </button>

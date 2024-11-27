@@ -26,6 +26,16 @@
       "allow": [
         {
           "args": true,
+          "name": "ffmpeg",
+          "cmd": "ffmpeg"
+        },
+        {
+          "args": true,
+          "name": "ffprobe",
+          "cmd": "ffprobe"
+        },
+        {
+          "args": true,
           "name": "bin/ffmpeg",
           "sidecar": true
         },
@@ -46,6 +56,16 @@
       "allow": [
         {
           "args": true,
+          "name": "ffmpeg",
+          "cmd": "ffmpeg"
+        },
+        {
+          "args": true,
+          "name": "ffprobe",
+          "cmd": "ffprobe"
+        },
+        {
+          "args": true,
           "name": "bin/ffmpeg",
           "sidecar": true
         },
@@ -64,6 +84,16 @@
     {
       "identifier": "shell:allow-kill",
       "allow": [
+        {
+          "args": true,
+          "name": "ffmpeg",
+          "cmd": "ffmpeg"
+        },
+        {
+          "args": true,
+          "name": "ffprobe",
+          "cmd": "ffprobe"
+        },
         {
           "args": true,
           "name": "bin/ffmpeg",

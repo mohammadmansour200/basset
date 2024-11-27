@@ -1,5 +1,4 @@
 import { join, appLocalDataDir } from "@tauri-apps/api/path";
-import { Command } from "@tauri-apps/plugin-shell";
 import {
   isPermissionGranted,
   sendNotification,
@@ -8,6 +7,7 @@ import {
 import { copyTmpMediaToMediaDir, extNameSync, getIsAudio } from "./fsUtils";
 
 import { t } from "i18next";
+import { ffmpeg } from "./command";
 
 export class SpleeterHelper {
   private filepath: string;
@@ -39,7 +39,7 @@ export class SpleeterHelper {
       "spleeter",
       "preprocessed.pcm",
     );
-    const ffmpegSidecar = Command.sidecar("bin/ffmpeg", [
+    const ffmpegSidecar = ffmpeg([
       "-y",
       "-i",
       this.filepath,
@@ -80,7 +80,7 @@ export class SpleeterHelper {
       extNameSync(this.finalOutputName),
     );
 
-    const ffmpegSidecar = Command.sidecar("bin/ffmpeg", [
+    const ffmpegSidecar = ffmpeg([
       "-y",
       "-an",
       "-i",
@@ -126,7 +126,7 @@ export class SpleeterHelper {
       `${this.finalOutputName.replace(`.${extNameSync(this.finalOutputName)}`, "")}.${isAudio ? extNameSync(this.finalOutputName) : "aac"}`,
     );
 
-    const ffmpegSidecar = Command.sidecar("bin/ffmpeg", [
+    const ffmpegSidecar = ffmpeg([
       "-y",
       "-f",
       "f32le",

@@ -1,7 +1,6 @@
-import { Command } from "@tauri-apps/plugin-shell";
-
 import unformatTimestamp from "./timestampUnformatter";
 import { getPercentage } from "./getPercentage";
+import { ffprobe as ffprobeCommand } from "./command";
 
 //This is crucial for not having a jitter and frame freeze for cutting Media files in ffmpeg without re-encoding
 const getNearestTimestamp = async (
@@ -29,7 +28,7 @@ const getNearestTimestamp = async (
   // Function to execute ffprobe and return nearest timestamp
   const executeFfprobe = async (cmd: string[]) => {
     return new Promise<number>((resolve, reject) => {
-      const ffprobe = Command.sidecar("bin/ffprobe", cmd);
+      const ffprobe = ffprobeCommand(cmd);
 
       ffprobe.stdout.on("data", (data) => {
         const nearestTimestamp = parseFloat(data.toString());
@@ -66,7 +65,7 @@ const getMediaDuration = async (filePath: string): Promise<number> => {
     filePath,
   ];
 
-  const ffprobeSidecar = Command.sidecar("bin/ffprobe", durationCmd);
+  const ffprobeSidecar = ffprobeCommand(durationCmd);
 
   return new Promise((resolve) => {
     ffprobeSidecar.stdout.on("data", (data) => {

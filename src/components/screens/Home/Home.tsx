@@ -71,7 +71,7 @@ function Home({ filePath }: HomeProps) {
       <nav
         id="navbar"
         ref={navElRef}
-        className="relative m-4 my-3 flex max-w-full overflow-hidden overflow-x-auto rounded-md bg-muted p-1 max-[740px]:max-w-[94vw]"
+        className="relative m-4 my-3 flex max-w-full overflow-hidden overflow-x-auto rounded-md bg-muted p-1 max-[770px]:max-w-[94vw]"
         dir="ltr"
       >
         <div

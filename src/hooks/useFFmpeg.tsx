@@ -3,7 +3,6 @@ import {
   isPermissionGranted,
   sendNotification,
 } from "@tauri-apps/plugin-notification";
-import { Command } from "@tauri-apps/plugin-shell";
 
 import { copyTmpMediaToMediaDir, deleteMediaTemp } from "@/utils/fsUtils";
 import { extractFFmpegProgress } from "@/utils/ffmpegHelperUtils";
@@ -11,6 +10,7 @@ import { extractFFmpegProgress } from "@/utils/ffmpegHelperUtils";
 import { useTranslation } from "react-i18next";
 import { useOperationStore } from "@/stores/useOperationStore";
 import { useFileStore } from "@/stores/useFileStore";
+import { ffmpeg } from "@/utils/command";
 
 function useFFmpeg() {
   const { t } = useTranslation();
@@ -28,11 +28,7 @@ function useFFmpeg() {
     setCmdStatus(undefined);
     setProgress(0);
     setCmdProcessing(true);
-    const ffmpegSidecar = Command.sidecar("bin/ffmpeg", [
-      "-y",
-      ...command,
-      outputPath,
-    ]);
+    const ffmpegSidecar = ffmpeg(["-y", ...command, outputPath]);
 
     ffmpegSidecar.on("close", async ({ code }) => {
       if (code === 0) {
