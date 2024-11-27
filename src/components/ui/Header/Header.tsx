@@ -88,7 +88,7 @@ function Header() {
               dir="ltr"
               role="log"
               aria-live="polite"
-              className="flex max-h-[250px] flex-col-reverse overflow-y-auto rounded-md bg-accent p-4"
+              className="flex h-[250px] max-h-[250px] flex-col-reverse overflow-y-auto rounded-md bg-accent p-4"
             >
               <button
                 onClick={() => {
