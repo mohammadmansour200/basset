@@ -29,7 +29,7 @@ function Header() {
   const [isCopied, setIsCopied] = useState(false);
 
   const { i18n, t } = useTranslation();
-  const { setFilePath } = useFileStore();
+  const { setFilePath, filePath } = useFileStore();
   const { logs, cmdProcessing } = useOperationStore();
 
   async function onCheckForUpdatesBtnClick() {
@@ -61,16 +61,18 @@ function Header() {
       dir={i18n.dir()}
     >
       <div>
-        <button
-          disabled={cmdProcessing}
-          onClick={() => {
-            setFilePath("");
-          }}
-          className="ripple rounded-full"
-        >
-          <Ripple />
-          <BackIcon />
-        </button>
+        {filePath !== "" && (
+          <button
+            disabled={cmdProcessing}
+            onClick={() => {
+              setFilePath("");
+            }}
+            className="ripple rounded-full"
+          >
+            <Ripple />
+            <BackIcon />
+          </button>
+        )}
       </div>
       <div className="flex items-center gap-1 p-1">
         <Dialog>

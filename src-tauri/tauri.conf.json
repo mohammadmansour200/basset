@@ -7,7 +7,7 @@
   },
   "bundle": {
     "createUpdaterArtifacts": "v1Compatible",
-    "externalBin": ["bin/ffmpeg", "bin/ffprobe"],
+    "externalBin": ["bin/ffmpeg", "bin/ffprobe", "bin/ytDlp"],
     "active": true,
     "license": "GPL-3.0",
     "targets": ["deb", "msi", "app", "dmg"],

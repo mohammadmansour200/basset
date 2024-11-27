@@ -6,6 +6,7 @@ import { Ripple } from "react-ripple-click";
 import OnBoardDialog from "./OnBoardDialog";
 import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
 import { useFileStore } from "@/stores/useFileStore";
+import DownloadFromInternet from "./DownloadFromInternet";
 
 interface FileUploadProps {
   setFilePath: (filePath: string) => void;
@@ -83,6 +84,8 @@ function FileUpload({ setFilePath }: FileUploadProps) {
             {t("uploadPage.uploadFileLabel")}
           </div>
         </button>
+        <hr className="mt-2 h-[2px] w-[90vw] border-none bg-border md:w-[600px]" />
+        <DownloadFromInternet />
       </div>
     </>
   );

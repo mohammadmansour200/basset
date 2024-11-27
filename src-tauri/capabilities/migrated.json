@@ -48,6 +48,11 @@
           "args": true,
           "name": "bin/SpleeterExe",
           "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "bin/ytDlp",
+          "sidecar": true
         }
       ]
     },
@@ -78,6 +83,11 @@
           "args": true,
           "name": "bin/SpleeterExe",
           "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "bin/ytDlp",
+          "sidecar": true
         }
       ]
     },
@@ -107,6 +117,11 @@
         {
           "args": true,
           "name": "bin/SpleeterExe",
+          "sidecar": true
+        },
+        {
+          "args": true,
+          "name": "bin/ytDlp",
           "sidecar": true
         }
       ]

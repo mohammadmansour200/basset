@@ -5,6 +5,6 @@
       "models/2stems/*": "models/2stems",
       "models/2stems/variables/*": "models/2stems/variables"
     },
-    "externalBin": ["bin/ffmpeg", "bin/ffprobe", "bin/SpleeterExe"]
+    "externalBin": ["bin/ffmpeg", "bin/ffprobe", "bin/SpleeterExe", "bin/ytDlp"]
   }
 }

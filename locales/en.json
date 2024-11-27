@@ -8,10 +8,14 @@
   "inputErr": "Error opening input file",
   "outputErr": "Error creating output file",
   "somethingWentWrongErr": "Something went wrong, try a different file",
+  "somethingWentWrongDownloadErr": "Something went wrong...",
+  "wrongUrlDownloadErr": "This link is incorrect...",
   "streamErr": "File is corrupted",
   "errTitle": "Something went wrong",
   "successBody": "Done :)",
   "successTitle": "Process finished",
+  "successBodyDownload": "File saved in Downloads",
+  "successTitleDownload": "Downloading finished",
   "onboard": {
     "greetings": "Basset is a free open source utility, its goals are: ",
     "goals": {
@@ -36,7 +40,11 @@
     "updateLoading": "Checking..."
   },
   "uploadPage": {
-    "uploadFileLabel": "Choose a file"
+    "uploadFileLabel": "Choose a file",
+    "downloadFromInternetDialogBtn": "Download from internet",
+    "downloadFromInternetBtn": "Download",
+    "downloadFromInternetLabel": "Video/Audio link",
+    "downloadFromInternetPlaceholder": "Youtube, X, Instagram, Soundcloud, Facebook, Linkedin link"
   },
   "tabs": {
     "cutTab": "Cut",

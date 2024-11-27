@@ -7,11 +7,15 @@
   "bugModalDesc": "أرسلها لي حال حدوث خطأ معك.",
   "inputErr": "لا يمكن فتح الملف المدخل",
   "somethingWentWrongErr": "حدث خطأ ما، جرب ملفًا آخر",
+  "somethingWentWrongDownloadErr": "حدث خطأ ما...",
+  "wrongUrlDownloadErr": "هذا الرابط غير صحيح...",
   "outputErr": "لم يمكننا إنشاء الملف",
   "streamErr": "الملف غير صالح",
   "errTitle": "حدث خطأ ما :(",
   "successBody": "تم بحمدالله :)",
   "successTitle": "انتهت العملية",
+  "successBodyDownload": "تم حفظه في الـDownloads",
+  "successTitleDownload": "انتهى التحميل",
   "onboard": {
     "greetings": "السلام عليكم ورحمة الله وبركاته... \n بسيط هي أداة مجانية مفتوحة المصدر من أهدافها:",
     "goals": {
@@ -36,7 +40,11 @@
     "updateLoading": "يتم البحث..."
   },
   "uploadPage": {
-    "uploadFileLabel": "اختر ملفًا"
+    "uploadFileLabel": "اختر ملفًا",
+    "downloadFromInternetDialogBtn": "التحميل من الشبكة",
+    "downloadFromInternetBtn": "تحميل",
+    "downloadFromInternetLabel": "رابط الفيديو/الصوتية",
+    "downloadFromInternetPlaceholder": "رابط Youtube, X, Instagram, Soundcloud, Facebook, Linkedin"
   },
   "tabs": {
     "cutTab": "قص (منتصف)",
