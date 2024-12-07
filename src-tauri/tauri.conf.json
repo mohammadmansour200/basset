@@ -10,7 +10,7 @@
     "externalBin": ["bin/ffmpeg", "bin/ffprobe", "bin/ytDlp"],
     "active": true,
     "license": "GPL-3.0",
-    "targets": ["deb", "msi", "app", "dmg"],
+    "targets": ["appimage", "msi", "app", "dmg"],
     "windows": {
       "webviewInstallMode": {
         "type": "embedBootstrapper"

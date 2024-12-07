@@ -158,7 +158,7 @@ function DownloadFromInternet() {
             />
             <button
               disabled={cmdProcessing}
-              className="transform rounded-lg bg-foreground px-4 py-2 font-bold text-white transition-all duration-300 ease-in-out hover:scale-105"
+              className="transform rounded-lg bg-foreground px-4 py-2 font-bold text-background transition-all duration-300 ease-in-out hover:scale-105"
               type="submit"
             >
               {cmdProcessing ? (
