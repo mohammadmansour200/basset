@@ -1,5 +1,5 @@
 <center>
- <img alt="Basset logo" src="https://raw.githubusercontent.com/mohammadmansour200/basset/main/src-tauri/icons/128x128@2x.png">
+ <img alt="Basset logo" src="https://raw.githubusercontent.com/mohammadmansour200/basset/refs/heads/main/src-tauri/icons/128x128%402x.png">
 </center>
 
 Basset (translates to simple in Arabic) is a free open source FFmpeg and Spleeter GUI utility.
