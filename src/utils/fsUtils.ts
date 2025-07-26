@@ -15,7 +15,13 @@ export function extNameSync(file: string) {
 
 export function getIsAudio(file: string) {
   const ext = extNameSync(file);
-  if (ext === "mp3" || ext === "ogg" || ext === "aac" || ext === "wav") {
+  if (
+    ext === "mp3" ||
+    ext === "ogg" ||
+    ext === "aac" ||
+    ext === "wav" ||
+    ext === "m4a"
+  ) {
     return true;
   } else return false;
 }

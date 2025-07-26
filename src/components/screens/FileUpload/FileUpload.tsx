@@ -35,6 +35,7 @@ function FileUpload({ setFilePath }: FileUploadProps) {
               "mp3",
               "ogg",
               "wav",
+              "m4a",
             ],
           },
         ],
