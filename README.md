@@ -64,7 +64,6 @@ Currently, Basset supports Arabic, Portuguese, and English. We encourage you to 
 If you have any questions or need assistance, please reach out:
 
 - **Email:** [mohammadamansour03@gmail.com](mailto:mohammadamansour03@gmail.com)
-- **Telegram:** [Mohammedmansour200](https://t.me/Mohammedmansour200)
 
 ## License 📜
 
