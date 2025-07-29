@@ -4,7 +4,7 @@ import {
   sendNotification,
 } from "@tauri-apps/plugin-notification";
 
-import { copyTmpMediaToMediaDir, extNameSync, getIsAudio } from "./fsUtils";
+import { copyTmpMediaToMediaDir, extNameSync } from "./fsUtils";
 
 import { t } from "i18next";
 import { ffmpeg } from "./command";
@@ -107,7 +107,7 @@ export class SpleeterHelper {
 
   /**
    * Converts processed .pcm file to either:
-   * - .aac in case the input file is video
+   * - (Suitable audio codec) in case the input file is video
    * - the input's format in case the file is audio
    * @private
    */
@@ -120,10 +120,23 @@ export class SpleeterHelper {
   ) {
     const processedPcmFile = await join(processedPcmFilePath, "processed.pcm");
 
-    const isAudio = getIsAudio(this.finalOutputName);
+    const finalOutputExt = extNameSync(this.finalOutputName);
+
+    const videoAudioCodecExtMap = {
+      mp4: "aac",
+      webm: "opus",
+      "3gp": "mp3",
+      flv: "aac",
+    };
+
+    // @ts-ignore
+    const videoAudioCodecExt = videoAudioCodecExtMap[finalOutputExt];
+
+    const isAudio = videoAudioCodecExt ? false : true;
+
     const outputFile = await join(
       processedPcmFilePath,
-      `${this.finalOutputName.replace(`.${extNameSync(this.finalOutputName)}`, "")}.${isAudio ? extNameSync(this.finalOutputName) : "aac"}`,
+      `${this.finalOutputName.replace(`.${extNameSync(this.finalOutputName)}`, "")}.${isAudio ? extNameSync(this.finalOutputName) : videoAudioCodecExt}`,
     );
 
     const ffmpegSidecar = ffmpeg([
