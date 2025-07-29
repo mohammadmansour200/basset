@@ -1,19 +1,25 @@
 import { useState } from "react";
-import { downloadDir } from "@tauri-apps/api/path";
-import {
-  isPermissionGranted,
-  sendNotification,
-} from "@tauri-apps/plugin-notification";
+import { downloadDir, join } from "@tauri-apps/api/path";
 import { Command } from "@tauri-apps/plugin-shell";
 
+import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
+
+import { useFileStore } from "@/stores/useFileStore";
 import { useOperationStore } from "@/stores/useOperationStore";
 import { useTranslation } from "react-i18next";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import { CheckCircle2, TriangleAlert } from "lucide-react";
 import { Ripple } from "react-ripple-click";
+import { toast } from "sonner";
 
 const supportedDomains = [
   "youtube.com",
@@ -26,15 +32,22 @@ const supportedDomains = [
   "soundcloud.com",
 ];
 
+const intQualityMap = {
+  high: "192",
+  medium: "128",
+  low: "96",
+};
+
+type MediaType = "video" | "audio";
+type QualityType = "high" | "medium" | "low";
+
 function DownloadFromInternet() {
   const [url, setUrl] = useState("");
-  const [errInfo, setErrInfo] = useState("");
-  const [progress, setProgress] = useState(0);
-  const [cmdStatus, setCmdStatus] = useState<"success" | "error" | "">("");
-
+  const [mediaType, setMediaType] = useState<MediaType>("video");
+  const [quality, setQuality] = useState<QualityType>("medium");
   const { cmdProcessing, setCmdProcessing } = useOperationStore();
-
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { setDuration, setFilePath } = useFileStore();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,72 +55,124 @@ function DownloadFromInternet() {
     if (!url) return;
 
     const isValidUrl = supportedDomains.some((domain) => url.includes(domain));
-    if (!isValidUrl) return;
+    if (!isValidUrl) {
+      toast.error(t("wrongUrlDownloadErr"));
+      return;
+    }
 
     setCmdProcessing(true);
-    setCmdStatus("");
 
     const downloadPath = await downloadDir();
-    const ytDlpSidecar = Command.sidecar("bin/ytDlp", [
-      "-S",
-      "ext",
-      "--yes-playlist",
+
+    const outputTemplate = await join(downloadPath, "%(id)s.%(ext)s");
+
+    const ytDlpCmd = [
+      "--no-playlist",
+      "-o",
+      outputTemplate,
       "-P",
       downloadPath,
       url,
-    ]);
+      "--print-json",
+    ];
 
+    if (mediaType === "audio")
+      ytDlpCmd.push(
+        "-f",
+        `bestaudio[abr>=${intQualityMap[quality]}]/bestaudio`,
+        "-x",
+        "--audio-format",
+        "mp3",
+      );
+
+    if (mediaType === "video" && quality !== "high")
+      ytDlpCmd.push(
+        "-f",
+        quality == "medium"
+          ? "bestvideo[height<=720]+bestaudio"
+          : "bestvideo[height<=360]+bestaudio",
+      );
+
+    const ytDlpSidecar = Command.sidecar("bin/ytDlp", ytDlpCmd);
+
+    let downloadedFilePath: string | null = null;
+    let isStdoutProcessed = false;
     ytDlpSidecar.on("close", async ({ code }) => {
       if (code === 0) {
-        setCmdProcessing(false);
-        setCmdStatus("success");
-        const permissionGranted = await isPermissionGranted();
+        while (!isStdoutProcessed && downloadedFilePath === null) {
+          await new Promise((resolve) => setTimeout(resolve, 10));
+        }
 
-        if (permissionGranted) {
-          sendNotification({
-            title: t("successTitleDownload"),
-            body: t("successBodyDownload"),
+        setCmdProcessing(false);
+
+        if (downloadedFilePath) {
+          await getMediaDuration(downloadedFilePath).then((data) => {
+            setDuration(data);
+            setFilePath(downloadedFilePath!);
           });
         }
       } else {
-        setCmdStatus("error");
         setCmdProcessing(false);
       }
     });
 
     ytDlpSidecar.on("error", (error) => {
       console.log(error);
-      setCmdStatus("error");
       setCmdProcessing(false);
     });
 
-    ytDlpSidecar.stdout.on("data", (data) => {
-      const match = data.match(/\s(\d+(\.\d+)?)%/);
-
-      if (!match) return;
-
-      const progress = parseFloat(match[1]);
-      console.log(progress);
-      if (progress !== undefined) {
-        setProgress(progress);
+    ytDlpSidecar.stdout.on("data", async (data) => {
+      try {
+        const urlData = JSON.parse(data);
+        const filename = `${urlData["id"]}.${mediaType === "audio" ? "mp3" : urlData["ext"]}`;
+        console.log(urlData);
+        const path = await join(downloadPath, filename);
+        downloadedFilePath = path;
+      } finally {
+        isStdoutProcessed = true;
       }
     });
 
     ytDlpSidecar.stderr.on("data", (data) => {
-      const wrongUrlErrRegex = /Unsupported URL/;
-      const somethingWentWrongRegex = /Unable to/;
-      const wrongYoutubeIdRegex = /Incomplete YouTube ID/;
-      const wrongYoutubePlaylistRegex = /Unable to recognize playlist/;
+      console.log(data);
+      const errorPatterns = [
+        {
+          regex:
+            /not available in your country|geo.?restricted|geographic.?restriction/i,
+          key: "geoRestricted",
+        },
+        {
+          regex: /sign in|login required|authentication/i,
+          key: "loginRequired",
+        },
+        {
+          regex: /rate.?limit|try again later|too many requests/i,
+          key: "rateLimit",
+        },
+        { regex: /DRM protected|drm protection/i, key: "drmProtected" },
+        {
+          regex: /No video formats found|no formats available/i,
+          key: "noFormats",
+        },
+        {
+          regex: /private video|video unavailable|video has been removed/i,
+          key: "privateVideo",
+        },
+        {
+          regex: /connection|timeout|network|ssl error|unable to download/i,
+          key: "networkError",
+        },
+        { regex: /blob:|doesn't make any sense/i, key: "invalidUrl" },
+      ];
 
-      if (data.match(somethingWentWrongRegex))
-        setErrInfo(t("somethingWentWrongDownloadErr"));
+      const matchedError = errorPatterns.find((pattern) =>
+        data.match(pattern.regex),
+      );
 
-      if (
-        data.match(wrongUrlErrRegex) ||
-        data.match(wrongYoutubeIdRegex) ||
-        data.match(wrongYoutubePlaylistRegex)
-      )
-        setErrInfo(t("somethingWentWrongDownloadErr"));
+      if (matchedError) {
+        setCmdProcessing(false);
+        toast.error(t(`uploadPage.${matchedError.key}`));
+      }
     });
 
     await ytDlpSidecar.spawn();
@@ -115,11 +180,12 @@ function DownloadFromInternet() {
 
   return (
     <Dialog open={cmdProcessing === true ? cmdProcessing : undefined}>
-      <DialogTrigger className="ripple flex items-center gap-2 rounded-lg border border-border p-2">
+      <DialogTrigger className="ripple relative flex w-64 items-center justify-center rounded-lg border border-border p-2">
         <Ripple />
         <p>{t("uploadPage.downloadFromInternetDialogBtn")}</p>
         <svg
           width="20"
+          className="absolute right-2"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
           xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -141,50 +207,65 @@ function DownloadFromInternet() {
           autoComplete="off"
           onSubmit={onSubmit}
           className="grid w-full items-center gap-1.5"
+          dir={i18n.dir()}
         >
           <Label htmlFor="url">
             {t("uploadPage.downloadFromInternetLabel")}
           </Label>
-
-          <div className="flex w-full items-center gap-1">
-            <Input
-              disabled={cmdProcessing}
-              onChange={(e) => setUrl(e.currentTarget.value)}
-              className="w-full"
-              type="url"
-              id="url"
-              autoComplete="off"
-              placeholder={t("uploadPage.downloadFromInternetPlaceholder")}
-            />
-            <button
-              disabled={cmdProcessing}
-              className="transform rounded-lg bg-foreground px-4 py-2 font-bold text-background transition-all duration-300 ease-in-out hover:scale-105"
-              type="submit"
-            >
-              {cmdProcessing ? (
-                <div className="flex items-center justify-center">
-                  {progress}%
-                </div>
-              ) : (
-                <div className="flex items-center justify-center">
-                  {t("uploadPage.downloadFromInternetBtn")}
-                </div>
-              )}
-            </button>
-          </div>
+          <Input
+            disabled={cmdProcessing}
+            onChange={(e) => setUrl(e.currentTarget.value)}
+            type="url"
+            id="url"
+            autoComplete="off"
+            placeholder={t("uploadPage.downloadFromInternetPlaceholder")}
+          />
+          <Label htmlFor="url">{t("uploadPage.mediaTypeLabel")}</Label>
+          <Select
+            defaultValue={mediaType}
+            onValueChange={(value) => setMediaType(value as MediaType)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="video">
+                {t("uploadPage.videoOption")}
+              </SelectItem>
+              <SelectItem value="audio">
+                {t("uploadPage.audioOption")}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          <Label htmlFor="url">{t("uploadPage.qualityLabel")}</Label>
+          <Select
+            defaultValue={quality}
+            onValueChange={(value) => setQuality(value as QualityType)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="high">{t("uploadPage.highOption")}</SelectItem>
+              <SelectItem value="medium">
+                {t("uploadPage.mediumOption")}
+              </SelectItem>
+              <SelectItem value="low">{t("uploadPage.lowOption")}</SelectItem>
+            </SelectContent>
+          </Select>
+          <button
+            disabled={cmdProcessing || !url}
+            className="ripple transform rounded-lg bg-foreground px-4 py-2 font-bold text-background disabled:bg-foreground/50"
+            type="submit"
+          >
+            <Ripple />
+            <div className="flex items-center justify-center">
+              {cmdProcessing
+                ? t("uploadPage.downloadInProgress")
+                : t("uploadPage.downloadFromInternetBtn")}
+            </div>
+          </button>
         </form>
-        {errInfo !== "" && (
-          <div className="mb-2 flex gap-1" dir="auto">
-            <TriangleAlert color="red" />
-            <p>{errInfo}</p>
-          </div>
-        )}
-        {cmdStatus === "success" && (
-          <div className="mb-2 flex gap-1" dir="auto">
-            <CheckCircle2 color="green" />
-            <p>{t("successBodyDownload")}</p>
-          </div>
-        )}
       </DialogContent>
     </Dialog>
   );

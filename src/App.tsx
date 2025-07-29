@@ -15,10 +15,11 @@ import "react-ripple-click/dist/index.css";
 import useFFmpeg from "./hooks/useFFmpeg";
 import useSpleeter from "./hooks/useSpleeter";
 import { useFileStore } from "./stores/useFileStore";
+import { Toaster } from "./components/ui/Sonner";
 
 function App() {
   const { filePath, setFilePath } = useFileStore();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { killFFmpeg } = useFFmpeg();
   const { killSpleeter } = useSpleeter();
 
@@ -65,6 +66,7 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
       <Header />
+      <Toaster dir={i18n.dir()} richColors position="top-center" />
       <main>
         {/* If file path is asigned show tabs, or else show file uploader screen */}
         {filePath === "" && <FileUpload setFilePath={setFilePath} />}

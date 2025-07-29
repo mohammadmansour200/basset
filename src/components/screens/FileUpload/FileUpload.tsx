@@ -87,7 +87,11 @@ function FileUpload({ setFilePath }: FileUploadProps) {
             {t("uploadPage.uploadFileLabel")}
           </div>
         </button>
-        <hr className="mt-2 h-[2px] w-[90vw] border-none bg-border md:w-[600px]" />
+        <div className="flex w-[90vw] items-center gap-2 md:w-[600px]">
+          <hr className="mt-2 h-[2px] w-full border-none bg-border" />
+          <p>{t("uploadPage.or")}</p>
+          <hr className="mt-2 h-[2px] w-full border-none bg-border" />
+        </div>
         <DownloadFromInternet />
       </div>
     </>
