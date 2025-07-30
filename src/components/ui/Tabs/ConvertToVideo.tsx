@@ -20,23 +20,16 @@ function ConvertToVideo() {
         text={t("tabs.convertBtn")}
         outputFormat="mp4"
         command={[
-          "-r",
-          "1",
-          "-loop",
-          "1",
           "-i",
           `${imageFilePath}`,
           "-i",
           `${filePath}`,
-          "-acodec",
-          "copy",
-          "-r",
-          "1",
           "-pix_fmt",
           "yuv420p",
           "-tune",
           "stillimage",
-          "-shortest",
+          "-vf",
+          "scale=1280:720,pad=ceil(iw/2)*2:ceil(ih/2)*2",
         ]}
       />
     </div>
