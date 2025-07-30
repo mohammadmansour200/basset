@@ -4,11 +4,11 @@ import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import { Alert, AlertDescription, AlertTitle } from "../Alert";
 
 function RemoveMusic() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <Alert className="flex flex-row gap-1">
+      <Alert dir={i18n.dir()} className="flex flex-row gap-1">
         <img
           draggable={false}
           src="/pin.png"

@@ -18,7 +18,7 @@ function FormatSelect({ setFormat, isAudio = false }: FormatSelectProps) {
   const { i18n, t } = useTranslation();
   return (
     <>
-      <Alert className="flex flex-row gap-1">
+      <Alert dir={i18n.dir()} className="flex flex-row gap-1">
         <img
           draggable={false}
           src="/star.png"

@@ -12,14 +12,14 @@ import { useFileStore } from "@/stores/useFileStore";
 function Quality() {
   const [quality, setQuality] = useState("1280:720");
   const [audioQuality, setAudioQuality] = useState("128k");
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { filePath } = useFileStore();
 
   const isAudio = getIsAudio(filePath);
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <Alert className="flex flex-row gap-1">
+      <Alert dir={i18n.dir()} className="flex flex-row gap-1">
         <img
           draggable={false}
           src="/star.png"

@@ -14,13 +14,13 @@ function CompressSlider({
   setCompressRate,
   compressRate,
 }: CompressSliderProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const compressPercentage = Math.trunc(getPercentage(compressRate, 25));
 
   return (
     <>
-      <Alert className="flex flex-row gap-1">
+      <Alert dir={i18n.dir()} className="flex flex-row gap-1">
         <img
           draggable={false}
           src="/pin.png"
