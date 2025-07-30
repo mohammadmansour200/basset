@@ -9,7 +9,7 @@ function OnBoardDialog() {
   const [isDialogOpen, setIsDialogOpen] = useState(() => {
     return localStorage.getItem("onboard");
   });
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     async function getAppVersion() {
@@ -28,7 +28,7 @@ function OnBoardDialog() {
       }}
       open={isDialogOpen === "" ? false : true}
     >
-      <DialogContent className="select-none">
+      <DialogContent dir={i18n.dir()}>
         <DialogHeader className="flex flex-col items-center">
           <svg
             className="w-32 fill-foreground"
@@ -41,7 +41,7 @@ function OnBoardDialog() {
           v{appVersion}
         </DialogHeader>
         <hr className="mt-2 h-[2px] border-none bg-border" />
-        <p dir="auto">{t("onboard.greetings")}</p>
+        <p>{t("onboard.greetings")}</p>
         <ul className="ms-4 list-disc">
           <li>{t("onboard.goals.simplicity")}</li>
           <li>{t("onboard.goals.speed")}</li>
