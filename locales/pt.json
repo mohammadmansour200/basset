@@ -1,9 +1,4 @@
 {
-  "inputErr": "Erro ao abrir arquivo de entrada",
-  "outputErr": "Erro ao criar arquivo de saída",
-  "somethingWentWrongErr": "Algo deu errado, tente um arquivo diferente",
-  "streamErr": "O arquivo está corrompido",
-  "errTitle": "Algo deu errado",
   "successBody": "Concluído :)",
   "successTitle": "Processo finalizado",
   "onboard": {

@@ -56,7 +56,7 @@ function DownloadFromInternet() {
 
     const isValidUrl = supportedDomains.some((domain) => url.includes(domain));
     if (!isValidUrl) {
-      toast.error(t("wrongUrlDownloadErr"));
+      toast.error(t("uploadPage.wrongUrlDownloadErr"));
       return;
     }
 

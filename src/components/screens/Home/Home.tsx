@@ -82,7 +82,7 @@ function Home({ filePath }: HomeProps) {
         <div
           onClick={onTabClick}
           className="flex gap-2 whitespace-nowrap"
-          style={{ direction: `${i18n.dir() === "ltr" ? "ltr" : "rtl"}` }}
+          style={{ direction: i18n.dir() }}
         >
           {(platformName === "windows" || platformName === "linux") && (
             <TabItem name="spleeter" />
@@ -96,8 +96,8 @@ function Home({ filePath }: HomeProps) {
               <TabItem name="compress" />
             </>
           )}
-          <TabItem name="quality" />
           {isAudio && <TabItem name="convertToVideo" />}
+          <TabItem name="quality" />
         </div>
       </nav>
 

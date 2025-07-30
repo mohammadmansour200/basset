@@ -14,8 +14,8 @@ import { ffmpeg } from "@/utils/command";
 
 function useFFmpeg() {
   const { t } = useTranslation();
-  const [cmdStatus, setCmdStatus] = useState<"success" | "error">();
-  const [errInfo, setErrInfo] = useState("");
+  const [cmdStatus, setCmdStatus] = useState<"success" | "error" | null>(null);
+  const [errInfo, setErrInfo] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
 
   const { duration } = useFileStore();
@@ -25,16 +25,15 @@ function useFFmpeg() {
 
   async function runFFmpeg(command: string[], outputPath: string) {
     setLogs([]);
-    setCmdStatus(undefined);
+    setCmdStatus(null);
     setProgress(0);
     setCmdProcessing(true);
     const ffmpegSidecar = ffmpeg(["-y", ...command, outputPath]);
 
-    ffmpegSidecar.on("close", async ({ code }) => {
+    ffmpegSidecar.on("close", async ({ code, signal }) => {
       if (code === 0) {
         await copyTmpMediaToMediaDir(outputPath);
         setCmdStatus("success");
-        setCmdProcessing(false);
         const permissionGranted = await isPermissionGranted();
 
         if (permissionGranted) {
@@ -43,10 +42,10 @@ function useFFmpeg() {
             body: t("successBody"),
           });
         }
-      } else {
+      } else if (signal !== 2 && signal !== 15 && signal !== 9) {
         setCmdStatus("error");
-        setCmdProcessing(false);
       }
+      setCmdProcessing(false);
     });
 
     ffmpegSidecar.on("error", (error) => {
@@ -68,19 +67,36 @@ function useFFmpeg() {
         setProgress(progress);
       }
 
-      const inputErrRegex = /Error opening input/;
-      const somethingWentWrongRegex = /Conversion failed/;
-      const outputErrRegex = /Error opening output/;
-      const streamErrRegex = /Output file does not contain any stream/;
-      if (data.match(inputErrRegex)) setErrInfo(t("inputErr"));
+      const errorPatterns = [
+        {
+          regex: /No such file or directory/i,
+          key: "inputFileErr",
+        },
+        {
+          regex: /Could not open file/i,
+          key: "inputFileErr",
+        },
+        {
+          regex: /Invalid data found when processing input/i,
+          key: "invalidFormatErr",
+        },
+        {
+          regex: /No space left on device/i,
+          key: "outputFileErr",
+        },
+        {
+          regex: /Output file #0 does not contain any stream/i,
+          key: "outputFileErr",
+        },
+      ];
 
-      if (data.match(outputErrRegex)) setErrInfo(t("outputErr"));
+      const matchedError = errorPatterns.find((pattern) =>
+        data.match(pattern.regex),
+      );
 
-      if (data.match(somethingWentWrongRegex))
-        setErrInfo(t("somethingWentWrongErr"));
-
-      if (data.match(streamErrRegex) || data.match(outputErrRegex))
-        setErrInfo(t("streamErr"));
+      if (matchedError) {
+        setErrInfo(matchedError.key);
+      }
     });
 
     setProcess(await ffmpegSidecar.spawn());
@@ -89,7 +105,7 @@ function useFFmpeg() {
   async function killFFmpeg() {
     try {
       setCmdProcessing(false);
-      setCmdStatus(undefined);
+      setCmdStatus(null);
       setProgress(0);
       setErrInfo("");
       if (process) {

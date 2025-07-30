@@ -12,16 +12,52 @@ import { ffmpeg } from "./command";
 export class SpleeterHelper {
   private filepath: string;
   private finalOutputName: string;
-  private setLogs: (logs: string[] | string) => void;
+  private onLogs: (logs: string[] | string) => void;
+  private onError: (error: string) => void;
 
   constructor(
     filepath: string,
     finalOutputName: string,
-    setLogs: (logs: string[] | string) => void,
+    onLogs: (logs: string[] | string) => void,
+    onError: (error: string) => void,
   ) {
     this.filepath = filepath;
     this.finalOutputName = finalOutputName;
-    this.setLogs = setLogs;
+    this.onLogs = onLogs;
+    this.onError = onError;
+  }
+
+  private parseFFmpegError(data: string) {
+    const errorPatterns = [
+      {
+        regex: /No such file or directory/i,
+        key: "inputFileErr",
+      },
+      {
+        regex: /Could not open file/i,
+        key: "inputFileErr",
+      },
+      {
+        regex: /Invalid data found when processing input/i,
+        key: "invalidFormatErr",
+      },
+      {
+        regex: /No space left on device/i,
+        key: "outputFileErr",
+      },
+      {
+        regex: /Output file #0 does not contain any stream/i,
+        key: "outputFileErr",
+      },
+    ];
+
+    const matchedError = errorPatterns.find((pattern) =>
+      data.match(pattern.regex),
+    );
+
+    if (matchedError) {
+      this.onError(matchedError.key);
+    }
   }
 
   /**
@@ -54,16 +90,21 @@ export class SpleeterHelper {
       outputFolder,
     ]);
 
+    ffmpegSidecar.stderr.on("data", async (data) => {
+      this.onLogs(data);
+      this.parseFFmpegError(data);
+    });
+
     return new Promise((resolve) => {
       ffmpegSidecar.on("close", ({ code }) => {
         if (code === 0) {
           resolve(outputFolder);
-          this.setLogs("File processed successfully");
+          this.onLogs("File processed successfully");
         }
       });
 
       ffmpegSidecar.on("error", (error) =>
-        this.setLogs(`Processing error: ${error}`),
+        this.onLogs(`Processing error: ${error}`),
       );
 
       ffmpegSidecar.spawn();
@@ -98,6 +139,11 @@ export class SpleeterHelper {
       finalTmpOutputFile,
     ]);
 
+    ffmpegSidecar.stderr.on("data", async (data) => {
+      this.onLogs(data);
+      this.parseFFmpegError(data);
+    });
+
     ffmpegSidecar.on("close", async () => {
       await copyTmpMediaToMediaDir(finalTmpOutputFile);
     });
@@ -113,10 +159,8 @@ export class SpleeterHelper {
    */
   private async convertPcmFile(
     processedPcmFilePath: string,
-    setCmdStatus: React.Dispatch<
-      React.SetStateAction<"success" | "error" | undefined>
-    >,
-    setCmdProcessing: (processing: boolean) => void,
+    onStatusChange: (status: "success" | "error" | null) => void,
+    onProcessChange: (processing: boolean) => void,
   ) {
     const processedPcmFile = await join(processedPcmFilePath, "processed.pcm");
 
@@ -154,14 +198,19 @@ export class SpleeterHelper {
       outputFile,
     ]);
 
+    ffmpegSidecar.stderr.on("data", async (data) => {
+      this.onLogs(data);
+      this.parseFFmpegError(data);
+    });
+
     ffmpegSidecar.on("close", async () => {
-      this.setLogs("File converted successfully");
+      this.onLogs("File converted successfully");
       isAudio
         ? await copyTmpMediaToMediaDir(outputFile)
         : await this.exchangeVideoAudioTrack(outputFile);
 
-      setCmdStatus("success");
-      setCmdProcessing(false);
+      onStatusChange("success");
+      onProcessChange(false);
 
       const permissionGranted = await isPermissionGranted();
 
@@ -180,17 +229,15 @@ export class SpleeterHelper {
    * Converts The file from .pcm and saves it to media directory.
    */
   async postprocessPcmFile(
-    setCmdStatus: React.Dispatch<
-      React.SetStateAction<"success" | "error" | undefined>
-    >,
-    setCmdProcessing: (processing: boolean) => void,
+    onStatusChange: (status: "success" | "error" | null) => void,
+    onProcessChange: (processing: boolean) => void,
   ) {
     const tempFolder = await appLocalDataDir();
     const processedPcmFilePath = await join(tempFolder, "output", "spleeter");
     await this.convertPcmFile(
       processedPcmFilePath,
-      setCmdStatus,
-      setCmdProcessing,
+      onStatusChange,
+      onProcessChange,
     );
   }
 }

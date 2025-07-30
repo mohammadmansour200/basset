@@ -7,15 +7,13 @@ import { Command } from "@tauri-apps/plugin-shell";
 import { deleteMediaTemp, ensureDir } from "@/utils/fsUtils";
 import { SpleeterHelper } from "@/utils/SpleeterHelper";
 
-import { useTranslation } from "react-i18next";
 import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
 import { useFileStore } from "@/stores/useFileStore";
 import { useOperationStore } from "@/stores/useOperationStore";
 
 function useSpleeter() {
-  const { t } = useTranslation();
-  const [cmdStatus, setCmdStatus] = useState<"success" | "error">();
-  const [errInfo, setErrInfo] = useState("");
+  const [cmdStatus, setCmdStatus] = useState<"success" | "error" | null>(null);
+  const [errInfo, setErrInfo] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
 
   const { filePath } = useFileStore();
@@ -24,14 +22,23 @@ function useSpleeter() {
 
   async function runSpleeter(outputName: string) {
     setLogs([]);
-    setCmdStatus(undefined);
+    setCmdStatus(null);
     setProgress(0);
     setCmdProcessing(true);
 
     const ensureSpleeterFolderPath = await join("output", "spleeter");
     await ensureDir(ensureSpleeterFolderPath);
 
-    const spleeterHelper = new SpleeterHelper(filePath, outputName, setLogs);
+    const spleeterHelper = new SpleeterHelper(
+      filePath,
+      outputName,
+      (logs) => setLogs(logs),
+      (error) => {
+        setErrInfo(error);
+        setCmdStatus("error");
+        setCmdProcessing(false);
+      },
+    );
     const preprocessedInputFilePath = await spleeterHelper.preprocessFile();
 
     const tempfolder = await appLocalDataDir();
@@ -56,13 +63,15 @@ function useSpleeter() {
     spleeterSidecar.on("close", async ({ code }) => {
       if (code === 0) {
         await remove(preprocessedInputFilePath);
-        await spleeterHelper.postprocessPcmFile(setCmdStatus, setCmdProcessing);
+        await spleeterHelper.postprocessPcmFile(
+          (status) => setCmdStatus(status),
+          (processing) => setCmdProcessing(processing),
+        );
       }
       if (code === 1) {
         await process?.kill();
         setCmdStatus("error");
         setCmdProcessing(false);
-        setErrInfo(t("somethingWentWrongErr"));
       }
     });
 
@@ -89,18 +98,32 @@ function useSpleeter() {
     spleeterSidecar.stderr.on("data", async (data) => {
       setLogs(data);
 
-      const inputErrRegex = /Failed to open input file/;
-      // const somethingWentWrongRegex = /Processing error:/;
-      const outputErrRegex = /Failed to open output file/;
-      const createOutputErrRegex = /Failed to create final output file/;
+      const errorPatterns = [
+        {
+          regex: /Processing failed/i,
+          key: "inputFileErr",
+        },
+        {
+          regex: /Failed to open chunk/i,
+          key: "inputFileErr",
+        },
+        {
+          regex: /Failed to open chunk/i,
+          key: "inputFileErr",
+        },
+        {
+          regex: /output file/i,
+          key: "outputFileErr",
+        },
+      ];
 
-      if (data.match(inputErrRegex)) setErrInfo(t("inputErr"));
+      const matchedError = errorPatterns.find((pattern) =>
+        data.match(pattern.regex),
+      );
 
-      if (data.match(outputErrRegex) || data.match(createOutputErrRegex))
-        setErrInfo(t("outputErr"));
-
-      // if (data.match(somethingWentWrongRegex))
-      //   setErrInfo(t("somethingWentWrongErr"));
+      if (matchedError) {
+        setErrInfo(matchedError.key);
+      }
     });
 
     const spleeterChild = await spleeterSidecar.spawn();
@@ -110,7 +133,7 @@ function useSpleeter() {
   async function killSpleeter() {
     try {
       setCmdProcessing(false);
-      setCmdStatus(undefined);
+      setCmdStatus(null);
       setProgress(0);
       setErrInfo("");
       if (process) {

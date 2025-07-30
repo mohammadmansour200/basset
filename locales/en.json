@@ -5,14 +5,8 @@
   "settingsBtnTitle": "Settings",
   "bugModalTitle": "Operations log",
   "bugModalDesc": "Send this to me in case an unexpectable behavior happens.",
-  "inputErr": "Error opening input file",
-  "outputErr": "Error creating output file",
-  "somethingWentWrongErr": "Something went wrong, try a different file",
-  "wrongUrlDownloadErr": "This Website isn't supported...",
-  "streamErr": "File is corrupted",
-  "errTitle": "Something went wrong",
   "successBody": "Done :)",
-  "successTitle": "Process finished",
+  "successTitle": "Process finished 🎉",
   "onboard": {
     "greetings": "Basset is a free open source utility, its goals are: ",
     "goals": {
@@ -37,6 +31,7 @@
     "updateLoading": "Checking..."
   },
   "uploadPage": {
+    "wrongUrlDownloadErr": "This Website isn't supported...",
     "uploadFileLabel": "Choose a file",
     "or": "Or",
     "downloadFromInternetDialogBtn": "Download from URL",
@@ -53,8 +48,10 @@
     "networkError": "Network connection error - please check your internet connection",
     "invalidUrl": "Invalid or unsupported URL format",
     "somethingWentWrongDownloadErr": "Download failed - please try again",
+    "mediaTypeLabel": "Download Format",
     "videoOption": "Video",
     "audioOption": "Audio",
+    "qualityLabel": "Download Quality",
     "highOption": "High",
     "mediumOption": "Medium",
     "lowOption": "Low"
@@ -100,7 +97,17 @@
     "notice3": "This operation is unlimited and compatible with all audio and video lengths."
   },
   "executeBtn": {
-    "outputFile": "File:"
+    "outputFile": "Open File",
+    "outputDir": "File directory",
+    "cancelBtn": "Cancel",
+    "selectImageErr": "Please choose an Image before converting to Video",
+    "selectFormatErr": "Please choose a format",
+    "unknownErrTitle": "Unknown error occurred! 😢",
+    "inputFileErrTitle": "File not found",
+    "inputFileErrDesc": "Either it's deleted or corrupted. check file's validity.",
+    "outputFileErrTitle": "Something went wrong while saving file",
+    "outputFileErrDesc": "Either there's no space left on device or no permissions to write to storage",
+    "invalidFormatErrTitle": "This format isn't supported or invalid"
   },
   "updater": {
     "updaterTitle": "New update available!",

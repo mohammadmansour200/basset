@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import ImageFileUploader from "@/components/ui/ImageFileUploader";
 import { useFileStore } from "@/stores/useFileStore";
+import { toast } from "sonner";
 
 function ConvertToVideo() {
   const [imageFilePath, setImageFilePath] = useState("");
@@ -16,7 +17,13 @@ function ConvertToVideo() {
         imageFilePath={imageFilePath}
       />
       <ExecuteBtn
-        disabled={imageFilePath === "" ? true : false}
+        validation={
+          imageFilePath === ""
+            ? () => {
+                toast.error(t("executeBtn.selectImageErr"));
+              }
+            : undefined
+        }
         text={t("tabs.convertBtn")}
         outputFormat="mp4"
         command={[

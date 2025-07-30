@@ -3,6 +3,7 @@ import FormatSelect from "@/components/ui/FormatSelect";
 import { useFileStore } from "@/stores/useFileStore";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 function ConvertToAudio() {
   const [outputFormat, setOutputFormat] = useState("");
@@ -12,7 +13,13 @@ function ConvertToAudio() {
     <div className="flex flex-col items-center gap-2">
       <FormatSelect isAudio={true} setFormat={setOutputFormat} />
       <ExecuteBtn
-        disabled={outputFormat === ""}
+        validation={
+          outputFormat === ""
+            ? () => {
+                toast.error(t("executeBtn.selectFormatErr"));
+              }
+            : undefined
+        }
         text={t("tabs.convertBtn")}
         outputFormat={outputFormat}
         command={
