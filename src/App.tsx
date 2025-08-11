@@ -1,27 +1,21 @@
-import { listen } from "@tauri-apps/api/event";
 import { ask } from "@tauri-apps/plugin-dialog";
 import { check } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 
+import { ThemeProvider } from "./contexts/ThemeProvider";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
-import { ThemeProvider } from "./contexts/ThemeProvider";
+import { useOperationStore } from "./stores/useOperationStore";
 
 import FileUpload from "./components/screens/FileUpload/FileUpload";
 import Header from "./components/ui/Header/Header";
-import Home from "./components/screens/Home/Home";
-import "react-ripple-click/dist/index.css";
-import useFFmpeg from "./hooks/useFFmpeg";
-import useSpleeter from "./hooks/useSpleeter";
-import { useFileStore } from "./stores/useFileStore";
+import Operation from "./components/screens/Operation/Operation";
 import { Toaster } from "./components/ui/Sonner";
+import "react-ripple-click/dist/index.css";
 
 function App() {
-  const { filePath, setFilePath } = useFileStore();
+  const { operationType } = useOperationStore();
   const { t, i18n } = useTranslation();
-  const { killFFmpeg } = useFFmpeg();
-  const { killSpleeter } = useSpleeter();
 
   //Remove context menu
   useEffect(() => {
@@ -51,26 +45,15 @@ function App() {
     }
     checkForUpdates();
   }, [t]);
-
-  //Kill FFmpeg commands on app exit
-  useEffect(() => {
-    async function onAppExit() {
-      await listen<string>("tauri://close-requested", () => {
-        killFFmpeg();
-        killSpleeter();
-      });
-    }
-    onAppExit();
-  }, [killFFmpeg, killSpleeter]);
-
+  console.log(operationType);
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
       <Header />
       <Toaster dir={i18n.dir()} richColors position="top-center" />
       <main>
-        {/* If file path is asigned show tabs, or else show file uploader screen */}
-        {filePath === "" && <FileUpload setFilePath={setFilePath} />}
-        {filePath !== "" && <Home filePath={filePath} />}
+        {/* If operationType path is asigned show tabs, or else show file uploader screen */}
+        {!operationType && <FileUpload />}
+        {operationType && <Operation />}
       </main>
     </ThemeProvider>
   );

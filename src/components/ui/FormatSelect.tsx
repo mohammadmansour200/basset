@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 
+import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+
 import {
   Select,
   SelectContent,
@@ -11,11 +13,11 @@ import { Alert, AlertDescription, AlertTitle } from "./Alert";
 
 interface FormatSelectProps {
   setFormat: React.Dispatch<React.SetStateAction<string>>;
-  isAudio?: boolean | null;
 }
 
-function FormatSelect({ setFormat, isAudio = false }: FormatSelectProps) {
+function FormatSelect({ setFormat }: FormatSelectProps) {
   const { i18n, t } = useTranslation();
+  const { mediaType } = useOperationStore();
   return (
     <>
       <Alert dir={i18n.dir()} className="flex flex-row gap-1">
@@ -37,24 +39,36 @@ function FormatSelect({ setFormat, isAudio = false }: FormatSelectProps) {
           <SelectTrigger className="w-full">
             <SelectValue placeholder={t("formatSelect.placeholder")} />
           </SelectTrigger>
-          {isAudio ? (
-            <SelectContent>
-              <SelectItem value="mp3">
-                mp3 {t("formatSelect.recommended")}
-              </SelectItem>
-              <SelectItem value="aac">aac</SelectItem>
-              <SelectItem value="ogg">ogg</SelectItem>
-              <SelectItem value="wav">wav</SelectItem>
-            </SelectContent>
-          ) : (
-            <SelectContent>
-              <SelectItem value="mp4">mp4</SelectItem>
-              <SelectItem value="webm">webm</SelectItem>
-              <SelectItem value="mov">mov</SelectItem>
-              <SelectItem value="avi">avi</SelectItem>
-              <SelectItem value="mkv">mkv</SelectItem>
-            </SelectContent>
-          )}
+          <SelectContent>
+            {(mediaType === MediaType.AUDIO ||
+              mediaType === MediaType.VIDEO) && (
+              <>
+                <SelectItem value="mp3">
+                  mp3 {t("formatSelect.recommended")}
+                </SelectItem>
+                <SelectItem value="aac">aac</SelectItem>
+                <SelectItem value="ogg">ogg</SelectItem>
+                <SelectItem value="wav">wav</SelectItem>
+                <hr />
+                <SelectItem value="mp4">mp4</SelectItem>
+                {mediaType !== MediaType.AUDIO && (
+                  <>
+                    <SelectItem value="webm">webm</SelectItem>
+                    <SelectItem value="mov">mov</SelectItem>
+                    <SelectItem value="avi">avi</SelectItem>
+                    <SelectItem value="mkv">mkv</SelectItem>
+                  </>
+                )}
+              </>
+            )}
+            {mediaType === MediaType.IMAGE && (
+              <>
+                <SelectItem value="png">png</SelectItem>
+                <SelectItem value="jpeg">jpeg</SelectItem>
+                <SelectItem value="webp">webp</SelectItem>
+              </>
+            )}
+          </SelectContent>
         </Select>
       </div>
     </>

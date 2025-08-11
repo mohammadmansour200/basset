@@ -27,15 +27,15 @@
   "uploadPage": {
     "uploadFileLabel": "Escolha um arquivo"
   },
-  "tabs": {
-    "cutTab": "Cortar",
-    "trimTab": "Separar",
-    "compressTab": "Comprimir",
+  "operations": {
+    "cutOperation": "Cortar",
+    "trimOperation": "Separar",
+    "compressOperation": "Comprimir",
     "compressTip": "32% é o ponto ideal (menor tamanho do arquivo + muito pouca mudança de qualidade)",
-    "convertToAudioTab": "Vídeo para Áudio",
-    "convertTab": "Converter Áudio/Vídeo",
-    "qualityTab": "Qualidade do vídeo",
-    "convertToVideoTab": "Áudio para Vídeo",
+    "convertToAudioOperation": "Vídeo para Áudio",
+    "convertOperation": "Converter Áudio/Vídeo",
+    "qualityOperation": "Qualidade do vídeo",
+    "convertToVideoOperation": "Áudio para Vídeo",
     "uploadImageBtn": "Escolher arquivo",
     "convertBtn": "Converter",
     "cutBtn": "Cortar",

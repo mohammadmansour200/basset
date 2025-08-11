@@ -183,7 +183,7 @@ export default function AVPlayer({
         />
       </div>
       <p className="rounded-md border border-border p-1">
-        {t("tabs.cutOutputDuration")}:{" "}
+        {t("operations.cutOutputDuration")}:{" "}
         {formatTimestamp(
           cutType === "cut"
             ? Math.max(

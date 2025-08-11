@@ -27,7 +27,7 @@ function RemoveMusic() {
           </AlertDescription>
         </div>
       </Alert>
-      <ExecuteBtn isSpleeter text={t("tabs.spleeterBtn")} />
+      <ExecuteBtn isSpleeter text={t("operations.spleeterBtn")} />
     </div>
   );
 }

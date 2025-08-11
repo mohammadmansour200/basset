@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/Dialog";
 import { Ripple } from "react-ripple-click";
 import { useFileStore } from "@/stores/useFileStore";
-import { useOperationStore } from "@/stores/useOperationStore";
+import { OperationType, useOperationStore } from "@/stores/useOperationStore";
 import { Check, Copy } from "lucide-react";
 
 function Header() {
@@ -29,8 +29,9 @@ function Header() {
   const [isCopied, setIsCopied] = useState(false);
 
   const { i18n, t } = useTranslation();
-  const { setFilePath, filePath } = useFileStore();
-  const { logs, cmdProcessing } = useOperationStore();
+  const { setFilePath } = useFileStore();
+  const { logs, cmdProcessing, operationType, setMediaType, setOperationType } =
+    useOperationStore();
 
   async function onCheckForUpdatesBtnClick() {
     setUpdateChecking(true);
@@ -57,15 +58,17 @@ function Header() {
 
   return (
     <header
-      className="fixed top-0 z-30 flex h-12 w-full items-center justify-between gap-1.5 border-b border-border bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="fixed top-0 z-30 flex h-12 w-full items-center justify-between gap-1.5 border-b border-border bg-background p-4 text-center"
       dir={i18n.dir()}
     >
       <div>
-        {filePath !== "" && (
+        {operationType && (
           <button
             disabled={cmdProcessing}
             onClick={() => {
               setFilePath("");
+              setOperationType(null);
+              setMediaType(null);
             }}
             className="ripple rounded-full"
           >
@@ -74,6 +77,18 @@ function Header() {
           </button>
         )}
       </div>
+      <h3 className="-translate-x-5">
+        {operationType === OperationType.TRIM && t("operations.trimOperation")}
+        {operationType === OperationType.CUT && t("operations.cutOperation")}
+        {operationType === OperationType.SPLEETER &&
+          t("operations.spleeterOperation")}
+        {operationType === OperationType.COMPRESS &&
+          t("operations.compressOperation")}
+        {operationType === OperationType.CONVERT &&
+          t("operations.convertOperation")}
+        {operationType === OperationType.QUALITY_DOWNGRADE &&
+          t("operations.qualityOperation")}
+      </h3>
       <div className="flex items-center gap-1 p-1">
         <Dialog>
           <DialogTrigger className="mt-[2px] inline-block">

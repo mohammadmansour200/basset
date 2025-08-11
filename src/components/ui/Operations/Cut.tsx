@@ -3,7 +3,10 @@ import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { getNearestTimestamp } from "@/utils/ffmpegHelperUtils";
+import {
+  arabicNums2EnglishNums,
+  getNearestTimestamp,
+} from "@/utils/ffmpegHelperUtils";
 
 import AVPlayer from "../AVPlayer/AVPlayer";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
@@ -36,11 +39,14 @@ function Cut() {
         setCutTimestamps={setCutTimestamps}
       />
       <ExecuteBtn
-        text={t("tabs.cutBtn")}
+        text={t("operations.cutBtn")}
         customFunction={async () => {
           const { nearestTS1, nearestTS2 } = await getNearestTimestamp(
             filePath,
-            cutTimestamps,
+            [
+              arabicNums2EnglishNums(cutTimestamps[0]),
+              arabicNums2EnglishNums(cutTimestamps[1]),
+            ],
           );
           await writeTextFile(
             "inputTxtFiles/input.txt",

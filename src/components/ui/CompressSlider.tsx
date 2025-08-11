@@ -28,7 +28,7 @@ function CompressSlider({
           height="38"
           className="object-contain"
         />
-        <AlertDescription>{t("tabs.compressTip")}</AlertDescription>
+        <AlertDescription>{t("operations.compressTip")}</AlertDescription>
       </Alert>
       <div className="my-2 flex w-[400px] flex-col items-center justify-center gap-4">
         <Slider

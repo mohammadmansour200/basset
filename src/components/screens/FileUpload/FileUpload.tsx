@@ -1,20 +1,23 @@
 import { open } from "@tauri-apps/plugin-dialog";
+
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useFileStore } from "@/stores/useFileStore";
+import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+
+import { getIsAudio, getIsImage, getIsVideo } from "@/utils/fsUtils";
+import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
 
 import { Ripple } from "react-ripple-click";
 import OnBoardDialog from "./OnBoardDialog";
-import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
-import { useFileStore } from "@/stores/useFileStore";
 import DownloadFromInternet from "./DownloadFromInternet";
+import OperationButtonsDialog from "./OperationButtonsDialog";
 
-interface FileUploadProps {
-  setFilePath: (filePath: string) => void;
-}
-
-function FileUpload({ setFilePath }: FileUploadProps) {
+function FileUpload() {
   const { t } = useTranslation();
-  const { setDuration } = useFileStore();
+  useOperationStore;
+  const { setDuration, setFilePath } = useFileStore();
+  const { setMediaType } = useOperationStore();
 
   const onFileUpload = useCallback(
     async function onFileUpload() {
@@ -22,7 +25,7 @@ function FileUpload({ setFilePath }: FileUploadProps) {
         multiple: false,
         filters: [
           {
-            name: "Video/Audio",
+            name: "Video/Audio/Image",
             extensions: [
               "mp4",
               "avi",
@@ -36,18 +39,27 @@ function FileUpload({ setFilePath }: FileUploadProps) {
               "ogg",
               "wav",
               "m4a",
+              "png",
+              "webp",
+              "jpg",
+              "jpeg",
             ],
           },
         ],
       });
-      if (selectedFile === undefined) return;
-      await getMediaDuration(selectedFile as string).then((data) => {
-        setDuration(data);
+      if (selectedFile === undefined || selectedFile === null) return;
 
-        setFilePath(selectedFile as string);
+      if (getIsAudio(selectedFile)) setMediaType(MediaType.AUDIO);
+      if (getIsImage(selectedFile)) setMediaType(MediaType.IMAGE);
+      if (getIsVideo(selectedFile)) setMediaType(MediaType.VIDEO);
+
+      setFilePath(selectedFile);
+
+      await getMediaDuration(selectedFile).then((data) => {
+        setDuration(data);
       });
     },
-    [setFilePath, setDuration],
+    [setFilePath, setDuration, setMediaType],
   );
 
   //Press ctrl+O to open the file uploader
@@ -65,6 +77,7 @@ function FileUpload({ setFilePath }: FileUploadProps) {
   return (
     <>
       <OnBoardDialog />
+      <OperationButtonsDialog />
       <div className="flex h-[100vh] flex-col items-center justify-center gap-3 text-center">
         <div className="w-56">
           <svg

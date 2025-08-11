@@ -6,6 +6,7 @@ import formatTimestamp from "@/utils/timestampFormatter";
 import AVPlayer from "../AVPlayer/AVPlayer";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import { useFileStore } from "@/stores/useFileStore";
+import { arabicNums2EnglishNums } from "@/utils/ffmpegHelperUtils";
 
 function Trim() {
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([
@@ -22,12 +23,12 @@ function Trim() {
         setCutTimestamps={setCutTimestamps}
       />
       <ExecuteBtn
-        text={t("tabs.cutBtn")}
+        text={t("operations.cutBtn")}
         command={[
           "-ss",
-          `${formatTimestamp(cutTimestamps[0])}`,
+          `${formatTimestamp(arabicNums2EnglishNums(cutTimestamps[0]))}`,
           "-to",
-          `${formatTimestamp(cutTimestamps[1])}`,
+          `${formatTimestamp(arabicNums2EnglishNums(cutTimestamps[1]))}`,
           "-i",
           `${filePath}`,
           "-c",

@@ -17,7 +17,7 @@ function Compress() {
         setCompressRate={setCompressRate}
       />
       <ExecuteBtn
-        text={t("tabs.startBtn")}
+        text={t("operations.startBtn")}
         command={["-i", `${filePath}`, "-crf", `${compressRate + 20}`]}
       />
     </div>

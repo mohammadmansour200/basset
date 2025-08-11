@@ -5,7 +5,7 @@ import { Command } from "@tauri-apps/plugin-shell";
 import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
 
 import { useFileStore } from "@/stores/useFileStore";
-import { useOperationStore } from "@/stores/useOperationStore";
+import { MediaType, useOperationStore } from "@/stores/useOperationStore";
 import { useTranslation } from "react-i18next";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Ripple } from "react-ripple-click";
 import { toast } from "sonner";
+import { getIsAudio, getIsImage, getIsVideo } from "@/utils/fsUtils";
 
 const supportedDomains = [
   "youtube.com",
@@ -38,15 +39,20 @@ const intQualityMap = {
   low: "96",
 };
 
-type MediaType = "video" | "audio";
+type YtDlpMediaType = "video" | "audio";
 type QualityType = "high" | "medium" | "low";
 
 function DownloadFromInternet() {
   const [url, setUrl] = useState("");
-  const [mediaType, setMediaType] = useState<MediaType>("video");
+  const [mediaType, setMediaType] = useState<YtDlpMediaType>("video");
   const [quality, setQuality] = useState<QualityType>("medium");
-  const { cmdProcessing, setCmdProcessing } = useOperationStore();
+
   const { t, i18n } = useTranslation();
+  const {
+    cmdProcessing,
+    setCmdProcessing,
+    setMediaType: setProcessingMediaType,
+  } = useOperationStore();
   const { setDuration, setFilePath } = useFileStore();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -106,9 +112,17 @@ function DownloadFromInternet() {
         setCmdProcessing(false);
 
         if (downloadedFilePath) {
+          if (getIsAudio(downloadedFilePath))
+            setProcessingMediaType(MediaType.AUDIO);
+          if (getIsImage(downloadedFilePath))
+            setProcessingMediaType(MediaType.IMAGE);
+          if (getIsVideo(downloadedFilePath))
+            setProcessingMediaType(MediaType.VIDEO);
+
+          setFilePath(downloadedFilePath!);
+
           await getMediaDuration(downloadedFilePath).then((data) => {
             setDuration(data);
-            setFilePath(downloadedFilePath!);
           });
         }
       } else {
@@ -223,7 +237,7 @@ function DownloadFromInternet() {
           <Label htmlFor="url">{t("uploadPage.mediaTypeLabel")}</Label>
           <Select
             defaultValue={mediaType}
-            onValueChange={(value) => setMediaType(value as MediaType)}
+            onValueChange={(value) => setMediaType(value as YtDlpMediaType)}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue />

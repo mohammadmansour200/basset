@@ -8,6 +8,7 @@ import {
 } from "@tauri-apps/plugin-fs";
 
 export function extNameSync(file: string) {
+  if (file.split(".").length === 1) return file.replace(".", "");
   return file.slice(
     (Math.max(0, file.lastIndexOf(".")) || Number.POSITIVE_INFINITY) + 1,
   );
@@ -21,6 +22,28 @@ export function getIsAudio(file: string) {
     ext === "aac" ||
     ext === "wav" ||
     ext === "m4a"
+  ) {
+    return true;
+  } else return false;
+}
+
+export function getIsImage(file: string) {
+  const ext = extNameSync(file);
+  if (ext === "png" || ext === "webp" || ext === "jpg" || ext === "jpeg") {
+    return true;
+  } else return false;
+}
+
+export function getIsVideo(file: string) {
+  const ext = extNameSync(file);
+  if (
+    ext === "mp4" ||
+    ext === "avi" ||
+    ext === "mov" ||
+    ext === "mkv" ||
+    ext === "wmv" ||
+    ext === "flv" ||
+    ext === "webm"
   ) {
     return true;
   } else return false;

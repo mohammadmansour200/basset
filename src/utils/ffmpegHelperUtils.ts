@@ -88,4 +88,12 @@ const extractFFmpegProgress = (data: string, AVDuration: number) => {
   return progressPercentage;
 };
 
-export { getMediaDuration, getNearestTimestamp, extractFFmpegProgress };
+const arabicNums2EnglishNums = (num: number) =>
+  Number(num.toString().replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d)));
+
+export {
+  getMediaDuration,
+  getNearestTimestamp,
+  extractFFmpegProgress,
+  arabicNums2EnglishNums,
+};

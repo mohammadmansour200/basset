@@ -2,6 +2,7 @@
   "playBtnTitle": "Play/Pause",
   "playbackSpeedBtnTitle": "Playback speed",
   "backBtnTitle": "Go back",
+  "operationButtonsModal": "Choose Operation",
   "settingsBtnTitle": "Settings",
   "bugModalTitle": "Operations log",
   "bugModalDesc": "Send this to me in case an unexpectable behavior happens.",
@@ -56,16 +57,16 @@
     "mediumOption": "Medium",
     "lowOption": "Low"
   },
-  "tabs": {
-    "cutTab": "Cut",
-    "trimTab": "Trim",
-    "spleeterTab": "Remove music",
-    "compressTab": "Compress",
+  "operations": {
+    "cutOperation": "Cut",
+    "trimOperation": "Trim",
+    "spleeterOperation": "Remove music",
+    "compressOperation": "Compress",
     "compressTip": "32% is the sweet spot (less file size + very little change in quality)",
-    "convertToAudioTab": "Video to Audio",
-    "convertTab": "Convert",
-    "qualityTab": "Quality",
-    "convertToVideoTab": "Audio to Video",
+    "convertToAudioOperation": "Video to Audio",
+    "convertOperation": "Convert",
+    "qualityOperation": "Downgrade Quality",
+    "convertToVideoOperation": "Audio to Video",
     "uploadImageBtn": "Choose an image",
     "uploadImageDescription": "The image will be still throughout the video",
     "convertBtn": "Convert",
@@ -80,7 +81,7 @@
     "label": "Output format",
     "recommended": "(recommended)",
     "explanationTitle": "What are formats?",
-    "explanation": "Formats determine how videos/audios are saved. Each format has its own distinguishing features in terms of quality, file size, or compatibility with applications; anyways, I recommend using MP4/MP3 unless you have a different purpose."
+    "explanation": "Formats determine how videos/audios are saved. Each format has its own distinguishing features in terms of quality, file size, or compatibility with applications; anyways, I recommend using MP4, MP3 and PNG unless you have a different purpose."
   },
   "qualitySelect": {
     "selectLabel": "Select quality",

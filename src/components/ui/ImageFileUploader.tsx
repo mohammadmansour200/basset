@@ -41,9 +41,9 @@ function ImageFileUploader({
           <div className="ripple flex w-[90vw] cursor-pointer flex-col items-center border-border bg-muted py-[10vh] hover:bg-accent md:w-[500px]">
             <Ripple />
             <ImageIcon />
-            <h3>{t("tabs.uploadImageBtn")}</h3>
+            <h3>{t("operations.uploadImageBtn")}</h3>
             <p className="text-sm text-muted-foreground">
-              {t("tabs.uploadImageDescription")}
+              {t("operations.uploadImageDescription")}
             </p>
           </div>
         </button>
