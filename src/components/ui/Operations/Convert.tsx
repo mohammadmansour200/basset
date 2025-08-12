@@ -63,6 +63,7 @@ function Convert() {
               ? ["-i", `${filePath}`, "-vn"]
               : ["-i", `${filePath}`]
         }
+        isImage={mediaType === MediaType.IMAGE}
       />
     </div>
   );

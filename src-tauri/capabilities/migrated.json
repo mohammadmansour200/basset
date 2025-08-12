@@ -2,7 +2,9 @@
   "identifier": "migrated",
   "description": "permissions that were migrated from v1",
   "local": true,
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
   "permissions": [
     "core:path:default",
     "core:event:default",
@@ -19,7 +21,12 @@
     "fs:allow-resource-read-recursive",
     {
       "identifier": "fs:scope",
-      "allow": ["$APPLOCALDATA/**/*", "$VIDEO/*", "$AUDIO/*"]
+      "allow": [
+        "$APPLOCALDATA/**/*",
+        "$VIDEO/*",
+        "$AUDIO/*",
+        "$PICTURE/*"
+      ]
     },
     {
       "identifier": "shell:allow-execute",

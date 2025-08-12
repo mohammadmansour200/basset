@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFileStore } from "@/stores/useFileStore";
-
-import { getIsAudio } from "@/utils/fsUtils";
+import { MediaType, useOperationStore } from "@/stores/useOperationStore";
 
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import QualitySelect from "@/components/ui/QualitySelect";
 import { Alert, AlertDescription, AlertTitle } from "../Alert";
-import { MediaType, useOperationStore } from "@/stores/useOperationStore";
 
 function Quality() {
   const { mediaType } = useOperationStore();
@@ -21,8 +19,6 @@ function Quality() {
   );
   const { t, i18n } = useTranslation();
   const { filePath } = useFileStore();
-
-  const isAudio = getIsAudio(filePath);
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -43,10 +39,13 @@ function Quality() {
       <ExecuteBtn
         text={t("operations.startBtn")}
         command={
-          isAudio
+          mediaType === MediaType.AUDIO
             ? ["-i", `${filePath}`, "-b:a", `${quality}`]
-            : ["-i", `${filePath}`, "-vf", `scale=${quality}`]
+            : mediaType === MediaType.VIDEO
+              ? ["-i", `${filePath}`, "-vf", `scale=${quality}`]
+              : [quality]
         }
+        isImage={mediaType === MediaType.IMAGE}
       />
     </div>
   );

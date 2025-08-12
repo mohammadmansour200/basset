@@ -9,17 +9,20 @@ import {
   join,
   videoDir,
   basename,
+  pictureDir,
 } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-shell";
+
 import { useTranslation } from "react-i18next";
+import useFFmpeg from "@/hooks/useFFmpeg";
+import useSpleeter from "@/hooks/useSpleeter";
+import useImage from "@/hooks/useImage";
+import { useFileStore } from "@/stores/useFileStore";
+import { useOperationStore } from "@/stores/useOperationStore";
 import { useEffect, useState } from "react";
 
 import { ensureDir, getIsAudio } from "@/utils/fsUtils";
 
-import useFFmpeg from "@/hooks/useFFmpeg";
-import useSpleeter from "@/hooks/useSpleeter";
-import { useFileStore } from "@/stores/useFileStore";
-import { useOperationStore } from "@/stores/useOperationStore";
 import { Dialog, DialogContent } from "./Dialog";
 import { Ripple } from "react-ripple-click";
 import { Progress } from "./Progress";
@@ -27,6 +30,7 @@ import { Progress } from "./Progress";
 interface ExecuteBtnProps {
   command?: string[];
   isSpleeter?: boolean;
+  isImage?: boolean;
   text?: string;
   outputFormat?: string;
   customFunction?: () => Promise<void>;
@@ -36,6 +40,7 @@ interface ExecuteBtnProps {
 function ExecuteBtn({
   command,
   isSpleeter = false,
+  isImage = false,
   text,
   outputFormat,
   customFunction,
@@ -55,10 +60,28 @@ function ExecuteBtn({
     progress: progressSpleeter,
     errInfo: errInfoSpleeter,
   } = useSpleeter();
+  const {
+    cmdStatus: cmdStatusImage,
+    errInfo: errInfoImage,
+    progress: progressImage,
+    compressImage,
+  } = useImage();
 
-  const cmdStatus = isSpleeter ? cmdStatusSpleeter : cmdStatusFFmpeg;
-  const progress = isSpleeter ? progressSpleeter : progressFFmpeg;
-  const errInfo = isSpleeter ? errInfoSpleeter : errInfoFFmpeg;
+  const cmdStatus = isSpleeter
+    ? cmdStatusSpleeter
+    : isImage
+      ? cmdStatusImage
+      : cmdStatusFFmpeg;
+  const progress = isSpleeter
+    ? progressSpleeter
+    : isImage
+      ? progressImage
+      : progressFFmpeg;
+  const errInfo = isSpleeter
+    ? errInfoSpleeter
+    : isImage
+      ? errInfoImage
+      : errInfoFFmpeg;
   const killProcess = isSpleeter ? killSpleeter : killFFmpeg;
 
   const [outputPath, setOutputPath] = useState("");
@@ -86,28 +109,41 @@ function ExecuteBtn({
     const fileName = (await basename(filePath)).replace(`.${fileExt}`, "");
 
     const date = new Date();
-    const outputFileDate = `${date.getFullYear()}_${Math.random().toString().slice(2, 7)}_${date.getMonth()}`;
+    const outputFileUniqueId = `${date.getFullYear()}_${Math.random().toString().slice(2, 7)}_${date.getMonth()}`;
 
     const outputFileFormat =
       outputFormat === undefined ? fileExt : outputFormat;
 
-    const outputFilePath = await join(
+    const outputFileBasename = `${fileName}_${outputFileUniqueId}.${outputFileFormat}`;
+
+    const tempFilePath = await join(
       await appLocalDataDir(),
       "output",
-      `${fileName}_${outputFileDate}.${outputFileFormat}`,
+      outputFileBasename,
     );
-    const isAudio = getIsAudio(outputFilePath);
-    const finalPath = await join(
-      isAudio ? await audioDir() : await videoDir(),
-      `${fileName}_${outputFileDate}.${outputFileFormat}`,
-    );
+    const isAudio = getIsAudio(tempFilePath);
+    const finalDir = isAudio
+      ? await audioDir()
+      : isImage
+        ? await pictureDir()
+        : await videoDir();
+
+    const finalPath = await join(finalDir, outputFileBasename);
 
     setOutputPath(finalPath);
-    setOutputDir(isAudio ? await audioDir() : await videoDir());
+    setOutputDir(finalDir);
 
-    isSpleeter
-      ? await runSpleeter(`${fileName}_${outputFileDate}.${outputFileFormat}`)
-      : await runFFmpeg(command as string[], outputFilePath);
+    if (!isImage) {
+      isSpleeter
+        ? await runSpleeter(outputFileBasename)
+        : await runFFmpeg(command as string[], tempFilePath);
+    } else {
+      await compressImage(
+        filePath,
+        finalPath,
+        outputFormat ? "100" : (command as string[])[0],
+      );
+    }
   }
 
   useEffect(() => {
@@ -185,7 +221,7 @@ function ExecuteBtn({
                   ? t(`executeBtn.${errInfo}Title`)
                   : t(`executeBtn.unknownErrTitle`)}
             </h2>
-            {errInfo && (
+            {errInfo && errInfo !== "unknownErr" && (
               <p className="mt-2 text-base text-gray-700">
                 {t(`executeBtn.${errInfo}Desc`)}
               </p>
@@ -234,9 +270,9 @@ function ExecuteBtn({
         </div>
 
         {/* Kill command button */}
-        {cmdProcessing && (
+        {cmdProcessing && !isImage && (
           <button
-            className="ripple flex items-center rounded-full border border-border px-20 py-4"
+            className="ripple flex items-center rounded-md border border-border px-20 py-4"
             onClick={async () => {
               await killProcess();
               setOutputPath("");
