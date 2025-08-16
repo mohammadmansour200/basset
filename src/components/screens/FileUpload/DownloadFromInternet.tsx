@@ -73,6 +73,7 @@ function DownloadFromInternet() {
     const outputTemplate = await join(downloadPath, "%(id)s.%(ext)s");
 
     const ytDlpCmd = [
+      "--update",
       "--no-playlist",
       "-o",
       outputTemplate,
