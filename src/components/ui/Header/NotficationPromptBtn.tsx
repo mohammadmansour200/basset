@@ -5,6 +5,7 @@ import {
 import { LucideBellRing } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Switch } from "../Switch";
 
 function NotficationPromptBtn() {
   const [permissionGranted, setPermissionGranted] = useState<boolean | null>(
@@ -20,7 +21,7 @@ function NotficationPromptBtn() {
     checkPermissionState();
   }, []);
 
-  async function onNotificationBtnClick() {
+  async function onRequestNotificationPermission() {
     await requestPermission().then(
       (data) => data === "granted" && setPermissionGranted(true),
     );
@@ -32,14 +33,11 @@ function NotficationPromptBtn() {
         <LucideBellRing size={22} />
         {t("header.notificationLabel")}
       </div>
-      <button
-        onClick={onNotificationBtnClick}
-        className="rounded-md bg-foreground px-4 py-1 font-medium text-background"
-      >
-        {permissionGranted
-          ? t("header.notificationOn")
-          : t("header.notificationOff")}
-      </button>
+      <Switch
+        dir="ltr"
+        checked={permissionGranted === true}
+        onCheckedChange={onRequestNotificationPermission}
+      />
     </div>
   );
 }
