@@ -1,6 +1,6 @@
 import { getPercentage } from "@/utils/getPercentage";
 import { Slider } from "../Slider";
-import { AVPlayerProps } from "./AVPlayer";
+import { AVPlayerProps } from ".";
 
 interface CutSliderProps {
   initialAVDuration: number;

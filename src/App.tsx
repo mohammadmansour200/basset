@@ -7,8 +7,8 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useOperationStore } from "./stores/useOperationStore";
 
-import FileUpload from "./components/screens/FileUpload/FileUpload";
-import Header from "./components/ui/Header/Header";
+import FileUpload from "./components/screens/FileUpload";
+import Header from "./components/ui/Header";
 import Operation from "./components/screens/Operation";
 import { Toaster } from "./components/ui/Sonner";
 import "react-ripple-click/dist/index.css";

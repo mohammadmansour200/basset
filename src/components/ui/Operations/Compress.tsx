@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useFileStore } from "@/stores/useFileStore";
 
 import CompressSlider from "@/components/ui/CompressSlider";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
-import { useFileStore } from "@/stores/useFileStore";
 
 function Compress() {
   const [compressRate, setCompressRate] = useState(8);

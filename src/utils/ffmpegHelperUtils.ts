@@ -172,8 +172,13 @@ const extractPreviewImage = async (
   return null;
 };
 
-const arabicNums2EnglishNums = (num: number) =>
-  Number(num.toString().replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d)));
+const arabicNums2EnglishNums = (num: number): number => {
+  const englishNumString = num
+    .toString()
+    .replace(/[٠-٩]/g, (d) => "0123456789"[parseInt(d, 10)]);
+
+  return Number(englishNumString);
+};
 
 export {
   getMediaDuration,

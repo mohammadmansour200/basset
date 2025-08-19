@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useFileStore } from "@/stores/useFileStore";
 
 import formatTimestamp from "@/utils/timestampFormatter";
-
-import AVPlayer from "../AVPlayer/AVPlayer";
-import ExecuteBtn from "@/components/ui/ExecuteBtn";
-import { useFileStore } from "@/stores/useFileStore";
 import { arabicNums2EnglishNums } from "@/utils/ffmpegHelperUtils";
+
+import AVPlayer from "../AVPlayer";
+import ExecuteBtn from "@/components/ui/ExecuteBtn";
 
 function Trim() {
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([

@@ -1,16 +1,17 @@
 import { appLocalDataDir, join } from "@tauri-apps/api/path";
 import { BaseDirectory, writeTextFile } from "@tauri-apps/plugin-fs";
+
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useFileStore } from "@/stores/useFileStore";
 
 import {
   arabicNums2EnglishNums,
   getNearestTimestamp,
 } from "@/utils/ffmpegHelperUtils";
 
-import AVPlayer from "../AVPlayer/AVPlayer";
+import AVPlayer from "../AVPlayer";
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
-import { useFileStore } from "@/stores/useFileStore";
 
 function Cut() {
   const [cutTimestamps, setCutTimestamps] = useState<[number, number]>([
