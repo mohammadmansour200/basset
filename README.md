@@ -45,7 +45,7 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 ## Download Links 📥
 
 - [GitHub Releases](https://github.com/mohammadmansour200/basset/releases)
-- [Basset Website](https://basset.vercel.app/)
+- [Basset Website](https://baseet.netlify.app/)
 
 ## Contributing 🤝
 
