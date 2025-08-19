@@ -60,35 +60,38 @@ function Header() {
       className="fixed top-0 z-30 flex h-12 w-full items-center justify-between gap-1.5 border-b border-border bg-background p-4 text-center"
       dir={i18n.dir()}
     >
-      <div>
-        {operationType && (
-          <button
-            disabled={cmdProcessing}
-            onClick={() => {
-              setFilePath("");
-              setOperationType(null);
-              setMediaType(null);
-              setPreviewImage(null);
-            }}
-            className="ripple rounded-full"
-          >
-            <Ripple />
-            <BackIcon />
-          </button>
-        )}
+      <div className="flex items-center gap-10">
+        <div>
+          {operationType && (
+            <button
+              disabled={cmdProcessing}
+              onClick={() => {
+                setFilePath("");
+                setOperationType(null);
+                setMediaType(null);
+                setPreviewImage(null);
+              }}
+              className="ripple rounded-full"
+            >
+              <Ripple />
+              <BackIcon />
+            </button>
+          )}
+        </div>
+        <h3>
+          {operationType === OperationType.TRIM &&
+            t("operations.trimOperation")}
+          {operationType === OperationType.CUT && t("operations.cutOperation")}
+          {operationType === OperationType.SPLEETER &&
+            t("operations.spleeterOperation")}
+          {operationType === OperationType.COMPRESS &&
+            t("operations.compressOperation")}
+          {operationType === OperationType.CONVERT &&
+            t("operations.convertOperation")}
+          {operationType === OperationType.QUALITY_DOWNGRADE &&
+            t("operations.qualityOperation")}
+        </h3>
       </div>
-      <h3 className="-translate-x-5">
-        {operationType === OperationType.TRIM && t("operations.trimOperation")}
-        {operationType === OperationType.CUT && t("operations.cutOperation")}
-        {operationType === OperationType.SPLEETER &&
-          t("operations.spleeterOperation")}
-        {operationType === OperationType.COMPRESS &&
-          t("operations.compressOperation")}
-        {operationType === OperationType.CONVERT &&
-          t("operations.convertOperation")}
-        {operationType === OperationType.QUALITY_DOWNGRADE &&
-          t("operations.qualityOperation")}
-      </h3>
       <div className="flex items-center gap-1 p-1">
         <Dialog>
           <DialogTrigger className="mt-[2px] inline-block">
