@@ -10,7 +10,7 @@ function MediaInfoSidebar() {
   const { t } = useTranslation();
 
   return (
-    <aside className="mt-12 h-screen w-64 border-e border-border p-4">
+    <aside className="fixed mt-12 h-full w-64 border-e border-border p-4">
       <div className="flex flex-col items-center">
         <div className="flex h-36 w-36 items-center justify-center overflow-hidden rounded-md bg-muted">
           {previewImage ? (

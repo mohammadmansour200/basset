@@ -12,9 +12,9 @@ function Operation() {
   const { operationType } = useOperationStore();
 
   return (
-    <div className="flex">
+    <div className="flex h-full w-full">
       <MediaInfoSidebar />
-      <main className="mt-16 flex w-full flex-col items-center">
+      <main className="ms-64 mt-16 flex w-full flex-col items-center">
         {operationType === OperationType.TRIM && <Trim />}
         {operationType === OperationType.CUT && <Cut />}
         {operationType === OperationType.SPLEETER && <RemoveMusic />}
