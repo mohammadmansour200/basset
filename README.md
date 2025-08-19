@@ -2,11 +2,8 @@
  <img alt="Basset logo" src="https://raw.githubusercontent.com/mohammadmansour200/basset/refs/heads/main/src-tauri/icons/128x128%402x.png">
 </center>
 
-Basset (translates to simple in Arabic) is a free open source FFmpeg and Spleeter GUI utility.
-<br/>
-its goals are:
-
 <center>
+<h3>Free open source media toolkit.</h3>
 Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 </center>
 
@@ -20,15 +17,14 @@ Simplicity and ease ✨ - Speed ⚡ - Privacy 🔏
 
 ## Demo 📷
 
-<img src="https://i.imgur.com/lF9EO8H.png" width=300> <img src="https://i.imgur.com/MpgWd9U.png" width=300>
-<img src="https://i.imgur.com/BtueYAd.png" width=300>
-<img src="https://i.imgur.com/V0avyKf.png" width=300>
-<img src="https://i.imgur.com/laZvSTE.png" width=300>
+<img src="https://i.imgur.com/cJiiX1w.png" width=300> <img src="https://i.imgur.com/VKgYFky.png" width=300>
+<img src="https://i.imgur.com/52nOKoG.png" width=300>
+<img src="https://i.imgur.com/3IDcuWR.png" width=300>
 
 ## Features 🌟
 
-- 🤖 **AI Spleeter model Instruments removing (currently only supports Windows)**
-- ✂️ **Media cutting and trimming with preview**
+- 🤖 **AI Spleeter model Instruments removing (Windows and Linux only)**
+- ✂️ **Media cutting and trimming**
 - 🔄 **Media conversion**
 - 📉 **Media compression**
 - 📉 **Video quality downgrading**
