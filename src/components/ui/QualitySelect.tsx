@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+import { MediaType, useFileStore } from "@/stores/useFileStore";
 
 import {
   Select,
@@ -16,7 +16,7 @@ interface QualitySelectProps {
 
 function QualitySelect({ quality, setQuality }: QualitySelectProps) {
   const { i18n, t } = useTranslation();
-  const { mediaType } = useOperationStore();
+  const { mediaType } = useFileStore();
   return (
     <div className="flex w-[250px] items-center gap-2" dir={i18n.dir()}>
       <p className="whitespace-nowrap">{t("qualitySelect.selectLabel")}</p>

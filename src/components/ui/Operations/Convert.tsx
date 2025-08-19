@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFileStore } from "@/stores/useFileStore";
-import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+import { MediaType } from "@/stores/useFileStore";
 
 import { getIsAudio } from "@/utils/fsUtils";
 
@@ -14,10 +14,8 @@ function Convert() {
   const [outputFormat, setOutputFormat] = useState("");
   const [imageFilePath, setImageFilePath] = useState("");
 
-  const { mediaType } = useOperationStore();
-
   const { t } = useTranslation();
-  const { filePath } = useFileStore();
+  const { filePath, mediaType } = useFileStore();
 
   const isAudioToVideo =
     mediaType === MediaType.AUDIO && outputFormat === "mp4";

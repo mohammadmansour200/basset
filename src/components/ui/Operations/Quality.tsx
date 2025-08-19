@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useFileStore } from "@/stores/useFileStore";
-import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+import { MediaType } from "@/stores/useFileStore";
 
 import ExecuteBtn from "@/components/ui/ExecuteBtn";
 import QualitySelect from "@/components/ui/QualitySelect";
 import { Alert, AlertDescription, AlertTitle } from "../Alert";
 
 function Quality() {
-  const { mediaType } = useOperationStore();
-
+  const { filePath, mediaType } = useFileStore();
+  const { t, i18n } = useTranslation();
   const [quality, setQuality] = useState(
     mediaType === MediaType.VIDEO
       ? "1280:720"
@@ -17,8 +17,6 @@ function Quality() {
         ? "128k"
         : "60",
   );
-  const { t, i18n } = useTranslation();
-  const { filePath } = useFileStore();
 
   return (
     <div className="flex flex-col items-center gap-2">

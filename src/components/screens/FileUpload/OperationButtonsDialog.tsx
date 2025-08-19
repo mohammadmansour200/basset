@@ -1,11 +1,8 @@
 import { useTranslation } from "react-i18next";
 
 import { useFileStore } from "@/stores/useFileStore";
-import {
-  MediaType,
-  OperationType,
-  useOperationStore,
-} from "@/stores/useOperationStore";
+import { OperationType, useOperationStore } from "@/stores/useOperationStore";
+import { MediaType } from "@/stores/useFileStore";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/Dialog";
 import { Ripple } from "react-ripple-click";
@@ -15,8 +12,8 @@ const platformName = platform();
 
 function OperationButtonsDialog() {
   const { t, i18n } = useTranslation();
-  const { filePath, setFilePath } = useFileStore();
-  const { mediaType, setOperationType } = useOperationStore();
+  const { filePath, setFilePath, mediaType } = useFileStore();
+  const { setOperationType } = useOperationStore();
   return (
     <Dialog onOpenChange={() => setFilePath("")} open={filePath !== ""}>
       <DialogContent dir={i18n.dir()} className="gap-1">

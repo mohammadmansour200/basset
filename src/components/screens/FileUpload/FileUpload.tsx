@@ -1,12 +1,16 @@
 import { open } from "@tauri-apps/plugin-dialog";
+import { stat } from "@tauri-apps/plugin-fs";
 
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useFileStore } from "@/stores/useFileStore";
-import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+import { MediaType } from "@/stores/useFileStore";
 
-import { getIsAudio, getIsImage, getIsVideo } from "@/utils/fsUtils";
-import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
+import { getIsAudio, getIsImage } from "@/utils/fsUtils";
+import {
+  extractPreviewImage,
+  getMediaDuration,
+} from "@/utils/ffmpegHelperUtils";
 
 import { Ripple } from "react-ripple-click";
 import OnBoardDialog from "./OnBoardDialog";
@@ -15,12 +19,13 @@ import OperationButtonsDialog from "./OperationButtonsDialog";
 
 function FileUpload() {
   const { t } = useTranslation();
-  useOperationStore;
-  const { setDuration, setFilePath } = useFileStore();
-  const { setMediaType } = useOperationStore();
+  const { setDuration, setFilePath, setMediaType, setPreviewImage, setSize } =
+    useFileStore();
 
   const onFileUpload = useCallback(
     async function onFileUpload() {
+      let determinedMediaType: MediaType | null = null;
+
       const selectedFile = await open({
         multiple: false,
         filters: [
@@ -49,17 +54,29 @@ function FileUpload() {
       });
       if (selectedFile === undefined || selectedFile === null) return;
 
-      if (getIsAudio(selectedFile)) setMediaType(MediaType.AUDIO);
-      if (getIsImage(selectedFile)) setMediaType(MediaType.IMAGE);
-      if (getIsVideo(selectedFile)) setMediaType(MediaType.VIDEO);
+      if (getIsAudio(selectedFile)) {
+        determinedMediaType = MediaType.AUDIO;
+      } else if (getIsImage(selectedFile)) {
+        determinedMediaType = MediaType.IMAGE;
+      } else {
+        determinedMediaType = MediaType.VIDEO;
+      }
 
+      setMediaType(determinedMediaType);
       setFilePath(selectedFile);
 
-      await getMediaDuration(selectedFile).then((data) => {
-        setDuration(data);
-      });
+      await stat(selectedFile).then((data) => setSize(data.size));
+
+      await extractPreviewImage(selectedFile, determinedMediaType).then(
+        (data) => {
+          console.log(data);
+          setPreviewImage(data);
+        },
+      );
+
+      await getMediaDuration(selectedFile).then((data) => setDuration(data));
     },
-    [setFilePath, setDuration, setMediaType],
+    [setFilePath, setDuration, setMediaType, setPreviewImage, setSize],
   );
 
   //Press ctrl+O to open the file uploader
@@ -75,7 +92,7 @@ function FileUpload() {
   }, [onFileUpload]);
 
   return (
-    <>
+    <main>
       <OnBoardDialog />
       <OperationButtonsDialog />
       <div className="flex h-[100vh] flex-col items-center justify-center gap-3 text-center">
@@ -107,7 +124,7 @@ function FileUpload() {
         </div>
         <DownloadFromInternet />
       </div>
-    </>
+    </main>
   );
 }
 

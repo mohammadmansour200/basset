@@ -54,7 +54,8 @@
     "security": {
       "assetProtocol": {
         "scope": [
-          "**"
+          "**",
+          "$APPLOCALDATA/**/*"
         ],
         "enable": true
       }

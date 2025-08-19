@@ -9,7 +9,7 @@ import { useOperationStore } from "./stores/useOperationStore";
 
 import FileUpload from "./components/screens/FileUpload/FileUpload";
 import Header from "./components/ui/Header/Header";
-import Operation from "./components/screens/Operation/Operation";
+import Operation from "./components/screens/Operation";
 import { Toaster } from "./components/ui/Sonner";
 import "react-ripple-click/dist/index.css";
 
@@ -45,16 +45,14 @@ function App() {
     }
     checkForUpdates();
   }, [t]);
-  console.log(operationType);
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
       <Header />
       <Toaster dir={i18n.dir()} richColors position="top-center" />
-      <main>
-        {/* If operationType path is asigned show tabs, or else show file uploader screen */}
-        {!operationType && <FileUpload />}
-        {operationType && <Operation />}
-      </main>
+      {/* If operationType path is asigned show tabs, or else show file uploader screen */}
+      {!operationType && <FileUpload />}
+      {operationType && <Operation />}
     </ThemeProvider>
   );
 }

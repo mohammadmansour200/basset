@@ -4,10 +4,11 @@ import { relaunch } from "@tauri-apps/plugin-process";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { OperationType, useOperationStore } from "@/stores/useOperationStore";
+import { useFileStore } from "@/stores/useFileStore";
 
 import LanguageSelect from "./LanguageSelect";
 import { ModeToggle } from "./ModeToggle";
-
 import NotficationPromptBtn from "./NotficationPromptBtn";
 import {
   Dialog,
@@ -17,8 +18,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/Dialog";
 import { Ripple } from "react-ripple-click";
-import { useFileStore } from "@/stores/useFileStore";
-import { OperationType, useOperationStore } from "@/stores/useOperationStore";
 import { Check, Copy } from "lucide-react";
 
 function Header() {
@@ -29,8 +28,8 @@ function Header() {
   const [isCopied, setIsCopied] = useState(false);
 
   const { i18n, t } = useTranslation();
-  const { setFilePath } = useFileStore();
-  const { logs, cmdProcessing, operationType, setMediaType, setOperationType } =
+  const { setFilePath, setMediaType, setPreviewImage } = useFileStore();
+  const { logs, cmdProcessing, operationType, setOperationType } =
     useOperationStore();
 
   async function onCheckForUpdatesBtnClick() {
@@ -69,6 +68,7 @@ function Header() {
               setFilePath("");
               setOperationType(null);
               setMediaType(null);
+              setPreviewImage(null);
             }}
             className="ripple rounded-full"
           >

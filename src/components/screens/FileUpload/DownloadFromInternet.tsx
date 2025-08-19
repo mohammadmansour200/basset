@@ -1,11 +1,17 @@
-import { useState } from "react";
 import { downloadDir, join } from "@tauri-apps/api/path";
 import { Command } from "@tauri-apps/plugin-shell";
+import { stat } from "@tauri-apps/plugin-fs";
 
-import { getMediaDuration } from "@/utils/ffmpegHelperUtils";
+import { getIsAudio, getIsImage } from "@/utils/fsUtils";
+import {
+  extractPreviewImage,
+  getMediaDuration,
+} from "@/utils/ffmpegHelperUtils";
 
+import { useState } from "react";
 import { useFileStore } from "@/stores/useFileStore";
-import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+import { useOperationStore } from "@/stores/useOperationStore";
+import { MediaType } from "@/stores/useFileStore";
 import { useTranslation } from "react-i18next";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
@@ -20,7 +26,6 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Ripple } from "react-ripple-click";
 import { toast } from "sonner";
-import { getIsAudio, getIsImage, getIsVideo } from "@/utils/fsUtils";
 
 const supportedDomains = [
   "youtube.com",
@@ -48,12 +53,14 @@ function DownloadFromInternet() {
   const [quality, setQuality] = useState<QualityType>("medium");
 
   const { t, i18n } = useTranslation();
+  const { cmdProcessing, setCmdProcessing } = useOperationStore();
   const {
-    cmdProcessing,
-    setCmdProcessing,
+    setDuration,
+    setFilePath,
     setMediaType: setProcessingMediaType,
-  } = useOperationStore();
-  const { setDuration, setFilePath } = useFileStore();
+    setPreviewImage,
+    setSize,
+  } = useFileStore();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -112,15 +119,26 @@ function DownloadFromInternet() {
 
         setCmdProcessing(false);
 
-        if (downloadedFilePath) {
-          if (getIsAudio(downloadedFilePath))
-            setProcessingMediaType(MediaType.AUDIO);
-          if (getIsImage(downloadedFilePath))
-            setProcessingMediaType(MediaType.IMAGE);
-          if (getIsVideo(downloadedFilePath))
-            setProcessingMediaType(MediaType.VIDEO);
+        let determinedMediaType: MediaType | null = null;
 
+        if (downloadedFilePath) {
+          if (getIsAudio(downloadedFilePath)) {
+            determinedMediaType = MediaType.AUDIO;
+          } else if (getIsImage(downloadedFilePath)) {
+            determinedMediaType = MediaType.IMAGE;
+          } else {
+            determinedMediaType = MediaType.VIDEO;
+          }
+
+          setProcessingMediaType(determinedMediaType);
           setFilePath(downloadedFilePath!);
+
+          await stat(downloadedFilePath).then((data) => setSize(data.size));
+
+          await extractPreviewImage(
+            downloadedFilePath,
+            determinedMediaType,
+          ).then((data) => setPreviewImage(data));
 
           await getMediaDuration(downloadedFilePath).then((data) => {
             setDuration(data);
@@ -166,7 +184,8 @@ function DownloadFromInternet() {
         },
         { regex: /DRM protected|drm protection/i, key: "drmProtected" },
         {
-          regex: /No video formats found|no formats available/i,
+          regex:
+            /No video formats found|no formats available|format is not available/i,
           key: "noFormats",
         },
         {

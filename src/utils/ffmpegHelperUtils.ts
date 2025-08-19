@@ -1,6 +1,10 @@
+import { appLocalDataDir, basename, extname, join } from "@tauri-apps/api/path";
+import { ensureDir } from "./fsUtils";
+import { ffprobe as ffprobeCommand, ffmpeg as ffmpegCommand } from "./command";
+
 import unformatTimestamp from "./timestampUnformatter";
 import { getPercentage } from "./getPercentage";
-import { ffprobe as ffprobeCommand } from "./command";
+import { MediaType } from "@/stores/useFileStore";
 
 //This is crucial for not having a jitter and frame freeze for cutting Media files in ffmpeg without re-encoding
 const getNearestTimestamp = async (
@@ -88,6 +92,86 @@ const extractFFmpegProgress = (data: string, AVDuration: number) => {
   return progressPercentage;
 };
 
+const extractPreviewImage = async (
+  path: string,
+  mediaType: MediaType,
+): Promise<string | null> => {
+  if (mediaType === MediaType.IMAGE) return path;
+
+  await ensureDir("output");
+  const tempfolder = await appLocalDataDir();
+  const fileExt = await extname(path);
+  const fileName = (await basename(path)).replace(`.${fileExt}`, "");
+  const outputPreviewImagePath = await join(
+    tempfolder,
+    "output",
+    `${fileName}.jpg`,
+  );
+
+  if (mediaType === MediaType.VIDEO) {
+    const ffmpegSidecar = ffmpegCommand([
+      "-y",
+      "-i",
+      path,
+      "-ss",
+      "00:00:01",
+      "-vframes",
+      "1",
+      outputPreviewImagePath,
+    ]);
+
+    return new Promise<string | null>((resolve) => {
+      ffmpegSidecar.on("error", (err) => {
+        console.error("Error extracting preview image:", err);
+        resolve(null);
+      });
+
+      ffmpegSidecar.on("close", async ({ code }) => {
+        if (code === 0) {
+          console.log(`Preview image extracted to ${outputPreviewImagePath}`);
+          resolve(outputPreviewImagePath);
+        } else {
+          resolve(null);
+        }
+      });
+
+      ffmpegSidecar.spawn();
+    });
+  }
+
+  if (mediaType === MediaType.AUDIO) {
+    const ffmpegSidecar = ffmpegCommand([
+      "-y",
+      "-i",
+      path,
+      "-an",
+      "-vcodec",
+      "copy",
+      outputPreviewImagePath,
+    ]);
+
+    return new Promise<string | null>((resolve) => {
+      ffmpegSidecar.on("error", (err) => {
+        console.error("Error extracting preview image:", err);
+        resolve(null);
+      });
+
+      ffmpegSidecar.on("close", async ({ code }) => {
+        if (code === 0) {
+          console.log(`Preview image extracted to ${outputPreviewImagePath}`);
+          resolve(outputPreviewImagePath);
+        } else {
+          resolve(null);
+        }
+      });
+
+      ffmpegSidecar.spawn();
+    });
+  }
+
+  return null;
+};
+
 const arabicNums2EnglishNums = (num: number) =>
   Number(num.toString().replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d)));
 
@@ -96,4 +180,5 @@ export {
   getNearestTimestamp,
   extractFFmpegProgress,
   arabicNums2EnglishNums,
+  extractPreviewImage,
 };

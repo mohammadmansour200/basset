@@ -7,11 +7,31 @@ import {
   copyFile,
 } from "@tauri-apps/plugin-fs";
 
+export function formatFileSize(sizeInBytes: number): string {
+  if (sizeInBytes === 0) return "0 Bytes";
+
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(sizeInBytes) / Math.log(1024));
+  const formattedSize = parseFloat(
+    (sizeInBytes / Math.pow(1024, i)).toFixed(2),
+  );
+
+  return `${formattedSize} ${sizes[i]}`;
+}
+
 export function extNameSync(file: string) {
   if (file.split(".").length === 1) return file.replace(".", "");
   return file.slice(
     (Math.max(0, file.lastIndexOf(".")) || Number.POSITIVE_INFINITY) + 1,
   );
+}
+
+export function fileTitleSync(file: string): string {
+  const fileName = file.split("/").pop() || file;
+
+  const title = fileName.split(".").slice(0, -1).join(".");
+
+  return title || fileName;
 }
 
 export function getIsAudio(file: string) {

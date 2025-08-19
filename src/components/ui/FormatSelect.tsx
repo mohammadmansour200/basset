@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { MediaType, useOperationStore } from "@/stores/useOperationStore";
+import { MediaType, useFileStore } from "@/stores/useFileStore";
 
 import {
   Select,
@@ -17,7 +17,7 @@ interface FormatSelectProps {
 
 function FormatSelect({ setFormat }: FormatSelectProps) {
   const { i18n, t } = useTranslation();
-  const { mediaType } = useOperationStore();
+  const { mediaType } = useFileStore();
   return (
     <>
       <Alert dir={i18n.dir()} className="flex flex-row gap-1">
