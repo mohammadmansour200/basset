@@ -1,5 +1,5 @@
 <center>
- <img alt="Basset logo" src="https://raw.githubusercontent.com/mohammadmansour200/basset/refs/heads/main/src-tauri/icons/128x128%402x.png">
+ <img alt="Basset logo" src="https://i.imgur.com/ccvPX4s.png">
 </center>
 
 <center>
